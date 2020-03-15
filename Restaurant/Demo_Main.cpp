@@ -11,10 +11,6 @@ int main()
 	delete pRest;
 	
 	return 0;
-	//deee77kkkk
-	//de7kk kteer mn abeer
-	//test de7k tany
-	//donia w raghad hywanaaaaattt
-	//hghgchcggh
+	
 
 }
