@@ -4,6 +4,7 @@
 
 int main()
 {
+	//awl test fl gdeed
 	
 	Restaurant* pRest = new Restaurant;
 	pRest->RunSimulation();
