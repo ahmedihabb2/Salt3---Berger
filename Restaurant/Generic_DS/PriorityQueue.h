@@ -1,6 +1,6 @@
 
-#ifndef __QUEUE_H_
-#define __QUEUE_H_
+#pragma once
+
 
 /*This code is an updated version from "Data Abstraction & Problem Solving with C++,WALLS AND MIRRORS ,SIXTH EDITION"*/
 
@@ -56,8 +56,8 @@ public:
 	PriorityQueue();
 	bool isEmpty() const;
 	bool enqueue(const T& newEntry, const int& prio);
-	bool dequeue(T& frntEntry);
-	bool peekFront(T& frntEntry)  const;
+	bool dequeue(T& frntEntry,int &prio);
+	bool peekFront(T& frntEntry,int& prio)  const;
 	T* toArray(int& count);	//returns array of T (array if items)
 	~PriorityQueue();
 };
@@ -111,12 +111,38 @@ bool PriorityQueue<T>::enqueue(const T& newEntry,const int& prio)
 	if (isEmpty())
 		frontPtr = newNodePtr; // The queue is empty
 	else
-	{ 
-		 // The queue was not empty
-		if new
-		prev = frontptr;
+	{
+		// The queue was not empty
+		if (newNodePtr->GetPriority() > frontPtr->GetPriority())
+		{
+			newNodePtr->setNext(frontPtr);
+			frontPtr = newNodePtr();
+		}
+		else
+		{
+			PriorityNode<T>* prev = frontPtr;
+			PriorityNode<T>* curr = prev->getNext();
+			while (curr)
+			{
+				if (newNodePtr->GetPriority() > curr->GetPriority())
+				{
+					prev->setNext(newNodePtr);
+					newNodePtr->setNext(curr);
+					break;
+				}
+				else
+				{
+					prev = curr;
+					curr = curr->getNext();
+				}
+			}
+		}
+		backPtr->setNext(newNodePtr);
 		
-	return true;
+	}
+	backPtr = newNodePtr;
+		return true;
+	
 } // end enqueue
 
 
@@ -131,13 +157,14 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool PriorityQueue<T>::dequeue(T& frntEntry)
+bool PriorityQueue<T>::dequeue(T& frntEntry,int&prio)
 {
 	if (isEmpty())
 		return false;
 
-	Node<T>* nodeToDeletePtr = frontPtr;
+	PriorityNode<T>* nodeToDeletePtr = frontPtr;
 	frntEntry = frontPtr->getItem();
+	pri = frontPtr->GetPriority();
 	frontPtr = frontPtr->getNext();
 	// Queue is not empty; remove front
 	if (nodeToDeletePtr == backPtr)	 // Special case: one node in queue
@@ -162,12 +189,13 @@ Output: The front of the queue.
 return: flase if Queue is empty
 */
 template <typename T>
-bool PriorityQueue<T>::peekFront(T& frntEntry) const
+bool PriorityQueue<T>::peekFront(T& frntEntry,int& prio) const
 {
 	if (isEmpty())
 		return false;
 
 	frntEntry = frontPtr->getItem();
+	prio = frontptr->GetPriority();
 	return true;
 
 }
@@ -195,7 +223,7 @@ T* PriorityQueue<T>::toArray(int& count)
 	if (!frontPtr)
 		return nullptr;
 	//counting the no. of items in the Queue
-	Node<T>* p = frontPtr;
+	PriorityNode<T>* p = frontPtr;
 	while (p)
 	{
 		count++;
@@ -213,4 +241,3 @@ T* PriorityQueue<T>::toArray(int& count)
 	return Arr;
 }
 
-#endif

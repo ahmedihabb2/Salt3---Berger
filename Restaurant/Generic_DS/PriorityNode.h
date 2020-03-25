@@ -1,6 +1,6 @@
 
-#ifndef __NODE_H_
-#define __NODE_H_
+#pragma once
+
 
 template < typename T>
 class PriorityNode
