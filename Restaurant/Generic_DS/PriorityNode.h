@@ -78,4 +78,4 @@ PriorityNode<T>* PriorityNode<T>::getNext() const
 	return next;
 }
 
-#endif#pragma once
+#endif
