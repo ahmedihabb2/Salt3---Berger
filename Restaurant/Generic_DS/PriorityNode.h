@@ -68,7 +68,7 @@ T PriorityNode<T>::getItem() const
 	return item;
 }
 template < typename T>
-T PriorityNode<T>::GetPriority() const
+int  PriorityNode<T>::GetPriority() const
 {
 	return priority;
 }
@@ -78,4 +78,3 @@ PriorityNode<T>* PriorityNode<T>::getNext() const
 	return next;
 }
 
-#endif
