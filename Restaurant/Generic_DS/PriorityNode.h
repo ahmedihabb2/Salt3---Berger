@@ -12,8 +12,8 @@ private:
 	PriorityNode<T>* next; // Pointer to next node
 public:
 	PriorityNode();
-	PriorityNode(const T& r_Item);	//passing by const ref.
-	PriorityNode(const T& r_Item, PriorityNode* nextNodePtr);
+	PriorityNode(const T& r_Item,const int& pri);	//passing by const ref.
+	PriorityNode(const T& r_Item, const int& pri, PriorityNode<T>* nextNodePtr);
 	void setItem(const T& r_Item);
 	void setNext(PriorityNode<T>* nextNodePtr);
 	void setPriority(const int& priority);
@@ -39,7 +39,7 @@ PriorityNode<T>::PriorityNode(const T& r_Item,const int& pri)
 }
 
 template < typename T>
-PriorityNode<T>::PriorityNode(const T& r_Item, const int& pri, Node<T>* nextNodePtr)
+PriorityNode<T>::PriorityNode(const T& r_Item, const int& pri, PriorityNode<T>* nextNodePtr)
 {
 	setPriority(pri);
 	item = r_Item;
@@ -57,7 +57,7 @@ void PriorityNode<T>::setPriority(const int& pri)
 		priority = pri;
 }
 template < typename T>
-void PriorityNode<T>::setNext(Node<T>* nextNodePtr)
+void PriorityNode<T>::setNext(PriorityNode<T>* nextNodePtr)
 {
 	next = nextNodePtr;
 }

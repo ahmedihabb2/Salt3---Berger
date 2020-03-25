@@ -1,4 +1,4 @@
-#pragma once
+#pragma onces
 #ifndef __QUEUE_H_
 #define __QUEUE_H_
 
@@ -55,7 +55,7 @@ private:
 public:
 	PriorityQueue();
 	bool isEmpty() const;
-	bool enqueue(const T& newEntry);
+	bool enqueue(const T& newEntry, const int& prio);
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
 	T* toArray(int& count);	//returns array of T (array if items)
