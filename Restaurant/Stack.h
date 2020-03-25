@@ -30,6 +30,8 @@ template <class T>
 bool Stack<T>::Push(T element)
 {
 	Node<T>* newnode = new Node<T>;
+	if (newnode == nullptr)
+		return false;
 	newnode->setItem(element);
 	newnode->setNext(Top);
 	Top = newnode;
