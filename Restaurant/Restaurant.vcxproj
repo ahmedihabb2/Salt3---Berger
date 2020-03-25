@@ -99,12 +99,14 @@
     <ClInclude Include="Events\ArrivalEvent.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Generic_DS\Node.h" />
+    <ClInclude Include="Generic_DS\PriorityNode.h" />
+    <ClInclude Include="Generic_DS\PriorityQueue.h" />
     <ClInclude Include="Generic_DS\Queue.h" />
+    <ClInclude Include="Generic_DS\Stack.h" />
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="Rest\Cook.h" />
     <ClInclude Include="Rest\Order.h" />
     <ClInclude Include="Rest\Restaurant.h" />
-    <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMUgraphicsLib\CMUgraphics.cpp" />
