@@ -1,5 +1,5 @@
 #pragma once
-#include "Generic_DS/Node.h"
+#include "Node.h"
 template <class T>
 
 //This Data Structure Depends On LIFO

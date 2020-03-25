@@ -108,7 +108,13 @@
     <ClInclude Include="Rest\Cook.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
-    <ClInclude Include="Stack.h">
+    <ClInclude Include="Generic_DS\PriorityNode.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\PriorityQueue.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\Stack.h">
       <Filter>Generic_DS</Filter>
     </ClInclude>
     <ClInclude Include="Generic_DS\PriorityNode.h">
