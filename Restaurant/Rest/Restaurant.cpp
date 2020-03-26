@@ -84,6 +84,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 
 		Queue<Cook> NcooksQ;
 		Queue<Cook> GcooksQ;
+		Queue<Cook> VcooksQ;
 
 		for (int i = 0; i < numNcooks; i++)
 		{
@@ -101,6 +102,15 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			newGCook->setSpeed(Gcookspeed);
 
 			GcooksQ.enqueue(*newGCook);
+		}
+
+		for (int i = 0; i < numVcooks; i++)
+		{
+			Cook* newVCook = new Cook();
+			newVCook->setType(TYPE_VIP);
+			newVCook->setType(Vcookspeed);
+
+			VcooksQ.enqueue(*newVCook);
 		}
 
 	}
