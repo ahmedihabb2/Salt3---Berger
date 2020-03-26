@@ -17,4 +17,6 @@ public:
 	void setID(int);
 	void setType(ORD_TYPE) ;
 
+	void setSpeed(int); //abeer added this
+
 };

@@ -7,6 +7,7 @@
 #include "..\Generic_DS\Queue.h"
 #include "..\Events\Event.h"
 
+#include <fstream>
 
 #include "Order.h"
 
@@ -17,6 +18,7 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
+	string filename; 
 	
 	/// ==> 
 	//	DEMO-related members. Should be removed in phases 1&2
@@ -37,7 +39,7 @@ public:
 	void ExecuteEvents(int TimeStep);	//executes all events at current timestep
 	void RunSimulation();
 
-	
+	void fileLoading();
 
 
 	void FillDrawingList();

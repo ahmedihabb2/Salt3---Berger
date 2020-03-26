@@ -69,7 +69,43 @@ void Restaurant::FillDrawingList()
 
 }
 
+void Restaurant::fileLoading() //abeer added this //not complete yet
+{
+	pGUI->PrintMessage("Enter file name");
+	filename = pGUI->GetString();
 
+	ifstream InFile(filename);
+
+	if (InFile.is_open())
+	{
+		int numNcooks, numGcooks, numVcooks, Ncookspeed, Gcookspeed, Vcookspeed;
+
+		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed >> Gcookspeed >> Vcookspeed;
+
+		Queue<Cook> NcooksQ;
+		Queue<Cook> GcooksQ;
+
+		for (int i = 0; i < numNcooks; i++)
+		{
+			Cook* newNCook = new Cook();
+			newNCook->setType(TYPE_NRM);
+			newNCook->setSpeed(Ncookspeed);
+
+			NcooksQ.enqueue(*newNCook);
+		}
+
+		for (int i = 0; i < numGcooks; i++)
+		{
+			Cook* newGCook = new Cook;
+			newGCook->setType(TYPE_VGAN);
+			newGCook->setSpeed(Gcookspeed);
+
+			GcooksQ.enqueue(*newGCook);
+		}
+
+	}
+
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
