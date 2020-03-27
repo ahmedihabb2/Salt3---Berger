@@ -58,7 +58,7 @@ public:
 	void setServInt(const int& serv);
 	void setFinishTime();
 	void setWaitTime(const int&);
-	void Serve(const int& ArrT, const int& Servtime, const int& Size);
+	void Serve(const int& ArrT, const int& Servtime, const int& Size);//
 };
 
 #endif
