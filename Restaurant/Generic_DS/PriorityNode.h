@@ -8,16 +8,16 @@ class PriorityNode
 private:
 	T item;// A data item
 
-	int priority;//priority of data to insert in the queue
+	float priority;//priority of data to insert in the queue
 	PriorityNode<T>* next; // Pointer to next node
 public:
 	PriorityNode();
-	PriorityNode(const T& r_Item,const int& pri);	//passing by const ref.
-	PriorityNode(const T& r_Item, const int& pri, PriorityNode<T>* nextNodePtr);
+	PriorityNode(const T& r_Item,float& pri);	//passing by const ref.
+	PriorityNode(const T& r_Item,float& pri, PriorityNode<T>* nextNodePtr);
 	void setItem(const T& r_Item);
 	void setNext(PriorityNode<T>* nextNodePtr);
-	void setPriority(const int& priority);
-	int GetPriority()const;
+	void setPriority(float& priority);
+	float GetPriority()const;
 	T getItem() const;
 	PriorityNode<T>* getNext() const;
 }; // end p. Node
@@ -31,7 +31,7 @@ PriorityNode<T>::PriorityNode()
 }
 
 template < typename T>
-PriorityNode<T>::PriorityNode(const T& r_Item,const int& pri)
+PriorityNode<T>::PriorityNode(const T& r_Item,float& pri)
 {
 	priority = pri;
 	item = r_Item;
@@ -39,7 +39,7 @@ PriorityNode<T>::PriorityNode(const T& r_Item,const int& pri)
 }
 
 template < typename T>
-PriorityNode<T>::PriorityNode(const T& r_Item, const int& pri, PriorityNode<T>* nextNodePtr)
+PriorityNode<T>::PriorityNode(const T& r_Item, float& pri, PriorityNode<T>* nextNodePtr)
 {
 	setPriority(pri);
 	item = r_Item;
@@ -51,7 +51,7 @@ void PriorityNode<T>::setItem(const T& r_Item)
 	item = r_Item;
 }
 template < typename T>
-void PriorityNode<T>::setPriority(const int& pri)
+void PriorityNode<T>::setPriority(float& pri)
 {
 	if(pri>=0)
 		priority = pri;
@@ -68,7 +68,7 @@ T PriorityNode<T>::getItem() const
 	return item;
 }
 template < typename T>
-int  PriorityNode<T>::GetPriority() const
+float  PriorityNode<T>::GetPriority() const
 {
 	return priority;
 }
