@@ -123,7 +123,7 @@
     <ClInclude Include="Generic_DS\PriorityQueue.h">
       <Filter>Generic_DS</Filter>
     </ClInclude>
-    <ClInclude Include="CancellationEvent.h">
+    <ClInclude Include="Events\CancellationEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
@@ -252,7 +252,7 @@
     <ClCompile Include="Rest\Cook.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
-    <ClCompile Include="CancellationEvent.cpp">
+    <ClCompile Include="Events\CancellationEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
   </ItemGroup>
