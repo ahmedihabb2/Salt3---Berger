@@ -51,7 +51,7 @@ public:
 	int getServInt()const;
 	int getWaitTime()const;
 	int getFinishTime()const;
-	void Promote(Order& promoted, int& addedmoney);
+	void Promote(double& addedmoney);
 	void setArrTime(int& arr);
 
 	void setServTime( int& serv);

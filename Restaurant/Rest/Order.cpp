@@ -89,10 +89,10 @@ float Order::getPriority()const
 {
 	return  Priority;
 }
-void Order::Promote(Order& promoted,int& addedmoney)
+void Order::Promote(double & addedmoney)
 {
-	promoted.type = TYPE_VIP;
-	promoted.totalMoney += addedmoney;
+	type = TYPE_VIP;
+	totalMoney += addedmoney;
 }
 void Order::setArrTime(int& arr)
 {
