@@ -6,6 +6,8 @@ using namespace std;
 #include "Restaurant.h"
 #include "..\Events\ArrivalEvent.h"
 
+#include "..\Events\CancellationEvent.h"
+#include"..\Events\PromotionEvent.h"
 
 Restaurant::Restaurant() 
 {
@@ -79,8 +81,11 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 	if (InFile.is_open())
 	{
 		int numNcooks, numGcooks, numVcooks, Ncookspeed, Gcookspeed, Vcookspeed;
+		int numOrdersBbreak, Nbreak, Gbreak, Vbreak , AutoP , numofevents ;
 
 		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed >> Gcookspeed >> Vcookspeed;
+
+		InFile >> numOrdersBbreak >> Nbreak >> Gbreak >> Vbreak>> AutoP>> numofevents;
 
 		Queue<Cook> NcooksQ;
 		Queue<Cook> GcooksQ;
@@ -113,6 +118,45 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			VcooksQ.enqueue(*newVCook);
 		}
 
+		//added by raghad
+		for (int i = 0; i < numofevents; i++)
+		{
+			char typeofevent;
+			InFile >> typeofevent;
+			Event* pEv;
+			if (typeofevent == 'R')
+			{
+				char ordertype;
+				int Ordertype, arrivaltime, ID, Size;
+					double Mony;
+				InFile >> ordertype>>arrivaltime>> ID>> Size>> Mony;
+				if (ordertype == 'N')
+					pEv = new ArrivalEvent(arrivaltime, ID, TYPE_NRM, Size, Mony);
+				else if (ordertype == 'G')
+					pEv = new ArrivalEvent(arrivaltime, ID, TYPE_VGAN, Size, Mony);
+				else if (ordertype == 'V')
+					pEv = new ArrivalEvent(arrivaltime, ID, TYPE_VIP, Size, Mony);
+
+			}
+			if (typeofevent == 'P')
+			{
+				int promotiontime, ID;
+				double exmony;
+				InFile >> promotiontime >> ID >> exmony;
+				pEv = new PromotionEvent(promotiontime,ID,exmony);
+			}
+			if (typeofevent == 'X')
+			{
+				int cancellationtime, ID;
+				InFile >> cancellationtime >> ID;
+				pEv = new CancellationEvent(cancellationtime, ID);
+
+			}
+
+				
+			
+			EventsQueue.enqueue(pEv);
+		}
 	}
 
 }
@@ -232,11 +276,65 @@ void Restaurant::Just_A_Demo()
 	
 }
 ////////////////
+//added by raghad
+void Restaurant::AddtoVIPQueue(Order* po)
+{
+	float priority = po->getPriority();
+	QVIP_Order.enqueue(po, priority);
+
+}
+void Restaurant::AddtoNOQueue(Order* po)
+{
+	QNormal_Order.enqueue(po);
+
+}
+void Restaurant::AddtoVEQueue(Order* po)
+{
+	Qvegan_Order.enqueue(po);
+
+}
+void Restaurant::cancellorder(int Id)
+{
+	Node<Order*>* prv = QNormal_Order.getfront();
+	if (prv->getItem()->GetID() == Id)
+		QNormal_Order.setfront(prv->getNext());
+	else {
+		Node<Order*>* Head = prv->getNext();
+		while (Head)
+		{
+			if (Head->getItem()->GetID() == Id)
+			{
+
+				prv->setNext(Head->getNext());
+				delete Head;
+				break;
+			}
+			else
+			{
+				prv = Head;
+				Head = Head->getNext();
+			}
+		}
+	}
+}
+
+void Restaurant::promoteorder(int Id, double exmoney)
+{
+	Node<Order*>* prv = QNormal_Order.getfront();
+	if (prv->getItem()->GetID() == Id)
+	{
+		//Node<Order*>* proOrder = prv;
+		////proOrder->getItem()->Promote(exmoney);
+		//QVIP_Order.enqueue(proOrder, );
+		//QNormal_Order.setfront(prv->getNext());
+	}
+}
 
 void Restaurant::AddtoDemoQueue(Order *pOrd)
 {
 	DEMO_Queue.enqueue(pOrd);
 }
+
 
 /// ==> end of DEMO-related function
 //////////////////////////////////////////////////////////////////////////////////////////////

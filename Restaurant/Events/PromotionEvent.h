@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Event.h"
-class CancellationEvent:public Event
+
+class PromotionEvent :public Event
 {
-	//there is no more data
+	double ExMony;
 public:
-	CancellationEvent(int Time, int ID);
-
+	PromotionEvent(int Time, int ID, double extramony);
 	virtual void Execute(Restaurant* pRest);	//override execute function
-};
 
+
+};

@@ -116,7 +116,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 		if (newNodePtr->GetPriority() > frontPtr->GetPriority())
 		{
 			newNodePtr->setNext(frontPtr);
-			frontPtr = newNodePtr();
+			frontPtr = newNodePtr;
 		}
 		else
 		{
