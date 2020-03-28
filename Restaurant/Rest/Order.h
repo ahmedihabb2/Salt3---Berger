@@ -25,7 +25,7 @@ protected:
 	int srvInt;
 
 public:
-	Order( ORD_TYPE r_Type,int arrtime, int ID, int size,int totalmoney);
+	Order( ORD_TYPE r_Type,int arrtime, int ID, int size,double totalmoney);
 	virtual ~Order();
 
 	int GetID();
@@ -44,14 +44,14 @@ public:
 	//Donia Addition
 	void setPriority();
 	void setOrderSize(int size);
-	float getPriority()const;
+	float getPriority();
 	int getOrderSize()const;
 	int getArrTime()const;
 	int getServTime()const;
 	int getServInt()const;
 	int getWaitTime()const;
 	int getFinishTime()const;
-	void Promote(Order& promoted, int& addedmoney);
+	void Promote( double& addedmoney);
 	void setArrTime(int& arr);
 
 	void setServTime( int& serv);

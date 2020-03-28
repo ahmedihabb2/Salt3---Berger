@@ -1,6 +1,6 @@
 #include "Order.h"
 
-Order::Order(ORD_TYPE r_Type,int arrtime, int id, int size, int totalmoney)
+Order::Order(ORD_TYPE r_Type,int arrtime, int id, int size, double totalmoney)
 {
 	ID = (id>0&&id<1000)?id:0;	//1<ID<999
 	type = r_Type;
@@ -9,6 +9,7 @@ Order::Order(ORD_TYPE r_Type,int arrtime, int id, int size, int totalmoney)
 	totalMoney = totalmoney;
 	setArrTime(arrtime);
 	setOrderSize(size);
+	Priority = 0;
 	
 }
 
@@ -85,14 +86,15 @@ int Order::getFinishTime()const
 	return FinishTime;
 }
 
-float Order::getPriority()const
+float Order::getPriority()
 {
 	return  Priority;
 }
-void Order::Promote(Order& promoted,int& addedmoney)
+void Order::Promote(double& addedmoney)
 {
-	promoted.type = TYPE_VIP;
-	promoted.totalMoney += addedmoney;
+	type = TYPE_VIP;
+	totalMoney += addedmoney;
+	setPriority();
 }
 void Order::setArrTime(int& arr)
 {
