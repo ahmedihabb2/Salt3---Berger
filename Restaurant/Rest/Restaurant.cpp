@@ -108,7 +108,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 		{
 			Cook* newVCook = new Cook();
 			newVCook->setType(TYPE_VIP);
-			newVCook->setType(Vcookspeed);
+			newVCook->setSpeed(Vcookspeed);
 
 			VcooksQ.enqueue(*newVCook);
 		}
