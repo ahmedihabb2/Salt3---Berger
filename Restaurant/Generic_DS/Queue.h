@@ -57,6 +57,9 @@ public :
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);  
 	bool peekFront(T& frntEntry)  const;
+	//added by raghad
+	Node<T>* getfront();
+	void setfront(Node<T>*);
 	T* toArray(int& count);	//returns array of T (array if items)
 	~Queue();
 };
@@ -76,7 +79,17 @@ Queue<T>::Queue()
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+Node<T>* Queue<T>::getfront()
+{
+	return frontPtr;
+}
+template <typename T>
+void Queue<T>::setfront(Node<T>* f)
+{
+	frontPtr = f;
 
+}
 /*
 Function: isEmpty
 Sees whether this queue is empty.
@@ -208,5 +221,8 @@ T* Queue<T>::toArray(int& count)
 	}
 	return Arr;
 }
+
+
+
 
 #endif

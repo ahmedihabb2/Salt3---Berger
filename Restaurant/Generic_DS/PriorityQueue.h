@@ -55,9 +55,9 @@ private:
 public:
 	PriorityQueue();
 	bool isEmpty() const;
-	bool enqueue(const T& newEntry, const int& prio);
-	bool dequeue(T& frntEntry,int &prio);
-	bool peekFront(T& frntEntry,int& prio)  const;
+	bool enqueue(const T& newEntry, float& prio);
+	bool dequeue(T& frntEntry,float &prio);
+	bool peekFront(T& frntEntry,float& prio)  const;
 	T* toArray(int& count);	//returns array of T (array if items)
 	~PriorityQueue();
 };
@@ -104,7 +104,7 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool PriorityQueue<T>::enqueue(const T& newEntry,const int& prio)
+bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 {
 	PriorityNode<T>* newNodePtr = new PriorityNode<T>(newEntry,prio);
 	// Insert the new node
@@ -116,7 +116,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry,const int& prio)
 		if (newNodePtr->GetPriority() > frontPtr->GetPriority())
 		{
 			newNodePtr->setNext(frontPtr);
-			frontPtr = newNodePtr();
+			frontPtr = newNodePtr;
 		}
 		else
 		{
@@ -157,7 +157,7 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool PriorityQueue<T>::dequeue(T& frntEntry,int&prio)
+bool PriorityQueue<T>::dequeue(T& frntEntry,float&prio)
 {
 	if (isEmpty())
 		return false;
@@ -189,7 +189,7 @@ Output: The front of the queue.
 return: flase if Queue is empty
 */
 template <typename T>
-bool PriorityQueue<T>::peekFront(T& frntEntry,int& prio) const
+bool PriorityQueue<T>::peekFront(T& frntEntry,float& prio) const
 {
 	if (isEmpty())
 		return false;

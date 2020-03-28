@@ -5,7 +5,10 @@
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\GUI\GUI.h"
 #include "..\Generic_DS\Queue.h"
+#include "..\Generic_DS\PriorityQueue.h"
 #include "..\Events\Event.h"
+
+
 
 #include <fstream>
 
@@ -25,11 +28,20 @@ private:
 	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
 	/// ==>
 	
+	//Added By Ahmed
+	Queue<Cook*> NCooks;
+	Queue<Cook*> GCooks;
+	Queue<Cook*> VCooks;
+	
 	
 	
 	//
 	// TODO: Add More Data Members As Needed
 	//
+	// added by raghad
+	PriorityQueue<Order*>  QVIP_Order;
+	Queue<Order*> QNormal_Order;
+	Queue<Order*> Qvegan_Order;
 
 public:
 	
@@ -46,8 +58,12 @@ public:
 
 	//
 	// TODO: Add More Member Functions As Needed
-	//
-
+	//added by raghad
+	void AddtoVIPQueue(Order* po);
+	void AddtoNOQueue(Order* po);
+	void AddtoVEQueue(Order* po);
+	void cancellorder(int ID);
+	void promoteorder(int ID, double exmoney);
 
 /// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
