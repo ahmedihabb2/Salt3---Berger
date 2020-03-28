@@ -323,11 +323,12 @@ void Restaurant::promoteorder(int Id, double exmoney)
 	Node<Order*>* prv = QNormal_Order.getfront();
 	if (prv->getItem()->GetID() == Id)
 	{
-		Node<Order*>* proOrder = prv;
-	    proOrder->getItem()->Promote(exmoney);
-		float priority = proOrder->getItem()->getPriority();
-		QVIP_Order.enqueue(proOrder->getItem(), priority);
-		QNormal_Order.setfront(prv->getNext());
+		Order* proOrder;
+		QNormal_Order.dequeue(proOrder);
+	    proOrder->Promote(exmoney);
+		float priority = proOrder->getPriority();
+		QVIP_Order.enqueue(proOrder, priority);
+		
 	}
 	else
 	{
@@ -344,7 +345,8 @@ void Restaurant::promoteorder(int Id, double exmoney)
 				QVIP_Order.enqueue(proOrder->getItem(), priority);
 				prv->setNext(Head->getNext());
 				//delete Head;
-				break;
+				return;
+				
 			}
 			else
 			{
@@ -356,6 +358,7 @@ void Restaurant::promoteorder(int Id, double exmoney)
 
 		
 	}
+	return; ///if ID isn't in Qnormal
 }
 
 void Restaurant::AddtoDemoQueue(Order *pOrd)
