@@ -29,11 +29,9 @@ private:
 	/// ==>
 	
 	//Added By Ahmed
-	Queue<Cook*> NCooks;
-	Queue<Cook*> GCooks;
-	Queue<Cook*> VCooks;
-	
-	
+	Queue<Cook> NcooksQ;
+	Queue<Cook> GcooksQ;
+	Queue<Cook> VcooksQ;
 	
 	//
 	// TODO: Add More Data Members As Needed
