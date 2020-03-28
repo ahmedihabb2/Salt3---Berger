@@ -28,6 +28,10 @@ private:
 	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
 	/// ==>
 	
+	//Added By Ahmed
+	Queue<Cook*> NCooks;
+	Queue<Cook*> GCooks;
+	Queue<Cook*> VCooks;
 	
 	
 	

@@ -28,7 +28,7 @@ void Restaurant::RunSimulation()
 	case MODE_SLNT:
 		break;
 	case MODE_DEMO:
-		Just_A_Demo();
+		FillDrawingList();
 
 	};
 
@@ -63,11 +63,18 @@ Restaurant::~Restaurant()
 
 void Restaurant::FillDrawingList()
 {
+	fileLoading();
 	//This function should be implemented in phase1
 	//It should add ALL orders and Cooks to the drawing list
 	//It should get orders from orders lists/queues/stacks/whatever (same for Cooks)
 	//To add orders it should call function  void GUI::AddToDrawingList(Order* pOrd);
 	//To add Cooks it should call function  void GUI::AddToDrawingList(Cook* pCc);
+	Cook* pC;
+	if (!NCooks.isEmpty())
+	{
+		NCooks.peekFront(pC);
+		pGUI->AddToDrawingList(pC);
+	}
 
 }
 
@@ -77,7 +84,6 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 	filename = pGUI->GetString();
 
 	ifstream InFile(filename);
-
 	if (InFile.is_open())
 	{
 		int numNcooks, numGcooks, numVcooks, Ncookspeed, Gcookspeed, Vcookspeed;
@@ -158,7 +164,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			EventsQueue.enqueue(pEv);
 		}
 	}
-
+	
 }
 
 
@@ -317,6 +323,7 @@ void Restaurant::cancellorder(int Id)
 		}
 	}
 }
+
 
 void Restaurant::promoteorder(int Id, double exmoney)
 {
