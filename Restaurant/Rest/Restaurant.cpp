@@ -9,7 +9,7 @@ using namespace std;
 #include "..\Events\CancellationEvent.h"
 #include"..\Events\PromotionEvent.h"
 
-Restaurant::Restaurant()
+Restaurant::Restaurant() 
 {
 	pGUI = NULL;
 }
@@ -18,7 +18,7 @@ void Restaurant::RunSimulation()
 {
 	pGUI = new GUI;
 	PROG_MODE	mode = pGUI->getGUIMode();
-
+		
 	switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
@@ -41,10 +41,10 @@ void Restaurant::RunSimulation()
 //Executes ALL events that should take place at current timestep
 void Restaurant::ExecuteEvents(int CurrentTimeStep)
 {
-	Event* pE;
-	while (EventsQueue.peekFront(pE))	//as long as there are more events
+	Event *pE;
+	while( EventsQueue.peekFront(pE) )	//as long as there are more events
 	{
-		if (pE->getEventTime() > CurrentTimeStep)	//no more events at current timestep
+		if(pE->getEventTime() > CurrentTimeStep )	//no more events at current timestep
 			return;
 
 		pE->Execute(this);
@@ -57,8 +57,8 @@ void Restaurant::ExecuteEvents(int CurrentTimeStep)
 
 Restaurant::~Restaurant()
 {
-	if (pGUI)
-		delete pGUI;
+		if (pGUI)
+			delete pGUI;
 }
 
 void Restaurant::FillDrawingList()
@@ -81,11 +81,11 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 	if (InFile.is_open())
 	{
 		int numNcooks, numGcooks, numVcooks, Ncookspeed, Gcookspeed, Vcookspeed;
-		int numOrdersBbreak, Nbreak, Gbreak, Vbreak, AutoP, numofevents;
+		int numOrdersBbreak, Nbreak, Gbreak, Vbreak , AutoP , numofevents ;
 
 		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed >> Gcookspeed >> Vcookspeed;
 
-		InFile >> numOrdersBbreak >> Nbreak >> Gbreak >> Vbreak >> AutoP >> numofevents;
+		InFile >> numOrdersBbreak >> Nbreak >> Gbreak >> Vbreak>> AutoP>> numofevents;
 
 		Queue<Cook> NcooksQ;
 		Queue<Cook> GcooksQ;
@@ -127,9 +127,9 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			if (typeofevent == 'R')
 			{
 				char ordertype;
-				int arrivaltime, ID, Size;
-				double Mony;
-				InFile >> ordertype >> arrivaltime >> ID >> Size >> Mony;
+				int Ordertype, arrivaltime, ID, Size;
+					double Mony;
+				InFile >> ordertype>>arrivaltime>> ID>> Size>> Mony;
 				if (ordertype == 'N')
 					pEv = new ArrivalEvent(arrivaltime, ID, TYPE_NRM, Size, Mony);
 				else if (ordertype == 'G')
@@ -138,14 +138,14 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 					pEv = new ArrivalEvent(arrivaltime, ID, TYPE_VIP, Size, Mony);
 
 			}
-			else if (typeofevent == 'P')
+			if (typeofevent == 'P')
 			{
 				int promotiontime, ID;
 				double exmony;
 				InFile >> promotiontime >> ID >> exmony;
-				pEv = new PromotionEvent(promotiontime, ID, exmony);
+				pEv = new PromotionEvent(promotiontime,ID,exmony);
 			}
-			else if (typeofevent == 'X')
+			if (typeofevent == 'X')
 			{
 				int cancellationtime, ID;
 				InFile >> cancellationtime >> ID;
@@ -153,8 +153,8 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 
 			}
 
-
-
+				
+			
 			EventsQueue.enqueue(pEv);
 		}
 	}
@@ -172,12 +172,12 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 //It should be removed starting phase 1
 void Restaurant::Just_A_Demo()
 {
-
+	
 	//
 	// THIS IS JUST A DEMO FUNCTION
 	// IT SHOULD BE REMOVED IN PHASE 1 AND PHASE 2
-
-	int EventCnt;
+	
+	int EventCnt;	
 	Order* pOrd;
 	Event* pEv;
 	srand(time(NULL));
@@ -187,79 +187,79 @@ void Restaurant::Just_A_Demo()
 
 	pGUI->PrintMessage("Generating Events randomly... In next phases, Events should be loaded from a file...CLICK to continue");
 	pGUI->waitForClick();
-
+		
 	//Just for sake of demo, generate some cooks and add them to the drawing list
 	//In next phases, Cooks info should be loaded from input file
-	int C_count = 12;
-	Cook* pC = new Cook[C_count];
+	int C_count = 12;	
+	Cook *pC = new Cook[C_count];
 	int cID = 1;
 
-	for (int i = 0; i < C_count; i++)
+	for(int i=0; i<C_count; i++)
 	{
-		cID += (rand() % 15 + 1);
+		cID+= (rand()%15+1);	
 		pC[i].setID(cID);
-		pC[i].setType((ORD_TYPE)(rand() % TYPE_CNT));
-	}
+		pC[i].setType((ORD_TYPE)(rand()%TYPE_CNT));
+	}	
 
-
+		
 	int EvTime = 0;
 
 	int O_id = 1;
-
+	
 	//Create Random events and fill them into EventsQueue
 	//All generated event will be "ArrivalEvents" for the demo
-	for (int i = 0; i < EventCnt; i++)
+	for(int i=0; i<EventCnt; i++)
 	{
-		O_id += (rand() % 4 + 1);
-		int OType = rand() % TYPE_CNT;	//Randomize order type		
-		EvTime += (rand() % 5 + 1);			//Randomize event time
-		pEv = new ArrivalEvent(EvTime, O_id, (ORD_TYPE)OType);
+		O_id += (rand()%4+1);		
+		int OType = rand()%TYPE_CNT;	//Randomize order type		
+		EvTime += (rand()%5+1);			//Randomize event time
+		pEv = new ArrivalEvent(EvTime,O_id,(ORD_TYPE)OType);
 		EventsQueue.enqueue(pEv);
 
-	}
+	}	
 
 	// --->   In next phases, no random generation is done
 	// --->       EventsQueue should be filled from actual events loaded from input file
 
-
-
-
-
+	
+	
+	
+	
 	//Now We have filled EventsQueue (randomly)
 	int CurrentTimeStep = 1;
-
+	
 
 	//as long as events queue is not empty yet
-	while (!EventsQueue.isEmpty())
+	while(!EventsQueue.isEmpty())
 	{
 		//print current timestep
 		char timestep[10];
-		itoa(CurrentTimeStep, timestep, 10);
+		itoa(CurrentTimeStep,timestep,10);	
 		pGUI->PrintMessage(timestep);
 
 
 		//The next line may add new orders to the DEMO_Queue
 		ExecuteEvents(CurrentTimeStep);	//execute all events at current time step
-
+		
 
 /////////////////////////////////////////////////////////////////////////////////////////
 		/// The next code section should be done through function "FillDrawingList()" once you
 		/// decide the appropriate list type for Orders and Cooks
-
+		
 		//Let's add ALL randomly generated Cooks to GUI::DrawingList
-		for (int i = 0; i < C_count; i++)
+		for(int i=0; i<C_count; i++)
 			pGUI->AddToDrawingList(&pC[i]);
-
+		
 		//Let's add ALL randomly generated Ordes to GUI::DrawingList
 		int size = 0;
 		Order** Demo_Orders_Array = DEMO_Queue.toArray(size);
-
-		for (int i = 0; i < size; i++)
+		
+		for(int i=0; i<size; i++)
 		{
 			pOrd = Demo_Orders_Array[i];
 			pGUI->AddToDrawingList(pOrd);
 		}
-		/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 
 		pGUI->UpdateInterface();
 		Sleep(1000);
@@ -267,13 +267,13 @@ void Restaurant::Just_A_Demo()
 		pGUI->ResetDrawingList();
 	}
 
-	delete[]pC;
+	delete []pC;
 
 
 	pGUI->PrintMessage("generation done, click to END program");
 	pGUI->waitForClick();
 
-
+	
 }
 ////////////////
 //added by raghad
@@ -296,11 +296,8 @@ void Restaurant::AddtoVEQueue(Order* po)
 void Restaurant::cancellorder(int Id)
 {
 	Node<Order*>* prv = QNormal_Order.getfront();
-	if (!prv)
-		return;
 	if (prv->getItem()->GetID() == Id)
 		QNormal_Order.setfront(prv->getNext());
-	
 	else {
 		Node<Order*>* Head = prv->getNext();
 		while (Head)
@@ -324,23 +321,29 @@ void Restaurant::cancellorder(int Id)
 void Restaurant::promoteorder(int Id, double exmoney)
 {
 	Node<Order*>* prv = QNormal_Order.getfront();
-	if (!prv)
-		return;
-	Order* promoted;
 	if (prv->getItem()->GetID() == Id)
 	{
-		QNormal_Order.dequeue(promoted);
+		Node<Order*>* proOrder = prv;
+	    proOrder->getItem()->Promote(exmoney);
+		float priority = proOrder->getItem()->getPriority();
+		QVIP_Order.enqueue(proOrder->getItem(), priority);
+		QNormal_Order.setfront(prv->getNext());
 	}
-	else 
+	else
 	{
 		Node<Order*>* Head = prv->getNext();
 		while (Head)
 		{
 			if (Head->getItem()->GetID() == Id)
 			{
-				promoted = Head->getItem();
+
+
+				Node<Order*>* proOrder = Head;
+				proOrder->getItem()->Promote(exmoney);
+				float priority = proOrder->getItem()->getPriority();
+				QVIP_Order.enqueue(proOrder->getItem(), priority);
 				prv->setNext(Head->getNext());
-				delete Head;
+				//delete Head;
 				break;
 			}
 			else
@@ -349,22 +352,13 @@ void Restaurant::promoteorder(int Id, double exmoney)
 				Head = Head->getNext();
 			}
 		}
+
+
 		
 	}
-	promoted->Promote(exmoney);
-	float prio = promoted->getPriority();
-	QVIP_Order.enqueue(promoted,prio );
-	//if (prv->getItem()->GetID() == Id)
-	//{
-	//	//Node<Order*>* proOrder = prv;
-	//	////proOrder->getItem()->Promote(exmoney);
-	//	//QVIP_Order.enqueue(proOrder, );
-	//	//QNormal_Order.setfront(prv->getNext());
-	//	
-	//}
 }
 
-void Restaurant::AddtoDemoQueue(Order* pOrd)
+void Restaurant::AddtoDemoQueue(Order *pOrd)
 {
 	DEMO_Queue.enqueue(pOrd);
 }
