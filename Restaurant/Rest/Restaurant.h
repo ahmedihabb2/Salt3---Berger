@@ -55,7 +55,7 @@ public:
 
 	void fileLoading();
 
-
+	void SimpleSimulator();
 	void FillDrawingList();
 
 	//
