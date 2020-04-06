@@ -66,22 +66,22 @@ void Restaurant::FillDrawingList()
 	int size = 0;
 	fileLoading();
 	//Converting The  Cooks Q to Array to iterate on it and add cooks to drawing list
-	Cook* pC= NcooksQ.toArray(size);
+	Cook** pC= NcooksQ.toArray(size);
 	for (int i = 0; i < size; i++)
 	{
-		pGUI->AddToDrawingList(&pC[i]);
+		pGUI->AddToDrawingList(pC[i]);
 	}
 	size = 0;
 	pC = GcooksQ.toArray(size);
 	for (int i = 0; i < size; i++)
 	{
-		pGUI->AddToDrawingList(&pC[i]);
+		pGUI->AddToDrawingList(pC[i]);
 	}
 	size = 0;
 	pC = VcooksQ.toArray(size);
 	for (int i = 0; i < size; i++)
 	{
-		pGUI->AddToDrawingList(&pC[i]);
+		pGUI->AddToDrawingList(pC[i]);
 	}
 	/////////////////////////////////////////
 	//end of drawing all cooks types
@@ -129,7 +129,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			newNCook->setType(TYPE_NRM);
 			newNCook->setSpeed(Ncookspeed);
 
-			NcooksQ.enqueue(*newNCook);
+			NcooksQ.enqueue(newNCook);
 		}
 
 		for (int i = 0; i < numGcooks; i++)
@@ -138,7 +138,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			newGCook->setType(TYPE_VGAN);
 			newGCook->setSpeed(Gcookspeed);
 
-			GcooksQ.enqueue(*newGCook);
+			GcooksQ.enqueue(newGCook);
 		}
 
 		for (int i = 0; i < numVcooks; i++)
@@ -147,7 +147,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			newVCook->setType(TYPE_VIP);
 			newVCook->setSpeed(Vcookspeed);
 
-			VcooksQ.enqueue(*newVCook);
+			VcooksQ.enqueue(newVCook);
 		}
 
 		//added by raghad

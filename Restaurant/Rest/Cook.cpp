@@ -22,6 +22,20 @@ ORD_TYPE Cook::GetType() const
 	return type;
 }
 
+int Cook::getSpeed() const
+{
+	return speed;
+}
+
+int Cook::getNumOrdBbreak() const
+{
+	return numOrdersBefBreak;
+}
+
+int Cook::getBreakDur() const
+{
+	return breakDuration;
+}
 
 void Cook::setID(int id)
 {
@@ -36,4 +50,14 @@ void Cook::setType(ORD_TYPE t)
 void Cook::setSpeed(int s)
 {
 	speed = s;
+}
+
+void Cook::setNumOrdBbreak(int num)
+{
+	numOrdersBefBreak = num;
+}
+
+void Cook::setBreakDur(int bd)
+{
+	breakDuration = bd;
 }

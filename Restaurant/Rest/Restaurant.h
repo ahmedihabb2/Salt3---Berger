@@ -21,20 +21,24 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
-	string filename; 
+
 	
 	/// ==> 
 	//	DEMO-related members. Should be removed in phases 1&2
 	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
 	/// ==>
-	
+
+		// TODO: Add More Data Members As Needed
+
+	string filename;
+
 	//Added By Ahmed
-	Queue<Cook> NcooksQ;
-	Queue<Cook> GcooksQ;
-	Queue<Cook> VcooksQ;
+	Queue<Cook*> NcooksQ;
+	Queue<Cook*> GcooksQ;
+	Queue<Cook*> VcooksQ;
 	
 	//
-	// TODO: Add More Data Members As Needed
+
 	//
 	// added by raghad
 	PriorityQueue<Order*>  QVIP_Order;
