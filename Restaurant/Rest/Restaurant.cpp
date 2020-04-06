@@ -120,22 +120,36 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 
 		InFile >> numOrdersBbreak >> Nbreak >> Gbreak >> Vbreak>> AutoP>> numofevents;
 
-		
+		int numAllcooks = numNcooks + numGcooks + numVcooks;
+		int* arrCIDs = new int[numAllcooks];
+		for (int i = 1; i <= numAllcooks; i++)
+		{
+			arrCIDs[i] = i;
+		}
 
 		for (int i = 0; i < numNcooks; i++)
 		{
 			Cook* newNCook = new Cook();
+	
+			newNCook->setID(arrCIDs[i + 1]);
 			newNCook->setType(TYPE_NRM);
 			newNCook->setSpeed(Ncookspeed);
+			newNCook->setNumOrdBbreak(numOrdersBbreak);
+			newNCook->setBreakDur(Nbreak);
 
 			NcooksQ.enqueue(newNCook);
 		}
 
 		for (int i = 0; i < numGcooks; i++)
 		{
+
 			Cook* newGCook = new Cook;
+
+			newGCook->setID(arrCIDs[i + numNcooks + 1]);
 			newGCook->setType(TYPE_VGAN);
 			newGCook->setSpeed(Gcookspeed);
+			newGCook->setNumOrdBbreak(numOrdersBbreak);
+			newGCook->setBreakDur(Nbreak);
 
 			GcooksQ.enqueue(newGCook);
 		}
@@ -143,8 +157,12 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 		for (int i = 0; i < numVcooks; i++)
 		{
 			Cook* newVCook = new Cook;
+
+			newVCook->setID(arrCIDs[i + numNcooks + numGcooks + 1]);
 			newVCook->setType(TYPE_VIP);
 			newVCook->setSpeed(Vcookspeed);
+			newVCook->setNumOrdBbreak(numOrdersBbreak);
+			newVCook->setBreakDur(Nbreak);
 
 			VcooksQ.enqueue(newVCook);
 		}
