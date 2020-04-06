@@ -64,7 +64,6 @@ Restaurant::~Restaurant()
 void Restaurant::FillDrawingList()
 {
 	int size = 0;
-	fileLoading();
 	//Converting The  Cooks Q to Array to iterate on it and add cooks to drawing list
 	Cook* pC= NcooksQ.toArray(size);
 	for (int i = 0; i < size; i++)
@@ -205,6 +204,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 void Restaurant::Just_A_Demo()
 {
 
+	fileLoading();
 	//
 	// THIS IS JUST A DEMO FUNCTION
 	// IT SHOULD BE REMOVED IN PHASE 1 AND PHASE 2
@@ -226,12 +226,12 @@ void Restaurant::Just_A_Demo()
 	Cook* pC = new Cook[C_count];
 	int cID = 1;
 
-	for (int i = 0; i < C_count; i++)
+	/*for (int i = 0; i < C_count; i++)
 	{
 		cID += (rand() % 15 + 1);
 		pC[i].setID(cID);
 		pC[i].setType((ORD_TYPE)(rand() % TYPE_CNT));
-	}
+	}*/
 
 
 	int EvTime = 0;
@@ -240,7 +240,7 @@ void Restaurant::Just_A_Demo()
 
 	//Create Random events and fill them into EventsQueue
 	//All generated event will be "ArrivalEvents" for the demo
-	for (int i = 0; i < EventCnt; i++)
+	/*for (int i = 0; i < EventCnt; i++)
 	{
 		O_id += (rand() % 4 + 1);
 		int OType = rand() % TYPE_CNT;	//Randomize order type		
@@ -248,7 +248,7 @@ void Restaurant::Just_A_Demo()
 		pEv = new ArrivalEvent(EvTime, O_id, (ORD_TYPE)OType);
 		EventsQueue.enqueue(pEv);
 
-	}
+	}*/
 
 	// --->   In next phases, no random generation is done
 	// --->       EventsQueue should be filled from actual events loaded from input file
@@ -278,7 +278,7 @@ void Restaurant::Just_A_Demo()
 		/// The next code section should be done through function "FillDrawingList()" once you
 		/// decide the appropriate list type for Orders and Cooks
 
-		//Let's add ALL randomly generated Cooks to GUI::DrawingList
+	/*	//Let's add ALL randomly generated Cooks to GUI::DrawingList
 		for (int i = 0; i < C_count; i++)
 			pGUI->AddToDrawingList(&pC[i]);
 
@@ -290,7 +290,8 @@ void Restaurant::Just_A_Demo()
 		{
 			pOrd = Demo_Orders_Array[i];
 			pGUI->AddToDrawingList(pOrd);
-		}
+		}*/
+		FillDrawingList();
 		/////////////////////////////////////////////////////////////////////////////////////////
 
 		pGUI->UpdateInterface();
