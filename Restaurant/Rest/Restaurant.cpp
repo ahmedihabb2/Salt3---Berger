@@ -149,7 +149,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			newGCook->setType(TYPE_VGAN);
 			newGCook->setSpeed(Gcookspeed);
 			newGCook->setNumOrdBbreak(numOrdersBbreak);
-			newGCook->setBreakDur(Nbreak);
+			newGCook->setBreakDur(Gbreak);
 
 			GcooksQ.enqueue(newGCook);
 		}
@@ -162,7 +162,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 			newVCook->setType(TYPE_VIP);
 			newVCook->setSpeed(Vcookspeed);
 			newVCook->setNumOrdBbreak(numOrdersBbreak);
-			newVCook->setBreakDur(Nbreak);
+			newVCook->setBreakDur(Vbreak);
 
 			VcooksQ.enqueue(newVCook);
 		}
