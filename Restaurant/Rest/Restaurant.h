@@ -32,11 +32,14 @@ private:
 
 	string filename;
 
-	//Added By Ahmed
+	//Added By Abeer //Brought as data members here by Ahmed
 	Queue<Cook*> NcooksQ;
 	Queue<Cook*> GcooksQ;
 	Queue<Cook*> VcooksQ;
 	
+	PriorityQueue<Cook*> busyCooks;
+	PriorityQueue<Cook*> inBreakCooks;
+
 	//
 
 	//
