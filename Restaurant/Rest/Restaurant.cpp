@@ -28,7 +28,7 @@ void Restaurant::RunSimulation()
 	case MODE_SLNT:
 		break;
 	case MODE_DEMO:
-		Just_A_Demo();
+		SimpleSimulator();
 
 	};
 
@@ -419,7 +419,24 @@ void Restaurant::AddtoDemoQueue(Order *pOrd)
 }
 
 
-/// ==> end of DEMO-related function
-//////////////////////////////////////////////////////////////////////////////////////////////
+void Restaurant::SimpleSimulator()
+{
+	pGUI->PrintMessage("Simple Simulator Function is Running .... Click to continue");
+	pGUI->waitForClick();
+	fileLoading();
+	int CurrentTimeStep = 1;
+	while (!EventsQueue.isEmpty())
+	{
+		char timestep[100];
+		itoa(CurrentTimeStep, timestep, 10);
+		pGUI->PrintMessage(timestep);
+		ExecuteEvents(CurrentTimeStep);
+		FillDrawingList();
+		pGUI->UpdateInterface();
+		Sleep(1000);
+		CurrentTimeStep++;
+		pGUI->ResetDrawingList();
+	}
+}
 
 
