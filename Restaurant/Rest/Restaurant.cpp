@@ -87,19 +87,19 @@ void Restaurant::FillDrawingList()
 	//////////////////////////////////////
 	//Converting The  Orders Q to Array to iterate on it and add ordrs to drawing list
 	size = 0;
-	Order** pO = QNormal_Order.toArray(size);
+	pON= QNormal_Order.toArray(size);
 		for (int i = 0; i < size;i++)
-		 pGUI->AddToDrawingList(pO[i]);
+		 pGUI->AddToDrawingList(pON[i]);
 	
 	size = 0;
-	pO = Qvegan_Order.toArray(size);
+	pOG = Qvegan_Order.toArray(size);
 	for (int i = 0; i < size;i++)
-		pGUI->AddToDrawingList(pO[i]);
+		pGUI->AddToDrawingList(pOG[i]);
 
 	size = 0;
-	pO = QVIP_Order.toArray(size);
+	pOV = QVIP_Order.toArray(size);
 	for (int i = 0; i < size;i++)
-		pGUI->AddToDrawingList(pO[i]);
+		pGUI->AddToDrawingList(pOV[i]);
 
 
 }
@@ -421,12 +421,14 @@ void Restaurant::AddtoDemoQueue(Order *pOrd)
 
 void Restaurant::SimpleSimulator()
 {
+	Order *pO;
 	pGUI->PrintMessage("Simple Simulator Function is Running .... Click to continue");
 	pGUI->waitForClick();
 	fileLoading();
 	int CurrentTimeStep = 1;
 	while (!EventsQueue.isEmpty())
 	{
+
 		char timestep[100];
 		itoa(CurrentTimeStep, timestep, 10);
 		pGUI->PrintMessage(timestep);
@@ -436,7 +438,15 @@ void Restaurant::SimpleSimulator()
 		Sleep(1000);
 		CurrentTimeStep++;
 		pGUI->ResetDrawingList();
+		if (CurrentTimeStep > 1 && !QNormal_Order.isEmpty())
+		{
+			//just for testing mshhhh saaaaaaaa7
+			QNormal_Order.peekFront(pO);
+			pO->setStatus(SRV);
+		}
+		
 	}
+	pGUI->waitForClick();
 }
 
 

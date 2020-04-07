@@ -21,7 +21,6 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
-
 	
 	/// ==> 
 	//	DEMO-related members. Should be removed in phases 1&2
@@ -47,6 +46,11 @@ private:
 	PriorityQueue<Order*>  QVIP_Order;
 	Queue<Order*> QNormal_Order;
 	Queue<Order*> Qvegan_Order;
+
+	//Queue To Array
+	Order** pON;
+	Order** pOG;
+	Order** pOV;
 
 public:
 	
