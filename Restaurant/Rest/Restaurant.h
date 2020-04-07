@@ -32,11 +32,14 @@ private:
 
 	string filename;
 
-	//Added By Ahmed
+	//Added By Abeer //Brought as data members here by Ahmed
 	Queue<Cook*> NcooksQ;
 	Queue<Cook*> GcooksQ;
 	Queue<Cook*> VcooksQ;
 	
+	PriorityQueue<Cook*> busyCooksQ;
+	PriorityQueue<Cook*> inBreakCooksQ;
+
 	//
 
 	//
@@ -66,6 +69,11 @@ public:
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
+
+	//// Added by abeer phase2
+	//void addToBusyCQ(Cook* pC, Order* pO);
+	//void addToInBreakCQ(Cook* pC);
+
 
 /// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
