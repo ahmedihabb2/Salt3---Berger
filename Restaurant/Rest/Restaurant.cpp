@@ -392,10 +392,11 @@ void Restaurant::promoteorder(int Id, double exmoney)
 
 
 				Node<Order*>* proOrder = Head;
+				prv->setNext(Head->getNext());
 				proOrder->getItem()->Promote(exmoney);
 				float priority = proOrder->getItem()->getPriority();
 				QVIP_Order.enqueue(proOrder->getItem(), priority);
-				prv->setNext(Head->getNext());
+			
 				//delete Head;
 				return;
 				
