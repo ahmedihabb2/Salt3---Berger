@@ -21,23 +21,36 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
-	string filename; 
 	
 	/// ==> 
 	//	DEMO-related members. Should be removed in phases 1&2
 	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
 	/// ==>
+
+		// TODO: Add More Data Members As Needed
+
+	string filename;
+
+	//Added By Abeer //Brought as data members here by Ahmed
+	Queue<Cook*> NcooksQ;
+	Queue<Cook*> GcooksQ;
+	Queue<Cook*> VcooksQ;
 	
-	
-	
-	
+	PriorityQueue<Cook*> busyCooksQ;
+	PriorityQueue<Cook*> inBreakCooksQ;
+
 	//
-	// TODO: Add More Data Members As Needed
+
 	//
 	// added by raghad
 	PriorityQueue<Order*>  QVIP_Order;
 	Queue<Order*> QNormal_Order;
 	Queue<Order*> Qvegan_Order;
+
+	//Queue To Array
+	Order** pON;
+	Order** pOG;
+	Order** pOV;
 
 public:
 	
@@ -49,7 +62,7 @@ public:
 
 	void fileLoading();
 
-
+	void SimpleSimulator();
 	void FillDrawingList();
 
 	//
@@ -60,6 +73,11 @@ public:
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
+
+	//// Added by abeer phase2
+	//void addToBusyCQ(Cook* pC, Order* pO);
+	//void addToInBreakCQ(Cook* pC);
+
 
 /// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
 
