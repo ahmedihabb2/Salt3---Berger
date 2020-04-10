@@ -96,8 +96,8 @@ void Restaurant::FillDrawingList()
 		pGUI->AddToDrawingList(pOV[i]);
 
 	int size = 0;
-	Order** SO = InServing.toArray(size);
-		for (int i = 0; i < size;i++)
+	Order** SO = InServing.toArray(SRVorders);
+		for (int i = 0; i < SRVorders;i++)
 			pGUI->AddToDrawingList(SO[i]);
 		size = 0;
 	Order** FD = FinishedList.toArray(size);

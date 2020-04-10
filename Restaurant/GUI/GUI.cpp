@@ -124,7 +124,7 @@ void GUI::ClearStatusBar(int line) const
 	if (line == 2)
 		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 1.3), WindWidth, WindHeight - (int)(StatusBarHeight / 1.5));
 	if (line == 3)
-		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 1.5), WindWidth, WindHeight - (int)(StatusBarHeight / 1.9));
+		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 1.56), WindWidth, WindHeight - (int)(StatusBarHeight / 1.9));
 	if(line == 4)
 		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 1.9), WindWidth, WindHeight - (int)(StatusBarHeight / 2.7));
 	if(line == 5)

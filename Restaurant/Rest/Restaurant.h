@@ -63,6 +63,7 @@ public:
 	//added by ahmed
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
+	int SRVorders;
 	
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
