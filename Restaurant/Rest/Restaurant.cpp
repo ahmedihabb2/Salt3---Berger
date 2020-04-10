@@ -28,7 +28,7 @@ void Restaurant::RunSimulation()
 	case MODE_SLNT:
 		break;
 	case MODE_DEMO:
-		testprint();
+		SimpleSimulator();
 
 	};
 
@@ -63,22 +63,19 @@ Restaurant::~Restaurant()
 
 void Restaurant::FillDrawingList()
 {
-	int size = 0;
 	//Converting The  Cooks Q to Array to iterate on it and add cooks to drawing list
-	Cook** pC= NcooksQ.toArray(size);
-	for (int i = 0; i < size; i++)
+	Cook** pC= NcooksQ.toArray(NCookNum);
+	for (int i = 0; i < NCookNum; i++)
 	{
 		pGUI->AddToDrawingList(pC[i]);
 	}
-	size = 0;
-	pC = GcooksQ.toArray(size);
-	for (int i = 0; i < size; i++)
+	pC = GcooksQ.toArray(GCookNum);
+	for (int i = 0; i < GCookNum; i++)
 	{
 		pGUI->AddToDrawingList(pC[i]);
 	}
-	size = 0;
-	pC = VcooksQ.toArray(size);
-	for (int i = 0; i < size; i++)
+	pC = VcooksQ.toArray(VCookNum);
+	for (int i = 0; i < VCookNum; i++)
 	{
 		pGUI->AddToDrawingList(pC[i]);
 	}
@@ -86,21 +83,19 @@ void Restaurant::FillDrawingList()
 	//end of drawing all cooks types
 	//////////////////////////////////////
 	//Converting The  Orders Q to Array to iterate on it and add ordrs to drawing list
-	size = 0;
-	Order** pON= QNormal_Order.toArray(size);
-		for (int i = 0; i < size;i++)
+	Order** pON= QNormal_Order.toArray(NWaitNum);
+		for (int i = 0; i < NWaitNum;i++)
 		 pGUI->AddToDrawingList(pON[i]);
-	
-	size = 0;
-	Order** pOG = Qvegan_Order.toArray(size);
-	for (int i = 0; i < size;i++)
+
+	Order** pOG = Qvegan_Order.toArray(GWaitNum);
+	for (int i = 0; i < GWaitNum ;i++)
 		pGUI->AddToDrawingList(pOG[i]);
 
-	size = 0;
-	Order** pOV = QVIP_Order.toArray(size);
-	for (int i = 0; i < size;i++)
+	Order** pOV = QVIP_Order.toArray(VWaitNum);
+	for (int i = 0; i < VWaitNum;i++)
 		pGUI->AddToDrawingList(pOV[i]);
-	size = 0;
+
+	int size = 0;
 	Order** SO = InServing.toArray(size);
 		for (int i = 0; i < size;i++)
 			pGUI->AddToDrawingList(SO[i]);
@@ -311,6 +306,7 @@ void Restaurant::SimpleSimulator()
 {
 	Order *NpO,*GpO,*VpO,*pO;
 	float pr;
+	
 	pGUI->PrintMessage("Simple Simulator Function is Running .... Click to continue");
 	pGUI->waitForClick();
 	fileLoading();
@@ -320,7 +316,7 @@ void Restaurant::SimpleSimulator()
 
 		char timestep[100];
 		itoa(CurrentTimeStep, timestep, 10);
-		pGUI->PrintMessage(timestep);
+		pGUI->PrintMessage(timestep,1);
 		ExecuteEvents(CurrentTimeStep);
 		if (!QNormal_Order.isEmpty())
 		{
@@ -380,6 +376,8 @@ void Restaurant::SimpleSimulator()
 			}
 		}
 		FillDrawingList();
+		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) +" Vegan :"  + to_string(GWaitNum) + " VIP : "+to_string(VWaitNum) , 2);
+		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 		pGUI->UpdateInterface();
 		Sleep(1000);
 		CurrentTimeStep++;
@@ -390,5 +388,20 @@ void Restaurant::SimpleSimulator()
 		pGUI->waitForClick();
 }
 
+void Restaurant::testprint()
+{
+	pGUI->PrintMessage("Ahmed",1);
+	pGUI->PrintMessage("ihab",2);
+	pGUI->PrintMessage("Ahmoooooooood",3);
+	pGUI->PrintMessage("abd 8afooor", 4);
+	pGUI->PrintMessage("ab wahaaab", 5);
+	Sleep(2000);
+	pGUI->PrintMessage("Ahmod", 1);
+	pGUI->PrintMessage("ihaaaaaab", 2);
+	pGUI->PrintMessage("Om Aliii", 3);
+	pGUI->PrintMessage("El bor3yyy", 4);
+	pGUI->PrintMessage("El bor3yy brdooo", 5);
+	pGUI->waitForClick();
+}
 
 

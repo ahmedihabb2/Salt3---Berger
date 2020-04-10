@@ -102,6 +102,7 @@ private:
 	void DrawRestArea() const;	    // draws the restaurant area
 
 	void ClearStatusBar() const;    // clears the status bar
+	void ClearStatusBar(int line) const;
 	void ClearDrawingArea() const;	// clears the Drawing area from all drawings
 
 public:
@@ -114,7 +115,7 @@ public:
 
 	// Output Functions  ---------------------------
 	void PrintMessage(string msg) const; // prints a message in the status bar
-
+	void PrintMessage(string msg, int line) const;
 
 	void UpdateInterface();
 	void AddToDrawingList(Order* pOrd);	//Adds a new order to the drawing queue

@@ -60,7 +60,10 @@ public:
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
-
+	//added by ahmed
+	int NCookNum , GCookNum , VCookNum;
+	int NWaitNum, GWaitNum, VWaitNum;
+	
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
