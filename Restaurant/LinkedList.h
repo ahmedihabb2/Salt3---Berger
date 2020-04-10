@@ -1,0 +1,144 @@
+#pragma once
+#include "Generic_DS/Node.h"
+
+template <typename T>
+class LinkedList
+{
+private:
+	Node<T>* Head;	//Pointer to the head of the list
+	//You can add tail pointer too (depending on your problem)
+	Node<T>* tail;
+public:
+	LinkedList()
+	{
+		Head = nullptr;
+		tail = nullptr;
+	}
+
+	//List is being desturcted ==> delete all items in the list
+	~LinkedList()
+	{
+		DeleteAll();
+	}
+	bool isEmpty()
+	{
+		return Head == nullptr;
+	}
+	Node<T>* getHead()
+	{
+		return Head;
+	}
+	void DeleteAll()
+	{
+		Node<T>* P = Head;
+		while (Head)
+		{
+			P = Head->getNext();
+			delete Head;
+			Head = P;
+		}
+	}
+	void InsertEnd(const T& data)
+	{
+		Node<T>* p = new Node<T>;
+		p->setItem(data);
+		if (!Head)
+		{
+			Head = tail = p;
+			p->setNext(nullptr);
+			return;
+		}
+
+		else
+		{
+			tail->setNext(p);
+			p->setNext(nullptr);
+			tail = p;
+		}
+	}
+	void DeleteFirst()
+	{
+		Node<T>* temp = Head->getNext();
+		delete Head;
+		Head = temp;
+	}
+	void DeleteLast()
+	{
+		Node<T>* temp = Head;
+		if (!Head)
+		{
+			return;
+		}
+		while (temp->getNext() != tail)
+		{
+			temp = temp->getNext();
+		}
+		temp->setNext(nullptr);
+		tail = temp;
+	}
+	bool DeleteNode(const T& value)
+	{
+		bool found = false;
+		if (!Head)
+		{
+			return found;
+		}
+		Node<T>* prev = Head;
+		if (Head->getItem() == value)
+		{
+			DeleteFirst();
+			found = true;
+			return found;
+		}
+
+		while (prev->getNext()->getNext())
+		{
+			if (prev->getNext()->getItem() == value)
+			{
+
+				Node<T>* temp = new Node<T>;
+				temp = prev->getNext();
+				prev->setNext(temp->getNext());
+				delete temp;
+				found = true;
+				return found;
+
+			}
+			else
+				prev = prev->getNext();
+
+		}
+		if (prev->getNext()->getItem() == value)
+		{
+			DeleteLast();
+			found = true;
+
+		}
+		return found;
+	}
+	T *toArray(int& count)
+	{
+		count = 0;
+
+		if (!Head)
+			return nullptr;
+		//counting the no. of items in the List
+		Node<T>* p = Head;
+		while (p)
+		{
+			count++;
+			p = p->getNext();
+		}
+
+
+		T* Arr = new T[count];
+		p = Head;
+		for (int i = 0; i < count;i++)
+		{
+			Arr[i] = p->getItem();
+			p = p->getNext();
+		}
+		return Arr;
+	}
+
+};

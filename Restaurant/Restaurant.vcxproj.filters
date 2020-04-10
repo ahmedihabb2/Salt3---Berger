@@ -129,6 +129,9 @@
     <ClInclude Include="Events\PromotionEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo_Main.cpp" />
