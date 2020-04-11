@@ -234,9 +234,10 @@ void Restaurant::AddtoVEQueue(Order* po)
 void Restaurant::cancellorder(int Id)
 {
 	Node<Order*>* prv = QNormal_Order.getfront();
-	if (prv->getItem()->GetID() == Id)
+	if (prv&&prv->getItem()->GetID() == Id)
 		QNormal_Order.setfront(prv->getNext());
-	else {
+	else if(prv) 
+	{
 		Node<Order*>* Head = prv->getNext();
 		while (Head)
 		{
