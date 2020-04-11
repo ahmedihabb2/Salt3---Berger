@@ -50,7 +50,6 @@ public:
 	void RunSimulation();
 
 	void fileLoading();
-	void testprint();
 	void SimpleSimulator();
 	void FillDrawingList();
 

@@ -379,7 +379,8 @@ void Restaurant::SimpleSimulator()
 		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) +" Vegan :"  + to_string(GWaitNum) + " VIP : "+to_string(VWaitNum) , 2);
 		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 		pGUI->UpdateInterface();
-		Sleep(1000);
+		//Sleep(1000);
+		pGUI->waitForClick();
 		CurrentTimeStep++;
 		pGUI->ResetDrawingList();
 		
@@ -388,20 +389,5 @@ void Restaurant::SimpleSimulator()
 		pGUI->waitForClick();
 }
 
-void Restaurant::testprint()
-{
-	pGUI->PrintMessage("Ahmed",1);
-	pGUI->PrintMessage("ihab",2);
-	pGUI->PrintMessage("Ahmoooooooood",3);
-	pGUI->PrintMessage("abd 8afooor", 4);
-	pGUI->PrintMessage("ab wahaaab", 5);
-	Sleep(2000);
-	pGUI->PrintMessage("Ahmod", 1);
-	pGUI->PrintMessage("ihaaaaaab", 2);
-	pGUI->PrintMessage("Om Aliii", 3);
-	pGUI->PrintMessage("El bor3yyy", 4);
-	pGUI->PrintMessage("El bor3yy brdooo", 5);
-	pGUI->waitForClick();
-}
 
 
