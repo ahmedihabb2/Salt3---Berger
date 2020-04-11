@@ -261,7 +261,7 @@ void Restaurant::cancellorder(int Id)
 void Restaurant::promoteorder(int Id, double exmoney)
 {
 	Node<Order*>* prv = QNormal_Order.getfront();
-	if (prv->getItem()->GetID() == Id)
+	if (prv&&prv->getItem()->GetID() == Id)
 	{
 		Order* proOrder;
 		QNormal_Order.dequeue(proOrder);
@@ -270,7 +270,7 @@ void Restaurant::promoteorder(int Id, double exmoney)
 		QVIP_Order.enqueue(proOrder, priority);
 		
 	}
-	else
+	else if(prv)
 	{
 		Node<Order*>* Head = prv->getNext();
 		while (Head)
