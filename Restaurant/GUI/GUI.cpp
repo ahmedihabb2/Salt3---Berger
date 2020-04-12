@@ -138,15 +138,16 @@ void GUI::ClearStatusBar(int line) const
 	pWind->SetPen(WHITE, 3);
 	pWind->SetBrush(WHITE);
 	if (line == 1)
-		pWind->DrawRectangle(0, WindHeight - StatusBarHeight, WindWidth, WindHeight - (int)(StatusBarHeight / 1.3));
+		pWind->DrawImage("GUI\\d.jpg",0, WindHeight - StatusBarHeight, WindWidth, WindHeight - (int)(StatusBarHeight / 1.3));
 	if (line == 2)
-		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 1.3), WindWidth, WindHeight - (int)(StatusBarHeight / 1.5));
+		pWind->DrawImage("GUI\\d.jpg",0, WindHeight - (int)(StatusBarHeight / 1.3), WindWidth, WindHeight - (int)(StatusBarHeight / 1.5));
 	if (line == 3)
-		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 1.56), WindWidth, WindHeight - (int)(StatusBarHeight / 1.9));
+		pWind->DrawImage("GUI\\d.jpg",0, WindHeight - (int)(StatusBarHeight / 1.56), WindWidth, WindHeight - (int)(StatusBarHeight / 1.9));
 	if (line == 4)
-		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 1.9), WindWidth, WindHeight - (int)(StatusBarHeight / 2.7));
+		pWind->DrawImage("GUI\\d.jpg",0, WindHeight - (int)(StatusBarHeight / 1.9), WindWidth, WindHeight - (int)(StatusBarHeight / 2.7));
 	if (line == 5)
-		pWind->DrawRectangle(0, WindHeight - (int)(StatusBarHeight / 3), WindWidth, WindHeight - (int)(StatusBarHeight / 4));
+		pWind->DrawImage("GUI\\d.jpg",0, WindHeight - (int)(StatusBarHeight / 3), WindWidth, WindHeight - (int)(StatusBarHeight / 4));
+	
 	pWind->SetPen(BROWN, 3);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight, WindWidth, WindHeight - StatusBarHeight);
 }
@@ -334,7 +335,7 @@ PROG_MODE	GUI::getGUIMode() const
 {
 	PROG_MODE Mode;
 
-	PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent, (4)DEMO... ");
+	PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent, (4)Simple Simulator");
 	string S = GetString();
 
 	Mode = (PROG_MODE)(atoi(S.c_str()) - 1);

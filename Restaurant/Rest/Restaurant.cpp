@@ -28,7 +28,7 @@ void Restaurant::RunSimulation()
 	case MODE_SLNT:
 		break;
 	case MODE_DEMO:
-		SimpleSimulator();
+		SimpleSimulator();   //Simulator Function Just For Testing
 
 	};
 
@@ -60,6 +60,8 @@ Restaurant::~Restaurant()
 		if (pGUI)
 			delete pGUI;
 }
+
+//Filling GUI with Orders and Cooks of All types
 
 void Restaurant::FillDrawingList()
 {
@@ -106,8 +108,10 @@ void Restaurant::FillDrawingList()
 
 
 }
-
-void Restaurant::fileLoading() //abeer added this //not complete yet
+/////////////////////////////////////////////////////
+//Reading inputs from File and filling suitable lists
+/////////////////////////////////////////////////////
+void Restaurant::fileLoading() 
 {
 	pGUI->PrintMessage("Enter file name");
 	filename = pGUI->GetString();
@@ -213,8 +217,7 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 	
 }
 
-////////////////
-//added by raghad
+
 void Restaurant::AddtoVIPQueue(Order* po)
 {
 	float priority = po->getPriority();
@@ -302,6 +305,7 @@ void Restaurant::promoteorder(int Id, double exmoney)
 	return; ///if ID isn't in Qnormal
 }
 
+//Testinf Function
 
 void Restaurant::SimpleSimulator()
 {
@@ -319,6 +323,7 @@ void Restaurant::SimpleSimulator()
 		itoa(CurrentTimeStep, timestep, 10);
 		pGUI->PrintMessage(timestep,1);
 		ExecuteEvents(CurrentTimeStep);
+		//Picking one order of each type and adding it to serving list
 		if (!QNormal_Order.isEmpty())
 		{
 			QNormal_Order.dequeue(NpO);
@@ -337,6 +342,7 @@ void Restaurant::SimpleSimulator()
 			VpO->setStatus(SRV);
 			InServing.InsertEnd(VpO);
 		}
+		//each 5 timesteps pick one order of each type and add it to finished orders
 		if (CurrentTimeStep % 5 == 0)
 		{
 			Node<Order*>* temp = InServing.getHead();
@@ -377,11 +383,12 @@ void Restaurant::SimpleSimulator()
 			}
 		}
 		FillDrawingList();
+		//Printing Cooks and Orders Information
 		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) +" Vegan :"  + to_string(GWaitNum) + " VIP : "+to_string(VWaitNum) , 2);
 		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 		pGUI->UpdateInterface();
-		//Sleep(1000);
-		pGUI->waitForClick();
+		Sleep(1000);
+		//pGUI->waitForClick();
 		CurrentTimeStep++;
 		pGUI->ResetDrawingList();
 		

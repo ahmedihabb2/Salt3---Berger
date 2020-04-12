@@ -23,18 +23,17 @@ private:
 
 	string filename;
 
-	//Added By Abeer //Brought as data members here by Ahmed
+	//Queue for each type of Cooks
 	Queue<Cook*> NcooksQ;
 	Queue<Cook*> GcooksQ;
 	Queue<Cook*> VcooksQ;
-	
+	//Priority Queue For Busy Cooks
 	PriorityQueue<Cook*> busyCooksQ;
 	PriorityQueue<Cook*> inBreakCooksQ;
 
-	//
-	//
-	// added by raghad
+	//Priority Queue for vip orders depending on Priority Equation
 	PriorityQueue<Order*>  QVIP_Order;
+	//
 	Queue<Order*> QNormal_Order;
 	Queue<Order*> Qvegan_Order;
 	LinkedList<Order*>InServing;
@@ -53,13 +52,11 @@ public:
 	void SimpleSimulator();
 	void FillDrawingList();
 
-	//added by raghad
 	void AddtoVIPQueue(Order* po);
 	void AddtoNOQueue(Order* po);
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
-	//added by ahmed
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders;

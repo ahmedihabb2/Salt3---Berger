@@ -4,17 +4,8 @@
 
 int main()
 {
-	//awl test fl gdeed
-	
 	Restaurant* pRest = new Restaurant;
 	pRest->RunSimulation();
-	
 	delete pRest;
-	
-	//a5er test yarab
-
-
 	return 0;
-	//kjklhlk
-
 }
