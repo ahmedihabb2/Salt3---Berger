@@ -272,5 +272,26 @@
     <Text Include="CMUgraphicsLib\Readme.txt">
       <Filter>CMUGraphicsLib</Filter>
     </Text>
+    <Text Include="test.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GUI\6.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\38.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\bggg.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\chef.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\d.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\waiting3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
