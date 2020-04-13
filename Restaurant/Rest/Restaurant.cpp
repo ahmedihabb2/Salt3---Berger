@@ -85,7 +85,7 @@ void Restaurant::FillDrawingList()
 	//end of drawing all cooks types
 	//////////////////////////////////////
 	//Converting The  Orders Q to Array to iterate on it and add ordrs to drawing list
-	Order** pON= QNormal_Order.toArray(NWaitNum);
+	Order** pON= LNormal_Order.toArray(NWaitNum);
 		for (int i = 0; i < NWaitNum;i++)
 		 pGUI->AddToDrawingList(pON[i]);
 
@@ -224,9 +224,9 @@ void Restaurant::AddtoVIPQueue(Order* po)
 	QVIP_Order.enqueue(po, priority);
 
 }
-void Restaurant::AddtoNOQueue(Order* po)
+void Restaurant::AddtoNOList(Order* po)
 {
-	QNormal_Order.enqueue(po);
+	LNormal_Order.InsertEnd(po);
 
 }
 void Restaurant::AddtoVEQueue(Order* po)
@@ -236,9 +236,11 @@ void Restaurant::AddtoVEQueue(Order* po)
 }
 void Restaurant::cancellorder(int Id)
 {
-	Node<Order*>* prv = QNormal_Order.getfront();
+
+	Order* del;
+	Node<Order*>* prv = LNormal_Order.getHead();
 	if (prv&&prv->getItem()->GetID() == Id)
-		QNormal_Order.setfront(prv->getNext());
+		LNormal_Order.DeleteFirst(del);
 	else if(prv) 
 	{
 		Node<Order*>* Head = prv->getNext();
@@ -263,11 +265,11 @@ void Restaurant::cancellorder(int Id)
 
 void Restaurant::promoteorder(int Id, double exmoney)
 {
-	Node<Order*>* prv = QNormal_Order.getfront();
+	Node<Order*>* prv = LNormal_Order.getHead();
 	if (prv&&prv->getItem()->GetID() == Id)
 	{
 		Order* proOrder;
-		QNormal_Order.dequeue(proOrder);
+		LNormal_Order.DeleteFirst(proOrder);
 	    proOrder->Promote(exmoney);
 		float priority = proOrder->getPriority();
 		QVIP_Order.enqueue(proOrder, priority);
@@ -324,9 +326,9 @@ void Restaurant::SimpleSimulator()
 		pGUI->PrintMessage(timestep,1);
 		ExecuteEvents(CurrentTimeStep);
 		//Picking one order of each type and adding it to serving list
-		if (!QNormal_Order.isEmpty())
+		if (!LNormal_Order.isEmpty())
 		{
-			QNormal_Order.dequeue(NpO);
+			LNormal_Order.DeleteFirst(NpO);
 			NpO->setStatus(SRV);
 			InServing.InsertEnd(NpO);
 		}
