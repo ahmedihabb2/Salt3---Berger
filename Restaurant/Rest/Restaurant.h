@@ -34,7 +34,7 @@ private:
 	//Priority Queue for vip orders depending on Priority Equation
 	PriorityQueue<Order*>  QVIP_Order;
 	//
-	Queue<Order*> QNormal_Order;
+	LinkedList<Order*> LNormal_Order;
 	Queue<Order*> Qvegan_Order;
 	LinkedList<Order*>InServing;
 	Queue<Order*>FinishedList;
@@ -53,7 +53,7 @@ public:
 	void FillDrawingList();
 
 	void AddtoVIPQueue(Order* po);
-	void AddtoNOQueue(Order* po);
+	void AddtoNOList(Order* po);
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);

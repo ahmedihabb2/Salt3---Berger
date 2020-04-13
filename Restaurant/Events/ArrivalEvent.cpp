@@ -31,7 +31,7 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 	//pRest->AddtoDemoQueue(pOrd);
 	if (OrdType == TYPE_NRM)
 	{
-		pRest->AddtoNOQueue(pOrd);
+		pRest->AddtoNOList(pOrd);
 	}
 	else if (OrdType == TYPE_VGAN)
 	{

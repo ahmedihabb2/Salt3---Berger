@@ -56,8 +56,9 @@ public:
 			tail = p;
 		}
 	}
-	void DeleteFirst()
+	void DeleteFirst(T& frntEntry)
 	{
+		frntEntry = Head->getItem();
 		Node<T>* temp = Head->getNext();
 		delete Head;
 		Head = temp;
@@ -76,6 +77,7 @@ public:
 		temp->setNext(nullptr);
 		tail = temp;
 	}
+
 	bool DeleteNode(const T& value)
 	{
 		bool found = false;
@@ -86,7 +88,8 @@ public:
 		Node<T>* prev = Head;
 		if (Head->getItem() == value)
 		{
-			DeleteFirst();
+			T num;
+			DeleteFirst(num);
 			found = true;
 			return found;
 		}
@@ -116,6 +119,8 @@ public:
 		}
 		return found;
 	}
+
+
 	T *toArray(int& count)
 	{
 		count = 0;
