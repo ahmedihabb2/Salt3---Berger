@@ -7,8 +7,8 @@
 #include "..\Generic_DS\Queue.h"
 #include "..\Generic_DS\PriorityQueue.h"
 #include "..\Events\Event.h"
-
-
+#include"..\Generic_DS\LinkedList.h"
+#include"..\LinkedList.h"
 
 #include <fstream>
 
@@ -21,18 +21,9 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
-
-	
-	/// ==> 
-	//	DEMO-related members. Should be removed in phases 1&2
-	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
-	/// ==>
-
-		// TODO: Add More Data Members As Needed
-
 	string filename;
 
-	//Added By Abeer //Brought as data members here by Ahmed
+	//Queue for each type of Cooks
 	Queue<Cook*> NcooksQ;
 	Queue<Cook*> GcooksQ;
 	Queue<Cook*> VcooksQ;
@@ -43,13 +34,12 @@ private:
 	Queue<Cook*> VCooksInBreakQ;
 
 	//
-
-	//
-	// added by raghad
-	PriorityQueue<Order*>  QVIP_Order;
 	Queue<Order*> QNormal_Order;
 	Queue<Order*> Qvegan_Order;
+	LinkedList<Order*>InServing;
+	Queue<Order*>FinishedList;
 
+	
 public:
 	
 	Restaurant();
@@ -59,32 +49,21 @@ public:
 	void RunSimulation();
 
 	void fileLoading();
-
 	void SimpleSimulator();
 	void FillDrawingList();
 
-	//
-	// TODO: Add More Member Functions As Needed
-	//added by raghad
 	void AddtoVIPQueue(Order* po);
 	void AddtoNOQueue(Order* po);
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
-
+	int NCookNum , GCookNum , VCookNum;
+	int NWaitNum, GWaitNum, VWaitNum;
+	int SRVorders;
+	
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
-
-
-/// ===================    DEMO-related functions. Should be removed in phases 1&2   ================= 
-
-	void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
-	void AddtoDemoQueue(Order* po);	//adds an order to the demo queue
-
-/// ================================================================================================== 
-
-
 
 };
 
