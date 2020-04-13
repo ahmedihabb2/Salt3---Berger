@@ -38,7 +38,9 @@ private:
 	Queue<Cook*> VcooksQ;
 	
 	PriorityQueue<Cook*> busyCooksQ;
-	PriorityQueue<Cook*> inBreakCooksQ;
+	Queue<Cook*> NCooksInBreakQ;
+	Queue<Cook*> GCooksInBreakQ;
+	Queue<Cook*> VCooksInBreakQ;
 
 	//
 
