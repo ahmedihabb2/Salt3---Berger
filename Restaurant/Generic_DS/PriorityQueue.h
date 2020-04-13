@@ -164,7 +164,7 @@ bool PriorityQueue<T>::dequeue(T& frntEntry,float&prio)
 
 	PriorityNode<T>* nodeToDeletePtr = frontPtr;
 	frntEntry = frontPtr->getItem();
-	pri = frontPtr->GetPriority();
+	prio = frontPtr->GetPriority();
 	frontPtr = frontPtr->getNext();
 	// Queue is not empty; remove front
 	if (nodeToDeletePtr == backPtr)	 // Special case: one node in queue
@@ -195,7 +195,7 @@ bool PriorityQueue<T>::peekFront(T& frntEntry,float& prio) const
 		return false;
 
 	frntEntry = frontPtr->getItem();
-	prio = frontptr->GetPriority();
+	prio = frontPtr->GetPriority();
 	return true;
 
 }

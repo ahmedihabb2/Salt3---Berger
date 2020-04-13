@@ -28,7 +28,7 @@ const int ciDefWindXPos = CW_USEDEFAULT;
 const int ciDefWindYPos = 0;
 
 const char ccDefWindClassName[] = "CMUgraphics Library";
-const char ccDefWindTitle[] = "Graphics Window";
+const char ccDefWindTitle[] = "The Restaurent";
 
 const int ciDefBrushSize = 1;
 

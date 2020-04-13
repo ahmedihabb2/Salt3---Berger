@@ -129,9 +129,11 @@
     <ClInclude Include="Events\PromotionEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Demo_Main.cpp" />
     <ClCompile Include="CMUgraphicsLib\jpeg\jcomapi.c">
       <Filter>CMUGraphicsLib\JPEG</Filter>
     </ClCompile>
@@ -261,6 +263,7 @@
     <ClCompile Include="Events\PromotionEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt">
@@ -269,5 +272,26 @@
     <Text Include="CMUgraphicsLib\Readme.txt">
       <Filter>CMUGraphicsLib</Filter>
     </Text>
+    <Text Include="test.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GUI\6.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\38.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\bggg.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\chef.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\d.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\waiting3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

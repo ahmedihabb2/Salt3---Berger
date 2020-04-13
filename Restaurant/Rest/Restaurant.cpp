@@ -28,7 +28,7 @@ void Restaurant::RunSimulation()
 	case MODE_SLNT:
 		break;
 	case MODE_DEMO:
-		SimpleSimulator();
+		SimpleSimulator();   //Simulator Function Just For Testing
 
 	};
 
@@ -61,24 +61,23 @@ Restaurant::~Restaurant()
 			delete pGUI;
 }
 
+//Filling GUI with Orders and Cooks of All types
+
 void Restaurant::FillDrawingList()
 {
-	int size = 0;
 	//Converting The  Cooks Q to Array to iterate on it and add cooks to drawing list
-	Cook** pC= NcooksQ.toArray(size);
-	for (int i = 0; i < size; i++)
+	Cook** pC= NcooksQ.toArray(NCookNum);
+	for (int i = 0; i < NCookNum; i++)
 	{
 		pGUI->AddToDrawingList(pC[i]);
 	}
-	size = 0;
-	pC = GcooksQ.toArray(size);
-	for (int i = 0; i < size; i++)
+	pC = GcooksQ.toArray(GCookNum);
+	for (int i = 0; i < GCookNum; i++)
 	{
 		pGUI->AddToDrawingList(pC[i]);
 	}
-	size = 0;
-	pC = VcooksQ.toArray(size);
-	for (int i = 0; i < size; i++)
+	pC = VcooksQ.toArray(VCookNum);
+	for (int i = 0; i < VCookNum; i++)
 	{
 		pGUI->AddToDrawingList(pC[i]);
 	}
@@ -86,25 +85,33 @@ void Restaurant::FillDrawingList()
 	//end of drawing all cooks types
 	//////////////////////////////////////
 	//Converting The  Orders Q to Array to iterate on it and add ordrs to drawing list
-	size = 0;
-	Order** pO = QNormal_Order.toArray(size);
-		for (int i = 0; i < size;i++)
-		 pGUI->AddToDrawingList(pO[i]);
-	
-	size = 0;
-	pO = Qvegan_Order.toArray(size);
-	for (int i = 0; i < size;i++)
-		pGUI->AddToDrawingList(pO[i]);
+	Order** pON= QNormal_Order.toArray(NWaitNum);
+		for (int i = 0; i < NWaitNum;i++)
+		 pGUI->AddToDrawingList(pON[i]);
 
-	size = 0;
-	pO = QVIP_Order.toArray(size);
-	for (int i = 0; i < size;i++)
-		pGUI->AddToDrawingList(pO[i]);
+	Order** pOG = Qvegan_Order.toArray(GWaitNum);
+	for (int i = 0; i < GWaitNum ;i++)
+		pGUI->AddToDrawingList(pOG[i]);
+
+	Order** pOV = QVIP_Order.toArray(VWaitNum);
+	for (int i = 0; i < VWaitNum;i++)
+		pGUI->AddToDrawingList(pOV[i]);
+
+	int size = 0;
+	Order** SO = InServing.toArray(SRVorders);
+		for (int i = 0; i < SRVorders;i++)
+			pGUI->AddToDrawingList(SO[i]);
+		size = 0;
+	Order** FD = FinishedList.toArray(size);
+		for (int i = 0; i < size;i++)
+			pGUI->AddToDrawingList(FD[i]);
 
 
 }
-
-void Restaurant::fileLoading() //abeer added this //not complete yet
+/////////////////////////////////////////////////////
+//Reading inputs from File and filling suitable lists
+/////////////////////////////////////////////////////
+void Restaurant::fileLoading() 
 {
 	pGUI->PrintMessage("Enter file name");
 	filename = pGUI->GetString();
@@ -211,123 +218,6 @@ void Restaurant::fileLoading() //abeer added this //not complete yet
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-/// ==> 
-///  DEMO-related functions. Should be removed in phases 1&2
-
-//Begin of DEMO-related functions
-
-//This is just a demo function for project introductory phase
-//It should be removed starting phase 1
-void Restaurant::Just_A_Demo()
-{
-
-	fileLoading();
-	//
-	// THIS IS JUST A DEMO FUNCTION
-	// IT SHOULD BE REMOVED IN PHASE 1 AND PHASE 2
-
-	int EventCnt;
-	Order* pOrd;
-	Event* pEv;
-	srand(time(NULL));
-
-	pGUI->PrintMessage("Just a Demo. Enter EVENTS Count(next phases should read I/P filename):");
-	EventCnt = atoi(pGUI->GetString().c_str());	//get user input as a string then convert to integer
-
-	pGUI->PrintMessage("Generating Events randomly... In next phases, Events should be loaded from a file...CLICK to continue");
-	pGUI->waitForClick();
-
-	//Just for sake of demo, generate some cooks and add them to the drawing list
-	//In next phases, Cooks info should be loaded from input file
-	int C_count = 12;
-	Cook* pC = new Cook[C_count];
-	int cID = 1;
-
-	/*for (int i = 0; i < C_count; i++)
-	{
-		cID += (rand() % 15 + 1);
-		pC[i].setID(cID);
-		pC[i].setType((ORD_TYPE)(rand() % TYPE_CNT));
-	}*/
-
-
-	int EvTime = 0;
-
-	int O_id = 1;
-
-	//Create Random events and fill them into EventsQueue
-	//All generated event will be "ArrivalEvents" for the demo
-	/*for (int i = 0; i < EventCnt; i++)
-	{
-		O_id += (rand() % 4 + 1);
-		int OType = rand() % TYPE_CNT;	//Randomize order type		
-		EvTime += (rand() % 5 + 1);			//Randomize event time
-		pEv = new ArrivalEvent(EvTime, O_id, (ORD_TYPE)OType);
-		EventsQueue.enqueue(pEv);
-
-	}*/
-
-	// --->   In next phases, no random generation is done
-	// --->       EventsQueue should be filled from actual events loaded from input file
-
-
-
-
-
-	//Now We have filled EventsQueue (randomly)
-	int CurrentTimeStep = 1;
-
-
-	//as long as events queue is not empty yet
-	while (!EventsQueue.isEmpty())
-	{
-		//print current timestep
-		char timestep[10];
-		itoa(CurrentTimeStep, timestep, 10);
-		pGUI->PrintMessage(timestep);
-
-
-		//The next line may add new orders to the DEMO_Queue
-		ExecuteEvents(CurrentTimeStep);	//execute all events at current time step
-
-
-/////////////////////////////////////////////////////////////////////////////////////////
-		/// The next code section should be done through function "FillDrawingList()" once you
-		/// decide the appropriate list type for Orders and Cooks
-
-	/*	//Let's add ALL randomly generated Cooks to GUI::DrawingList
-		for (int i = 0; i < C_count; i++)
-			pGUI->AddToDrawingList(&pC[i]);
-
-		//Let's add ALL randomly generated Ordes to GUI::DrawingList
-		int size = 0;
-		Order** Demo_Orders_Array = DEMO_Queue.toArray(size);
-
-		for (int i = 0; i < size; i++)
-		{
-			pOrd = Demo_Orders_Array[i];
-			pGUI->AddToDrawingList(pOrd);
-		}*/
-		FillDrawingList();
-		/////////////////////////////////////////////////////////////////////////////////////////
-
-		pGUI->UpdateInterface();
-		Sleep(1000);
-		CurrentTimeStep++;	//advance timestep
-		pGUI->ResetDrawingList();
-	}
-
-	delete []pC;
-
-
-	pGUI->PrintMessage("generation done, click to END program");
-	pGUI->waitForClick();
-
-	
-}
-////////////////
-//added by raghad
 void Restaurant::AddtoVIPQueue(Order* po)
 {
 	float priority = po->getPriority();
@@ -347,9 +237,10 @@ void Restaurant::AddtoVEQueue(Order* po)
 void Restaurant::cancellorder(int Id)
 {
 	Node<Order*>* prv = QNormal_Order.getfront();
-	if (prv->getItem()->GetID() == Id)
+	if (prv&&prv->getItem()->GetID() == Id)
 		QNormal_Order.setfront(prv->getNext());
-	else {
+	else if(prv) 
+	{
 		Node<Order*>* Head = prv->getNext();
 		while (Head)
 		{
@@ -373,7 +264,7 @@ void Restaurant::cancellorder(int Id)
 void Restaurant::promoteorder(int Id, double exmoney)
 {
 	Node<Order*>* prv = QNormal_Order.getfront();
-	if (prv->getItem()->GetID() == Id)
+	if (prv&&prv->getItem()->GetID() == Id)
 	{
 		Order* proOrder;
 		QNormal_Order.dequeue(proOrder);
@@ -382,7 +273,7 @@ void Restaurant::promoteorder(int Id, double exmoney)
 		QVIP_Order.enqueue(proOrder, priority);
 		
 	}
-	else
+	else if(prv)
 	{
 		Node<Order*>* Head = prv->getNext();
 		while (Head)
@@ -392,10 +283,11 @@ void Restaurant::promoteorder(int Id, double exmoney)
 
 
 				Node<Order*>* proOrder = Head;
+				prv->setNext(Head->getNext());
 				proOrder->getItem()->Promote(exmoney);
 				float priority = proOrder->getItem()->getPriority();
 				QVIP_Order.enqueue(proOrder->getItem(), priority);
-				prv->setNext(Head->getNext());
+			
 				//delete Head;
 				return;
 				
@@ -413,30 +305,96 @@ void Restaurant::promoteorder(int Id, double exmoney)
 	return; ///if ID isn't in Qnormal
 }
 
-void Restaurant::AddtoDemoQueue(Order *pOrd)
-{
-	DEMO_Queue.enqueue(pOrd);
-}
-
+//Testinf Function
 
 void Restaurant::SimpleSimulator()
 {
+	Order *NpO,*GpO,*VpO,*pO;
+	float pr;
+	
 	pGUI->PrintMessage("Simple Simulator Function is Running .... Click to continue");
 	pGUI->waitForClick();
 	fileLoading();
 	int CurrentTimeStep = 1;
-	while (!EventsQueue.isEmpty())
+	while (!EventsQueue.isEmpty() || !InServing.isEmpty())
 	{
+
 		char timestep[100];
 		itoa(CurrentTimeStep, timestep, 10);
-		pGUI->PrintMessage(timestep);
+		pGUI->PrintMessage(timestep,1);
 		ExecuteEvents(CurrentTimeStep);
+		//Picking one order of each type and adding it to serving list
+		if (!QNormal_Order.isEmpty())
+		{
+			QNormal_Order.dequeue(NpO);
+			NpO->setStatus(SRV);
+			InServing.InsertEnd(NpO);
+		}
+		if (!Qvegan_Order.isEmpty())
+		{
+			Qvegan_Order.dequeue(GpO);
+			GpO->setStatus(SRV);
+			InServing.InsertEnd(GpO);
+		}
+		if (!QVIP_Order.isEmpty())
+		{
+			QVIP_Order.dequeue(VpO, pr);
+			VpO->setStatus(SRV);
+			InServing.InsertEnd(VpO);
+		}
+		//each 5 timesteps pick one order of each type and add it to finished orders
+		if (CurrentTimeStep % 5 == 0)
+		{
+			Node<Order*>* temp = InServing.getHead();
+			while (temp)
+			{
+				if (temp->getItem()->GetType() == TYPE_NRM )
+				{
+					temp->getItem()->setStatus(DONE);
+					FinishedList.enqueue(temp->getItem());
+					InServing.DeleteNode(temp->getItem());
+					break;
+				}
+				temp = temp->getNext();
+			}
+			temp = InServing.getHead();
+			while (temp)
+			{
+				if (temp->getItem()->GetType() == TYPE_VGAN)
+				{
+					temp->getItem()->setStatus(DONE);
+					FinishedList.enqueue(temp->getItem());
+					InServing.DeleteNode(temp->getItem());
+					break;
+				}
+				temp = temp->getNext();
+			}
+			temp = InServing.getHead();
+			while (temp)
+			{
+				if (temp->getItem()->GetType() == TYPE_VIP)
+				{
+					temp->getItem()->setStatus(DONE);
+					FinishedList.enqueue(temp->getItem());
+					InServing.DeleteNode(temp->getItem());
+					break;
+				}
+				temp = temp->getNext();
+			}
+		}
 		FillDrawingList();
+		//Printing Cooks and Orders Information
+		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) +" Vegan :"  + to_string(GWaitNum) + " VIP : "+to_string(VWaitNum) , 2);
+		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 		pGUI->UpdateInterface();
 		Sleep(1000);
+		//pGUI->waitForClick();
 		CurrentTimeStep++;
 		pGUI->ResetDrawingList();
+		
 	}
+		pGUI->PrintMessage("Simulation Done ... Click To Exit");
+		pGUI->waitForClick();
 }
 
 //phase2
@@ -450,4 +408,5 @@ void Restaurant::SimpleSimulator()
 //{
 //
 //}
+
 
