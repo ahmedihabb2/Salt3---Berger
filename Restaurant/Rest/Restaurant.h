@@ -36,6 +36,9 @@ private:
 	//
 	Queue<Order*> QNormal_Order;
 	Queue<Order*> Qvegan_Order;
+	//We made it LinkedList only in this phase to be able to take order of each type
+	//and put it in finished list as SimpleSimulator function requires
+	//In General we choosed Priority Queue for this
 	LinkedList<Order*>InServing;
 	Queue<Order*>FinishedList;
 
