@@ -23,16 +23,22 @@ private:
 
 	string filename;
 
+
 	//Queue for each type of Cooks
 	Queue<Cook*> NcooksQ;
 	Queue<Cook*> GcooksQ;
 	Queue<Cook*> VcooksQ;
-	
+
+	//Priority Queue For Busy Cooks and queues for inBreak cooks
 	PriorityQueue<Cook*> busyCooksQ;
+
 	Queue<Cook*> NCooksInBreakQ;
 	Queue<Cook*> GCooksInBreakQ;
 	Queue<Cook*> VCooksInBreakQ;
+	
 
+	//Priority Queue for vip orders depending on Priority Equation
+	PriorityQueue<Order*>  QVIP_Order;
 	//
 	Queue<Order*> QNormal_Order;
 	Queue<Order*> Qvegan_Order;
@@ -57,6 +63,7 @@ public:
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
+
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders;
@@ -64,6 +71,7 @@ public:
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
+
 
 };
 
