@@ -23,19 +23,28 @@ private:
 
 	string filename;
 
+
 	//Queue for each type of Cooks
 	Queue<Cook*> NcooksQ;
 	Queue<Cook*> GcooksQ;
 	Queue<Cook*> VcooksQ;
-	//Priority Queue For Busy Cooks
+
+	//Priority Queue For Busy Cooks and queues for inBreak cooks
 	PriorityQueue<Cook*> busyCooksQ;
-	PriorityQueue<Cook*> inBreakCooksQ;
+
+	Queue<Cook*> NCooksInBreakQ;
+	Queue<Cook*> GCooksInBreakQ;
+	Queue<Cook*> VCooksInBreakQ;
+	
 
 	//Priority Queue for vip orders depending on Priority Equation
 	PriorityQueue<Order*>  QVIP_Order;
 	//
 	LinkedList<Order*> LNormal_Order;
 	Queue<Order*> Qvegan_Order;
+	//We made it LinkedList only in this phase to be able to take order of each type
+	//and put it in finished list as SimpleSimulator function requires
+	//In General we choosed Priority Queue for this
 	LinkedList<Order*>InServing;
 	Queue<Order*>FinishedList;
 
@@ -57,7 +66,6 @@ public:
 	void AddtoVEQueue(Order* po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
-	void Executepromotion(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP;
@@ -65,6 +73,7 @@ public:
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
+
 
 };
 
