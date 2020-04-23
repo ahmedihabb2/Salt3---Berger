@@ -63,6 +63,15 @@ public:
 		delete Head;
 		Head = temp;
 	}
+	bool peek(T& frntEntry)
+	{
+		if (isEmpty())
+			reeturn false;
+
+		frntEntry = Head->getItem();
+		return true;
+	
+	}
 	void DeleteLast()
 	{
 		Node<T>* temp = Head;

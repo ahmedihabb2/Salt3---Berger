@@ -53,6 +53,27 @@ void Restaurant::ExecuteEvents(int CurrentTimeStep)
 	}
 
 }
+//by Raghad
+
+//promot Normer orders automatically promoted to VIP after it excess (Autop) time step in waiting List  
+void Restaurant::Executepromotion(int CurrentTimeStep)
+{
+
+	Order* proOrder;
+	while (LNormal_Order.peek(proOrder))                        //as long as there is more waiting Orders
+	{
+		if ((CurrentTimeStep - proOrder->getArrTime()) < AutoP) //no more event can be promoted in this time step
+			return;
+
+		LNormal_Order.DeleteFirst(proOrder);                   //remove order from Normal List
+		double money = 0;
+		proOrder->Promote(money);
+		float priority = proOrder->getPriority();
+		QVIP_Order.enqueue(proOrder, priority);                //add it to VIP queue
+	}
+	
+
+}
 
 
 Restaurant::~Restaurant()
@@ -121,7 +142,7 @@ void Restaurant::fileLoading()
 	if (InFile.is_open())
 	{
 		int numNcooks, numGcooks, numVcooks, Ncookspeed, Gcookspeed, Vcookspeed;
-		int numOrdersBbreak, Nbreak, Gbreak, Vbreak , AutoP , numofevents ;
+		int numOrdersBbreak, Nbreak, Gbreak, Vbreak  , numofevents ;
 
 		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed >> Gcookspeed >> Vcookspeed;
 
