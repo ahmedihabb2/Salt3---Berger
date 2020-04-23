@@ -66,7 +66,7 @@ public:
 	bool peek(T& frntEntry)
 	{
 		if (isEmpty())
-			reeturn false;
+			return false;
 
 		frntEntry = Head->getItem();
 		return true;
