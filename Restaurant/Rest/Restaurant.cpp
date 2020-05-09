@@ -420,5 +420,16 @@ void Restaurant::SimpleSimulator()
 		pGUI->waitForClick();
 }
 
+//phase2
+//void Restaurant::addToBusyCQ(Cook* pC, Order* pO)
+//{
+//	float priority = pO->getFinishTime();
+//	busyCooksQ.enqueue(pC, priority);
+//}
+//
+//void Restaurant::addToInBreakCQ(Cook* pC)
+//{
+//
+//}
 
 
