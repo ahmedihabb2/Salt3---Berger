@@ -45,7 +45,8 @@ private:
 	//We made it LinkedList only in this phase to be able to take order of each type
 	//and put it in finished list as SimpleSimulator function requires
 	//In General we choosed Priority Queue for this
-	LinkedList<Order*>InServing;
+	//LinkedList<Order*>InServing;    //////////////NMSA7HAAA
+	PriorityQueue<Order*> InServing;
 	Queue<Order*>FinishedList;
 
 	
@@ -67,9 +68,12 @@ public:
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
 	void Executepromotion(int CurrentTimeStep);
+	void serve_VIP_orders(int CurrentTimeStep);
+	void serve_Normal_orders(int CurrentTimeStep);
+	void serve_Vegan_orders(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
-	int SRVorders, AutoP;
+	int SRVorders, AutoP,  InjProp, RstPrd, VIP_WT;
 	
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);

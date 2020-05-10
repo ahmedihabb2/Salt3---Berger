@@ -56,12 +56,15 @@ public:
 			tail = p;
 		}
 	}
-	void DeleteFirst(T& frntEntry)
+	bool DeleteFirst(T& frntEntry)
 	{
+		if (isEmpty())
+			return false;
 		frntEntry = Head->getItem();
 		Node<T>* temp = Head->getNext();
 		delete Head;
 		Head = temp;
+		return true;
 	}
 	bool peek(T& frntEntry)
 	{

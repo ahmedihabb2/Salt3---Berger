@@ -27,8 +27,8 @@ void Restaurant::RunSimulation()
 		break;
 	case MODE_SLNT:
 		break;
-	case MODE_DEMO:
-		SimpleSimulator();   //Simulator Function Just For Testing
+	//case MODE_DEMO:
+		//SimpleSimulator();   //Simulator Function Just For Testing
 
 	};
 
@@ -74,7 +74,138 @@ void Restaurant::Executepromotion(int CurrentTimeStep)
 	
 
 }
+//by raghad
+void Restaurant::serve_VIP_orders(int CurrentTimeStep)
+{
+	Order* proOrder;
+	float prio;
+	while (QVIP_Order.dequeue(proOrder,prio))  //get orders from VIP waiting Queue to be serve
+	{
+		Cook* Bcook;
+		if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook
+		{
+			
+			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
+			
+			int ST = ceil(proOrder->getOrderSize() / Bcook->getSpeed()); //calculate the surving time
+			proOrder->setServInt(ST);                                     
+			proOrder->setWaitTime();
+			proOrder->setFinishTime();
+			float priority = 1/(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(proOrder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+		}
+		else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
+		{
+			
+			proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
 
+			int ST = ceil(proOrder->getOrderSize() / Bcook->getSpeed()); //calculate the surving time
+			proOrder->setServInt(ST);
+			proOrder->setWaitTime();
+			proOrder->setFinishTime();
+			float priority = 1 / (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(proOrder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+		}
+		else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
+		{
+			
+			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
+
+			int ST = ceil(proOrder->getOrderSize() / Bcook->getSpeed()); //calculate the surving time
+			proOrder->setServInt(ST);
+			proOrder->setWaitTime();
+			proOrder->setFinishTime();
+			float priority = 1 / (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(proOrder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+
+
+		}
+		else
+		{
+			return;                                         //there is no more available cooks in this timestep 
+		}
+	}
+
+}
+//by raghad
+void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
+{
+	Order* proOrder;
+
+	while (Qvegan_Order.dequeue(proOrder))  //get orders from Vegan waiting Queue to be serve
+	{
+		Cook* Bcook;
+		if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook 
+		{
+
+			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
+
+			int ST = ceil(proOrder->getOrderSize() / Bcook->getSpeed()); //calculate the surving time
+			proOrder->setServInt(ST);
+			proOrder->setWaitTime();
+			proOrder->setFinishTime();
+			float priority = 1 / (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(proOrder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+
+
+		}
+		else
+		{
+			return;                                         //there is no more available cooks in this timestep 
+		}
+	}
+}
+
+
+
+
+
+//by raghad
+void Restaurant::serve_Normal_orders(int CurrentTimeStep)
+{
+	Order* proOrder;
+	while (LNormal_Order.DeleteFirst(proOrder))                   //get orders from Normal list to be serve
+	{
+		Cook* Bcook;
+		if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook 
+		{
+
+			proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
+
+			int ST = ceil(proOrder->getOrderSize() / Bcook->getSpeed()); //calculate the surving time
+			proOrder->setServInt(ST);
+			proOrder->setWaitTime();
+			proOrder->setFinishTime();
+			float priority = 1 / (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(proOrder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+		}
+		else if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook when there is no Normal
+		{
+
+			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
+
+			int ST = ceil(proOrder->getOrderSize() / Bcook->getSpeed()); //calculate the surving time
+			proOrder->setServInt(ST);
+			proOrder->setWaitTime();
+			proOrder->setFinishTime();
+			float priority = 1 / (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(proOrder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+		}
+		else
+		{
+			return;                                                   //there is no more available cooks in this timestep 
+		}
+
+
+	}
+
+}
 
 Restaurant::~Restaurant()
 {
@@ -141,12 +272,12 @@ void Restaurant::fileLoading()
 	
 	if (InFile.is_open())
 	{
-		int numNcooks, numGcooks, numVcooks, Ncookspeed, Gcookspeed, Vcookspeed;
-		int numOrdersBbreak, Nbreak, Gbreak, Vbreak  , numofevents ;
+		int numNcooks, numGcooks, numVcooks, Ncookspeed_min, Ncookspeed_max, Gcookspeed_min, Gcookspeed_max, Vcookspeed_min, Vcookspeed_max;
+		int numOrdersBbreak, Nbreak_min, Nbreak_max, Gbreak_min, Gbreak_max, Vbreak_min  , Vbreak_max, numofevents ;
 
-		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed >> Gcookspeed >> Vcookspeed;
+		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed_min>> Ncookspeed_max>> Gcookspeed_min>> Gcookspeed_max>> Vcookspeed_min>> Vcookspeed_max;
 
-		InFile >> numOrdersBbreak >> Nbreak >> Gbreak >> Vbreak>> AutoP>> numofevents;
+		InFile >> numOrdersBbreak >> Nbreak_min>> Nbreak_max>> Gbreak_min>> Gbreak_max>> Vbreak_min>> Vbreak_max >> InjProp >> RstPrd >> AutoP>> VIP_WT>>numofevents;
 
 		int numAllcooks = numNcooks + numGcooks + numVcooks;
 		int* arrCIDs = new int[numAllcooks];
@@ -161,9 +292,9 @@ void Restaurant::fileLoading()
 	
 			newNCook->setID(arrCIDs[i + 1]);
 			newNCook->setType(TYPE_NRM);
-			newNCook->setSpeed(Ncookspeed);
+			newNCook->setSpeed(rand() % ((Ncookspeed_min - Ncookspeed_max) + 1));
 			newNCook->setNumOrdBbreak(numOrdersBbreak);
-			newNCook->setBreakDur(Nbreak);
+			newNCook->setBreakDur(rand() % ((Nbreak_min - Nbreak_max) + 1));
 
 			NcooksQ.enqueue(newNCook);
 		}
@@ -175,9 +306,9 @@ void Restaurant::fileLoading()
 
 			newGCook->setID(arrCIDs[i + numNcooks + 1]);
 			newGCook->setType(TYPE_VGAN);
-			newGCook->setSpeed(Gcookspeed);
+			newGCook->setSpeed(rand() % ((Gcookspeed_min - Gcookspeed_max) + 1));
 			newGCook->setNumOrdBbreak(numOrdersBbreak);
-			newGCook->setBreakDur(Gbreak);
+			newGCook->setBreakDur(rand() % ((Gbreak_min - Gbreak_max) + 1));
 
 			GcooksQ.enqueue(newGCook);
 		}
@@ -188,9 +319,9 @@ void Restaurant::fileLoading()
 
 			newVCook->setID(arrCIDs[i + numNcooks + numGcooks + 1]);
 			newVCook->setType(TYPE_VIP);
-			newVCook->setSpeed(Vcookspeed);
+			newVCook->setSpeed(rand() % ((Vcookspeed_min - Vcookspeed_max) + 1));
 			newVCook->setNumOrdBbreak(numOrdersBbreak);
-			newVCook->setBreakDur(Vbreak);
+			newVCook->setBreakDur(rand() % ((Gbreak_min - Gbreak_max) + 1));
 
 			VcooksQ.enqueue(newVCook);
 		}
@@ -330,7 +461,7 @@ void Restaurant::promoteorder(int Id, double exmoney)
 
 //Testinf Function
 
-void Restaurant::SimpleSimulator()
+/*void Restaurant::SimpleSimulator()
 {
 	Order *NpO,*GpO,*VpO,*pO;
 	float pr;
@@ -405,6 +536,7 @@ void Restaurant::SimpleSimulator()
 				temp = temp->getNext();
 			}
 		}
+		
 		FillDrawingList();
 		//Printing Cooks and Orders Information
 		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) +" Vegan :"  + to_string(GWaitNum) + " VIP : "+to_string(VWaitNum) , 2);
@@ -419,7 +551,7 @@ void Restaurant::SimpleSimulator()
 		pGUI->PrintMessage("Simulation Done ... Click To Exit");
 		pGUI->waitForClick();
 }
-
+*/
 //phase2
 //void Restaurant::addToBusyCQ(Cook* pC, Order* pO)
 //{

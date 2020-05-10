@@ -57,7 +57,7 @@ public:
 	void setServTime( int& serv);
 	void setServInt(int& serv);
 	void setFinishTime();
-	void setWaitTime( );
+	void setWaitTime();
 	void Serve( int);//
 };
 
