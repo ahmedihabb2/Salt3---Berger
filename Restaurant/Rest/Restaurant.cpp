@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <iostream>
+
 using namespace std;
 
 #include "Restaurant.h"
@@ -22,7 +23,7 @@ void Restaurant::RunSimulation()
 	switch (mode)	//Add a function for each mode in next phases
 	{
 	case MODE_INTR:
-		break;
+		Interactive();
 	case MODE_STEP:
 		break;
 	case MODE_SLNT:
@@ -274,7 +275,7 @@ void Restaurant::fileLoading()
 	{
 		int numNcooks, numGcooks, numVcooks, Ncookspeed_min, Ncookspeed_max, Gcookspeed_min, Gcookspeed_max, Vcookspeed_min, Vcookspeed_max;
 		int numOrdersBbreak, Nbreak_min, Nbreak_max, Gbreak_min, Gbreak_max, Vbreak_min  , Vbreak_max, numofevents ;
-
+		
 		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed_min>> Ncookspeed_max>> Gcookspeed_min>> Gcookspeed_max>> Vcookspeed_min>> Vcookspeed_max;
 
 		InFile >> numOrdersBbreak >> Nbreak_min>> Nbreak_max>> Gbreak_min>> Gbreak_max>> Vbreak_min>> Vbreak_max >> InjProp >> RstPrd >> AutoP>> VIP_WT>>numofevents;
@@ -306,7 +307,7 @@ void Restaurant::fileLoading()
 
 			newGCook->setID(arrCIDs[i + numNcooks + 1]);
 			newGCook->setType(TYPE_VGAN);
-			newGCook->setSpeed(rand() % ((Gcookspeed_min - Gcookspeed_max) + 1));
+			newGCook->setSpeed(rand() % ((Gcookspeed_max - Gcookspeed_min) + 1) + Gcookspeed_min);
 			newGCook->setNumOrdBbreak(numOrdersBbreak);
 			newGCook->setBreakDur(rand() % ((Gbreak_min - Gbreak_max) + 1));
 
@@ -564,4 +565,29 @@ void Restaurant::promoteorder(int Id, double exmoney)
 //
 //}
 
+void Restaurant::Interactive()
+{
+	pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue");
+	pGUI->waitForClick();
+	fileLoading();
+	int CurrentTimeStep = 1;
+	while (!EventsQueue.isEmpty() || !InServing.isEmpty())
+	{
+		char timestep[100];
+		itoa(CurrentTimeStep, timestep, 10);
+		pGUI->PrintMessage(timestep, 1);
+		ExecuteEvents(CurrentTimeStep);
+		serve_VIP_orders(CurrentTimeStep);
+		serve_Vegan_orders(CurrentTimeStep);
+		serve_Normal_orders(CurrentTimeStep);
+		FillDrawingList();
+		//Printing Cooks and Orders Information
+		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
+		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
+		pGUI->UpdateInterface();
+		Sleep(1000);
+		CurrentTimeStep++;
+		pGUI->ResetDrawingList();
+	}
+}
 
