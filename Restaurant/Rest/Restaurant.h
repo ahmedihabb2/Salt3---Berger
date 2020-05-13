@@ -60,6 +60,7 @@ public:
 
 	void fileLoading();
 	void SimpleSimulator();
+	void Interactive();
 	void FillDrawingList();
 
 	void AddtoVIPQueue(Order* po);
@@ -73,7 +74,8 @@ public:
 	void serve_Vegan_orders(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
-	int SRVorders, AutoP,  InjProp, RstPrd, VIP_WT;
+	int SRVorders, AutoP, RstPrd, VIP_WT;
+	float InjProp;
 	
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
