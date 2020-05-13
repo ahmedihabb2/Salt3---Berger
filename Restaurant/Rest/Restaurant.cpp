@@ -169,7 +169,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 {
 	Order* proOrder;
 	while (LNormal_Order.DeleteFirst(proOrder))                   //get orders from Normal list to be serve
-	{
+	{	
 		Cook* Bcook;
 		if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook 
 		{
