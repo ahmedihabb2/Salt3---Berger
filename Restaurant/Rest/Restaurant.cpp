@@ -30,7 +30,6 @@ void Restaurant::RunSimulation()
 		break;
 	//case MODE_DEMO:
 		//SimpleSimulator();   //Simulator Function Just For Testing
-
 	};
 
 }
