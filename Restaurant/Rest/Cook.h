@@ -12,6 +12,8 @@ class Cook
 	//abeer
 	int numOrdersBefBreak; 
 	int breakDuration; 
+	//raghad
+	int numofOrderdServed;
 
 public:
 	Cook();
@@ -24,7 +26,7 @@ public:
 	int getSpeed() const;
 	int getNumOrdBbreak() const;
 	int getBreakDur() const;
-
+	int getnumofOrderdServed() const;
 	//////////////////////////////////////////////////
 
 	void setID(int);
@@ -34,5 +36,6 @@ public:
 	void setSpeed(int); 
 	void setNumOrdBbreak(int num);
 	void setBreakDur(int bd);
+	void setnumofOrderdServed(int num);
 
 };

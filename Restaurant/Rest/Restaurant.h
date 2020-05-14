@@ -22,7 +22,7 @@ private:
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
 	string filename;
-
+	float InjProp;
 
 	//Queue for each type of Cooks
 	Queue<Cook*> NcooksQ;
@@ -32,9 +32,10 @@ private:
 	//Priority Queue For Busy Cooks and queues for inBreak cooks
 	PriorityQueue<Cook*> busyCooksQ;
 
-	Queue<Cook*> NCooksInBreakQ;
-	Queue<Cook*> GCooksInBreakQ;
-	Queue<Cook*> VCooksInBreakQ;
+	//Queue<Cook*> NCooksInBreakQ;
+	//Queue<Cook*> GCooksInBreakQ;
+	//Queue<Cook*> VCooksInBreakQ;
+	PriorityQueue<Cook*> CooksInBreak;
 	
 
 	//Priority Queue for vip orders depending on Priority Equation
@@ -48,21 +49,15 @@ private:
 	//LinkedList<Order*>InServing;    //////////////NMSA7HAAA
 	PriorityQueue<Order*> InServing;
 	Queue<Order*>FinishedList;
-
-	
 public:
-	
 	Restaurant();
 	~Restaurant();
-	
 	void ExecuteEvents(int TimeStep);	//executes all events at current timestep
 	void RunSimulation();
-
 	void fileLoading();
 	void SimpleSimulator();
 	void Interactive();
 	void FillDrawingList();
-
 	void AddtoVIPQueue(Order* po);
 	void AddtoNOList(Order* po);
 	void AddtoVEQueue(Order* po);
@@ -72,11 +67,13 @@ public:
 	void serve_VIP_orders(int CurrentTimeStep);
 	void serve_Normal_orders(int CurrentTimeStep);
 	void serve_Vegan_orders(int CurrentTimeStep);
+	void getfrombusyCookQ(int CurrentTimeStep);
+	void getfromBreakCookQ(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP, RstPrd, VIP_WT;
-	float InjProp;
 	
+	bool Health_Emergency();
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
