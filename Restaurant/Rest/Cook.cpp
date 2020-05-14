@@ -37,6 +37,12 @@ int Cook::getBreakDur() const
 	return breakDuration;
 }
 
+
+int Cook::getnumofOrderdServed() const
+{
+	return numofOrderdServed;
+}
+
 void Cook::setID(int id)
 {
 	ID = id;
@@ -60,4 +66,9 @@ void Cook::setNumOrdBbreak(int num)
 void Cook::setBreakDur(int bd)
 {
 	breakDuration = bd;
+}
+
+void Cook::setnumofOrderdServed(int num)
+{
+	numofOrderdServed = num;
 }
