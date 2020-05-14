@@ -36,7 +36,7 @@ private:
 	//Queue<Cook*> GCooksInBreakQ;
 	//Queue<Cook*> VCooksInBreakQ;
 	PriorityQueue<Cook*> CooksInBreak;
-	
+	Queue<Cook*>CooksInRest;
 
 	//Priority Queue for vip orders depending on Priority Equation
 	PriorityQueue<Order*>  QVIP_Order;

@@ -378,7 +378,7 @@ void Restaurant::fileLoading()
 			newNCook->setNumOrdBbreak(numOrdersBbreak);
 			newNCook->setBreakDur(Nbreak_min+rand() % Nbreak_max);
 			newNCook->set_RstPrd(RstPrd);
-			newNCook->setBreakDur((Nbreak_min+rand() % Nbreak_max));
+			
 			newNCook->setnumofOrderdServed(0);
 
 			NcooksQ.enqueue(newNCook);
@@ -396,7 +396,7 @@ void Restaurant::fileLoading()
 			newGCook->setNumOrdBbreak(numOrdersBbreak);
 			newGCook->setBreakDur(Gbreak_min+rand() % Gbreak_max );
 			newGCook->set_RstPrd(RstPrd);
-			newGCook->setBreakDur((Gbreak_min+ rand() %  Gbreak_max));
+			
 			newGCook->setnumofOrderdServed(0);
 			GcooksQ.enqueue(newGCook);
 		}
@@ -412,7 +412,7 @@ void Restaurant::fileLoading()
 			newVCook->setNumOrdBbreak(numOrdersBbreak);
 			newVCook->setBreakDur(Gbreak_min + rand() %Gbreak_max );
 			newVCook->set_RstPrd(RstPrd);
-			newVCook->setBreakDur( (Gbreak_min+rand() % Gbreak_max));
+			
 			newVCook->setnumofOrderdServed(0);
 			VcooksQ.enqueue(newVCook);
 		}
@@ -689,10 +689,10 @@ void Restaurant::Interactive()
 		Sleep(1000);
 		CurrentTimeStep++;
 		pGUI->ResetDrawingList();
-		busyCooksQ.peekFront(temp, tem);
+		/*busyCooksQ.peekFront(temp, tem);
 		cout << temp->get_order() << endl;
 		InServing.peekFront(temp2, tem);
-		cout << temp2->GetID() << endl;
+		cout << temp2->GetID() << endl;*/
 
 	}
 

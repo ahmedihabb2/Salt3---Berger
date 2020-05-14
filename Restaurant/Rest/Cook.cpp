@@ -3,6 +3,7 @@
 
 Cook::Cook()
 {
+	RstPrd = 0;
 }
 
 
@@ -71,4 +72,28 @@ void Cook::setBreakDur(int bd)
 void Cook::setnumofOrderdServed(int num)
 {
 	numofOrderdServed = num;
+}
+
+
+/////////////donya\\\\\\\\\\\\\\\\
+
+void Cook::set_RstPrd(int r)
+{
+	if (r >= 0)
+		RstPrd = r;
+
+}
+
+int Cook::get_RstPrd()
+{
+	return RstPrd;
+}
+
+void Cook::assign_Order(int order)
+{
+	ord_assigned = order;
+}
+int Cook::get_order()
+{
+	return ord_assigned;
 }

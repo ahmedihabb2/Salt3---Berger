@@ -8,8 +8,10 @@ class Cook
 	int ID;
 	ORD_TYPE type;	//for each order type there is a corresponding type (VIP, Normal, Vegan)
 	int speed;		//dishes it can prepare in one clock tick (in one timestep)
-
+	//donya
+	int ord_assigned;
 	//abeer
+	int RstPrd;
 	int numOrdersBefBreak; 
 	int breakDuration; 
 	//raghad
@@ -37,5 +39,12 @@ public:
 	void setNumOrdBbreak(int num);
 	void setBreakDur(int bd);
 	void setnumofOrderdServed(int num);
+	//donya
+	void set_RstPrd(int r);
+
+	int get_RstPrd();
+	void assign_Order(int order);
+	int get_order();
+
 
 };
