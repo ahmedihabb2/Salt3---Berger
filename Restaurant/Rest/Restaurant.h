@@ -22,7 +22,7 @@ private:
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
 	string filename;
-
+	float InjProp;
 
 	//Queue for each type of Cooks
 	Queue<Cook*> NcooksQ;
@@ -35,7 +35,7 @@ private:
 	Queue<Cook*> NCooksInBreakQ;
 	Queue<Cook*> GCooksInBreakQ;
 	Queue<Cook*> VCooksInBreakQ;
-	
+	Queue<Cook*>CooksInRest;
 
 	//Priority Queue for vip orders depending on Priority Equation
 	PriorityQueue<Order*>  QVIP_Order;
@@ -69,8 +69,8 @@ public:
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP, RstPrd, VIP_WT;
-	float InjProp;
 	
+	bool Health_Emergency();
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
