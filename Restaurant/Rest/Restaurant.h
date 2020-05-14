@@ -49,20 +49,15 @@ private:
 	//LinkedList<Order*>InServing;    //////////////NMSA7HAAA
 	PriorityQueue<Order*> InServing;
 	Queue<Order*>FinishedList;
-
-	
 public:
-	
 	Restaurant();
 	~Restaurant();
-	
 	void ExecuteEvents(int TimeStep);	//executes all events at current timestep
 	void RunSimulation();
-
 	void fileLoading();
 	void SimpleSimulator();
+	void Interactive();
 	void FillDrawingList();
-
 	void AddtoVIPQueue(Order* po);
 	void AddtoNOList(Order* po);
 	void AddtoVEQueue(Order* po);
@@ -76,7 +71,8 @@ public:
 	void getfromBreakCookQ(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
-	int SRVorders, AutoP,  InjProp, RstPrd, VIP_WT;
+	int SRVorders, AutoP, RstPrd, VIP_WT;
+	float InjProp;
 	
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
