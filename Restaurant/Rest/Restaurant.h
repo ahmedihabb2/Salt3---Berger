@@ -32,10 +32,11 @@ private:
 	//Priority Queue For Busy Cooks and queues for inBreak cooks
 	PriorityQueue<Cook*> busyCooksQ;
 
-	Queue<Cook*> NCooksInBreakQ;
-	Queue<Cook*> GCooksInBreakQ;
-	Queue<Cook*> VCooksInBreakQ;
-	Queue<Cook*>CooksInRest;
+	//Queue<Cook*> NCooksInBreakQ;
+	//Queue<Cook*> GCooksInBreakQ;
+	//Queue<Cook*> VCooksInBreakQ;
+	PriorityQueue<Cook*> CooksInBreak;
+	
 
 	//Priority Queue for vip orders depending on Priority Equation
 	PriorityQueue<Order*>  QVIP_Order;
@@ -66,6 +67,8 @@ public:
 	void serve_VIP_orders(int CurrentTimeStep);
 	void serve_Normal_orders(int CurrentTimeStep);
 	void serve_Vegan_orders(int CurrentTimeStep);
+	void getfrombusyCookQ(int CurrentTimeStep);
+	void getfromBreakCookQ(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP, RstPrd, VIP_WT;
