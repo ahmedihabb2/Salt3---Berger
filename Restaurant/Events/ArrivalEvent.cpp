@@ -29,6 +29,7 @@ void ArrivalEvent::Execute(Restaurant* pRest)
 	///Remove the next code lines in phases 1&2
 	Order* pOrd = new Order(OrdType, EventTime,OrderID, OrderSize, OrdMoney);
 	//pRest->AddtoDemoQueue(pOrd);
+	pOrd->setStatus(WAIT);
 	if (OrdType == TYPE_NRM)
 	{
 		pRest->AddtoNOList(pOrd);
