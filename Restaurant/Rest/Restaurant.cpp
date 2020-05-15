@@ -91,7 +91,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1/float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority = 1/(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QVIP_Order.dequeue(proOrder, prio);
@@ -107,7 +107,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority = 1 / (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QVIP_Order.dequeue(proOrder, prio);
@@ -124,7 +124,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority = 1 / (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QVIP_Order.dequeue(proOrder, prio);
@@ -155,7 +155,7 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority = 1 /proOrder->getFinishTime();             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			Qvegan_Order.dequeue(proOrder);
@@ -203,7 +203,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority = 1 /proOrder->getFinishTime();             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
@@ -219,7 +219,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority = 1 /proOrder->getFinishTime();             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
