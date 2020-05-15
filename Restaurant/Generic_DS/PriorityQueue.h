@@ -109,7 +109,10 @@ bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 	PriorityNode<T>* newNodePtr = new PriorityNode<T>(newEntry,prio);
 	// Insert the new node
 	if (isEmpty())
+	{
 		frontPtr = newNodePtr; // The queue is empty
+		backPtr = newNodePtr;
+	}
 	else
 	{
 		// The queue was not empty
@@ -117,6 +120,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 		{
 			newNodePtr->setNext(frontPtr);
 			frontPtr = newNodePtr;
+	
 		}
 		else
 		{
@@ -136,11 +140,16 @@ bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 					curr = curr->getNext();
 				}
 			}
+			if (!curr)
+			{
+				backPtr->setNext(newNodePtr);
+				backPtr = newNodePtr;
+			}
 		}
-		backPtr->setNext(newNodePtr);
 		
 	}
-	backPtr = newNodePtr;
+	
+	backPtr->setNext(nullptr);
 		return true;
 	
 } // end enqueue
