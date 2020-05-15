@@ -91,7 +91,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1/float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QVIP_Order.dequeue(proOrder, prio);
@@ -107,7 +107,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QVIP_Order.dequeue(proOrder, prio);
@@ -124,7 +124,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QVIP_Order.dequeue(proOrder, prio);
@@ -155,7 +155,7 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			Qvegan_Order.dequeue(proOrder);
@@ -203,7 +203,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
@@ -219,7 +219,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setWaitTime();
 			proOrder->setFinishTime();
 			proOrder->setStatus(SRV);
-			float priority = 1 / float(proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
@@ -244,10 +244,10 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 		if (Acook->getnumofOrderdServed()==Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
 		{
 			busyCooksQ.dequeue(Acook, priority);
-			float F=1/float(Acook->getBreakDur()+ CurrentTimeStep);
+			float F=(Acook->getBreakDur()+ CurrentTimeStep);
 			CooksInBreak.enqueue(Acook,  F);
 		}
-		else if ((1 / priority) <= CurrentTimeStep)                      //Finish time equal the current time step
+		else if (( priority) <= CurrentTimeStep)                      //Finish time equal the current time step
 		{
 			busyCooksQ.dequeue(Acook, priority);
 			if (Acook->GetType() == TYPE_VIP)
@@ -272,7 +272,7 @@ void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 	float priority;
 	while (CooksInBreak.peekFront(Acook, priority))
 	{
-		if ((1 / priority) <= CurrentTimeStep)               //If there is a cooks finished it's break
+		if ((priority) <= CurrentTimeStep)               //If there is a cooks finished it's break
 		{
 			busyCooksQ.dequeue(Acook, priority);
 			if (Acook->GetType() == TYPE_VIP)

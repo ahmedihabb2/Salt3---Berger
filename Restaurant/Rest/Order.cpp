@@ -58,7 +58,7 @@ void Order::setOrderSize(int size)
 
 void Order::setPriority()
 {
-	Priority = float(totalMoney) / (ArrTime * orderSize);
+	Priority = float(ArrTime * orderSize)/(totalMoney);
 
 }
 int Order::getOrderSize()const

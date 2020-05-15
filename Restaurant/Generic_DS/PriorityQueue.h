@@ -113,7 +113,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 	else
 	{
 		// The queue was not empty
-		if (newNodePtr->GetPriority() > frontPtr->GetPriority())
+		if (newNodePtr->GetPriority() < frontPtr->GetPriority())
 		{
 			newNodePtr->setNext(frontPtr);
 			frontPtr = newNodePtr;
@@ -124,7 +124,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 			PriorityNode<T>* curr = prev->getNext();
 			while (curr)
 			{
-				if (newNodePtr->GetPriority() > curr->GetPriority())
+				if (newNodePtr->GetPriority() < curr->GetPriority())
 				{
 					prev->setNext(newNodePtr);
 					newNodePtr->setNext(curr);
