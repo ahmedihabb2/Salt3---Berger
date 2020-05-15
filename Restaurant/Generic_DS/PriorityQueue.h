@@ -141,6 +141,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry, float& prio)
 		
 	}
 	backPtr = newNodePtr;
+	backPtr->setNext(nullptr);
 		return true;
 	
 } // end enqueue
