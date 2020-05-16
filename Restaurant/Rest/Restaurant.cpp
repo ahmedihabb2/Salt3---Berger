@@ -683,6 +683,8 @@ void Restaurant::Interactive()
 		itoa(CurrentTimeStep, timestep, 10);
 		pGUI->PrintMessage(timestep, 1);
 		ExecuteEvents(CurrentTimeStep);
+		getfromBreakCookQ(CurrentTimeStep);
+		getfrombusyCookQ(CurrentTimeStep);
 		serve_VIP_orders(CurrentTimeStep);
 		serve_Vegan_orders(CurrentTimeStep);
 		serve_Normal_orders(CurrentTimeStep);
@@ -691,7 +693,8 @@ void Restaurant::Interactive()
 		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
 		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 		pGUI->UpdateInterface();
-		Sleep(1000);
+		//Sleep(1000);
+		pGUI->waitForClick();
 		CurrentTimeStep++;
 		pGUI->ResetDrawingList();
 		/*busyCooksQ.peekFront(temp, tem);
