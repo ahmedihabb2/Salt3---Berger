@@ -147,6 +147,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QUrgentOrders.dequeue(Urgorder);
 			Bcook->assign_Order((*Urgorder)->GetID());
+			Vserved++;
 		}
 		else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
 		{
@@ -163,7 +164,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QUrgentOrders.dequeue(Urgorder);
 			Bcook->assign_Order((*Urgorder)->GetID());
-
+			Vserved++;
 		}
 		else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
 		{
@@ -180,6 +181,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QUrgentOrders.dequeue(Urgorder);
 			Bcook->assign_Order((*Urgorder)->GetID());
+			Vserved++;
 		}
 		else
 		{
@@ -212,6 +214,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
+				Vserved++;
 			}
 			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
 			{
@@ -228,7 +231,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
-
+				Vserved++;
 			}
 			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
 			{
@@ -245,6 +248,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
+				Vserved++;
 			}
 			else
 			{
@@ -281,6 +285,7 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			Qvegan_Order.dequeue(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
+			Gserved++;
 		}
 		else
 		{
@@ -329,6 +334,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
+			Nserved++;
 		}
 		else if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook when there is no Normal
 		{
@@ -345,6 +351,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
+			Nserved++;
 		}
 		else
 		{
@@ -814,6 +821,7 @@ void Restaurant::Interactive()
 		//Printing Cooks and Orders Information
 		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
 		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
+		pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
 		pGUI->UpdateInterface();
 		//Sleep(1000);
 		pGUI->waitForClick();

@@ -77,6 +77,7 @@ public:
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP, RstPrd, VIP_WT;
 	int UrgentOredersNum=0;
+	int Vserved = 0, Nserved = 0, Gserved = 0;
 	bool Health_Emergency();
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
