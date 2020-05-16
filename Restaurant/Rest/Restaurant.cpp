@@ -241,7 +241,7 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 	float priority;
 	while (busyCooksQ.peekFront(Acook, priority))
 	{
-		if (Acook->getnumofOrderdServed()==Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
+		if ((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed()==Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
 		{
 			busyCooksQ.dequeue(Acook, priority);
 			float F=(Acook->getBreakDur()+ CurrentTimeStep);
@@ -274,7 +274,7 @@ void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 	{
 		if ((priority) <= CurrentTimeStep)               //If there is a cooks finished it's break
 		{
-			busyCooksQ.dequeue(Acook, priority);
+			CooksInBreak.dequeue(Acook, priority);
 			if (Acook->GetType() == TYPE_VIP)
 				VcooksQ.enqueue(Acook);
 			if (Acook->GetType() == TYPE_VGAN)
