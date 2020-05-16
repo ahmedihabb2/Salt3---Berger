@@ -10,6 +10,7 @@ Order::Order(ORD_TYPE r_Type,int arrtime, int id, int size, double totalmoney)
 	setArrTime(arrtime);
 	setOrderSize(size);
 	Priority = 0;
+	Urgent = false;
 	
 }
 
@@ -134,4 +135,14 @@ void Order::Serve(int crrTS)
 	setFinishTime();
 
 
+}
+
+void Order::setUrgent(bool flag)
+{
+	Urgent = flag;
+}
+
+bool Order::isUrgent()
+{
+	return Urgent;
 }

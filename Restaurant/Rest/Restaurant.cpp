@@ -73,6 +73,120 @@ void Restaurant::Executepromotion(int CurrentTimeStep)
 	
 
 }
+//by Ahmed
+//Serving VIP orders after wating time excess VIP_WT to any cook in Break or Rest
+void Restaurant::CheckUrgentOrders(int CurrentTimeStep)
+{
+	Order**vipordersarr;
+	int size;
+	vipordersarr = QVIP_Order.toArray(size);
+	for (int i = 0; i < size;i++)
+	{
+		if (CurrentTimeStep - vipordersarr[i]->getArrTime() > VIP_WT)
+		{
+			vipordersarr[i]->setUrgent(true);
+			QUrgentOrders.enqueue(&vipordersarr[i]);
+			UrgentOredersNum++;
+		}
+	}
+}
+void Restaurant::GetCooksFor_Urgent_VIP(int CurrentTimeStep)
+{
+	Order** UrgOrder;
+	Cook* urgentcook;
+	float cookprio;
+	if (QUrgentOrders.peekFront(UrgOrder))
+	{
+		if (VcooksQ.isEmpty() && GcooksQ.isEmpty() && NcooksQ.isEmpty())
+		{
+			if (CooksInBreak.peekFront(urgentcook, cookprio))        //When waiting time exceeds VIP_WT, we check for
+			{                                                        // is there is Cooks in break queue
+				CooksInBreak.dequeue(urgentcook, cookprio);
+				if (urgentcook->GetType() == TYPE_VIP)               //return the cook to it's suitable list
+					VcooksQ.enqueue(urgentcook);
+				if (urgentcook->GetType() == TYPE_VGAN)
+					GcooksQ.enqueue(urgentcook);
+				if (urgentcook->GetType() == TYPE_NRM)
+					NcooksQ.enqueue(urgentcook);
+			}                                                       //if there is no cooks in break we check for
+			else if (CooksInRest.peekFront(urgentcook))             //the cooks in rest but they work with half speed
+			{
+				CooksInRest.dequeue(urgentcook);
+				if (urgentcook->GetType() == TYPE_VIP)
+					VcooksQ.enqueue(urgentcook);
+				if (urgentcook->GetType() == TYPE_VGAN)
+					GcooksQ.enqueue(urgentcook);
+				if (urgentcook->GetType() == TYPE_NRM)
+					NcooksQ.enqueue(urgentcook);
+			}
+			else
+				return;
+		}
+	}
+}
+void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
+{
+	CheckUrgentOrders(CurrentTimeStep);
+	GetCooksFor_Urgent_VIP(CurrentTimeStep);
+	Order** Urgorder;
+	while (QUrgentOrders.peekFront(Urgorder))
+	{
+		Cook* Bcook;
+		if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook
+		{
+			Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
+			(*Urgorder)->setServTime(CurrentTimeStep); //set serving time with current time step 
+
+			int ST = ceil(float((*Urgorder)->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
+			(*Urgorder)->setServInt(ST);
+			(*Urgorder)->setWaitTime();
+			(*Urgorder)->setFinishTime();
+			(*Urgorder)->setStatus(SRV);
+			float priority = ((*Urgorder)->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(*Urgorder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+			QUrgentOrders.dequeue(Urgorder);
+			Bcook->assign_Order((*Urgorder)->GetID());
+		}
+		else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
+		{
+			Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
+			(*Urgorder)->setServTime(CurrentTimeStep);                       //set serving time with current time step 
+
+			int ST = ceil(float((*Urgorder)->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
+			(*Urgorder)->setServInt(ST);
+			(*Urgorder)->setWaitTime();
+			(*Urgorder)->setFinishTime();
+			(*Urgorder)->setStatus(SRV);
+			float priority = ((*Urgorder)->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(*Urgorder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+			QUrgentOrders.dequeue(Urgorder);
+			Bcook->assign_Order((*Urgorder)->GetID());
+
+		}
+		else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
+		{
+			Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
+			(*Urgorder)->setServTime(CurrentTimeStep); //set serving time with current time step 
+
+			int ST = ceil(float((*Urgorder)->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
+			(*Urgorder)->setServInt(ST);
+			(*Urgorder)->setWaitTime();
+			(*Urgorder)->setFinishTime();
+			(*Urgorder)->setStatus(SRV);
+			float priority = ((*Urgorder)->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			InServing.enqueue(*Urgorder, priority);
+			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+			QUrgentOrders.dequeue(Urgorder);
+			Bcook->assign_Order((*Urgorder)->GetID());
+		}
+		else
+		{
+			return;                                         //there is no more available cooks in this timestep 
+		}
+	}
+}
 //by raghad
 void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 {
@@ -80,59 +194,66 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 	float prio;
 	while (QVIP_Order.peekFront(proOrder,prio))  //get orders from VIP waiting Queue to be serve
 	{
-		Cook* Bcook;
-		if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook
+		if (!proOrder->isUrgent())
 		{
-			Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
-			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
-			
-			int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);                                     
-			proOrder->setWaitTime();
-			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
-			float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
-			InServing.enqueue(proOrder, priority);
-			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
-			QVIP_Order.dequeue(proOrder, prio);
-			Bcook->assign_Order(proOrder->GetID());
-		}
-		else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
-		{
-			Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
-			proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
+			Cook* Bcook;
+			if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook
+			{
+				Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
+				proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
-			int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			proOrder->setWaitTime();
-			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
-			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
-			InServing.enqueue(proOrder, priority);
-			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
-			QVIP_Order.dequeue(proOrder, prio);
-			Bcook->assign_Order(proOrder->GetID());
+				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
+				proOrder->setServInt(ST);
+				proOrder->setWaitTime();
+				proOrder->setFinishTime();
+				proOrder->setStatus(SRV);
+				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+				InServing.enqueue(proOrder, priority);
+				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+				QVIP_Order.dequeue(proOrder, prio);
+				Bcook->assign_Order(proOrder->GetID());
+			}
+			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
+			{
+				Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
+				proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
 
-		}
-		else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
-		{
-			Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
-			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
+				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
+				proOrder->setServInt(ST);
+				proOrder->setWaitTime();
+				proOrder->setFinishTime();
+				proOrder->setStatus(SRV);
+				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+				InServing.enqueue(proOrder, priority);
+				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+				QVIP_Order.dequeue(proOrder, prio);
+				Bcook->assign_Order(proOrder->GetID());
 
-			int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			proOrder->setWaitTime();
-			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
-			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
-			InServing.enqueue(proOrder, priority);
-			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
-			QVIP_Order.dequeue(proOrder, prio);
-			Bcook->assign_Order(proOrder->GetID());
+			}
+			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
+			{
+				Bcook->setnumofOrderdServed(Bcook->getnumofOrderdServed() + 1);
+				proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
+
+				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
+				proOrder->setServInt(ST);
+				proOrder->setWaitTime();
+				proOrder->setFinishTime();
+				proOrder->setStatus(SRV);
+				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+				InServing.enqueue(proOrder, priority);
+				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
+				QVIP_Order.dequeue(proOrder, prio);
+				Bcook->assign_Order(proOrder->GetID());
+			}
+			else
+			{
+				return;                                         //there is no more available cooks in this timestep 
+			}
 		}
 		else
 		{
-			return;                                         //there is no more available cooks in this timestep 
+			QVIP_Order.dequeue(proOrder, prio);
 		}
 	}
 
@@ -685,6 +806,7 @@ void Restaurant::Interactive()
 		ExecuteEvents(CurrentTimeStep);
 		getfromBreakCookQ(CurrentTimeStep);
 		getfrombusyCookQ(CurrentTimeStep);
+		Serve_Urgent_VIP(CurrentTimeStep);
 		serve_VIP_orders(CurrentTimeStep);
 		serve_Vegan_orders(CurrentTimeStep);
 		serve_Normal_orders(CurrentTimeStep);
@@ -701,7 +823,7 @@ void Restaurant::Interactive()
 		cout << temp->get_order() << endl;
 		InServing.peekFront(temp2, tem);
 		cout << temp2->GetID() << endl;*/
-
+		
 	}
 
 
