@@ -303,7 +303,7 @@ bool Restaurant::Health_Emergency(int curr_ts)
 		
 		int ST = ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
-		tempOrd->setWaitTime();
+		
 		tempOrd->setFinishTime();
 		priority = tempOrd->getFinishTime();
 		busyCooksQ.dequeue(temp, pri_temp);
