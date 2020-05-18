@@ -58,6 +58,7 @@ public:
 	void fileLoading();
 	void SimpleSimulator();
 	void Interactive();
+	void Restaurant_Modes(int Mode);
 	void FillDrawingList();
 	void AddtoVIPQueue(Order* po);
 	void AddtoNOList(Order* po);
