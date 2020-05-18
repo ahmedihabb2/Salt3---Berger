@@ -437,6 +437,23 @@ void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 
 
 }
+void Restaurant::getfromInServingQ(int CurrentTimeStep)
+{
+	Order* proOrder;
+	float prio;
+	while (InServing.peekFront(proOrder, prio))
+	{
+		if (prio > CurrentTimeStep)
+			return;                        //there is no more finished orders
+
+		InServing.dequeue(proOrder, prio);
+		proOrder->setStatus(DONE);
+		FinishedList.enqueue(proOrder);
+	}
+
+
+
+}
 void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 {
 	Cook* Rcook;
@@ -778,9 +795,11 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromRestCookQ(CurrentTimeStep);
 			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
+			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
 			serve_Normal_orders(CurrentTimeStep);
+			getfromInServingQ(CurrentTimeStep);
 			FillDrawingList();
 			/*busyCooksQ.peekFront(Busy, prio);
 			cout << Busy->GetID() <<"   "<< Busy->get_order() << "   ";
@@ -823,9 +842,11 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromRestCookQ(CurrentTimeStep);
 			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
+			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
 			serve_Normal_orders(CurrentTimeStep);
+			getfromInServingQ(CurrentTimeStep);
 			FillDrawingList();
 			//Printing Cooks and Orders Information
 			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
@@ -859,9 +880,11 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromRestCookQ(CurrentTimeStep);
 			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
+			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
 			serve_Normal_orders(CurrentTimeStep);
+			getfromInServingQ(CurrentTimeStep);
 			//Printing Cooks and Orders Information
 			CurrentTimeStep++;
 			
