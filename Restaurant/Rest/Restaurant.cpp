@@ -279,9 +279,9 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 
 			int ST = ceil(float(proOrder->getOrderSize() )/ Bcook->getSpeed()); //calculate the surving time
 			proOrder->setServInt(ST);
-			
+			proOrder->setWaitTime();
 			proOrder->setFinishTime();
-
+			proOrder->setStatus(SRV);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -315,7 +315,7 @@ bool Restaurant::Health_Emergency(int curr_ts)
 		
 		int ST = ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
-		tempOrd->setWaitTime();
+		
 		tempOrd->setFinishTime();
 		priority = tempOrd->getFinishTime();
 		busyCooksQ.dequeue(temp, pri_temp);
