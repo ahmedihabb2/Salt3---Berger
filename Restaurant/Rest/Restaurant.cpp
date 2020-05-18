@@ -207,10 +207,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-				proOrder->setServInt(ST);
-				proOrder->setWaitTime();
-				proOrder->setFinishTime();
-				proOrder->setStatus(SRV);
+				proOrder->Serve(ST);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -224,10 +221,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
 
 				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-				proOrder->setServInt(ST);
-				proOrder->setWaitTime();
-				proOrder->setFinishTime();
-				proOrder->setStatus(SRV);
+				proOrder->Serve(ST);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -241,10 +235,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-				proOrder->setServInt(ST);
-				proOrder->setWaitTime();
-				proOrder->setFinishTime();
-				proOrder->setStatus(SRV);
+				proOrder->Serve(ST);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -278,10 +269,7 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 			int ST = ceil(float(proOrder->getOrderSize() )/ Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			
-			proOrder->setFinishTime();
-
+			proOrder->Serve(ST);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -346,10 +334,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
 
 			int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			proOrder->setWaitTime();
-			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
+			proOrder->Serve(ST);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -363,10 +348,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 			int ST = ceil(float(proOrder->getOrderSize() )/ Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			proOrder->setWaitTime();
-			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
+			proOrder->Serve(ST);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
