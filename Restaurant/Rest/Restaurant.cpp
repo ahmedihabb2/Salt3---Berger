@@ -986,4 +986,5 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->PrintMessage("Simulation Done ... Click To Exit");
 		pGUI->waitForClick();
 }
+
 */
