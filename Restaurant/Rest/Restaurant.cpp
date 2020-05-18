@@ -82,6 +82,7 @@ void Restaurant::CheckUrgentOrders(int CurrentTimeStep)
 	{
 		if (CurrentTimeStep - vipordersarr[i]->getArrTime() > VIP_WT)
 		{
+
 			vipordersarr[i]->setUrgent(true);
 			QUrgentOrders.enqueue(&vipordersarr[i]);
 			UrgentOredersNum++;
@@ -110,6 +111,8 @@ void Restaurant::GetCooksFor_Urgent_VIP(int CurrentTimeStep)
 			else if (CooksInRest.peekFront(urgentcook))             //the cooks in rest but they work with half speed
 			{
 				CooksInRest.dequeue(urgentcook);
+				urgentcook->setSpeed(urgentcook->getSpeed() / 2);
+				urgentcook->Give_Urg(true);
 				if (urgentcook->GetType() == TYPE_VIP)
 					VcooksQ.enqueue(urgentcook);
 				if (urgentcook->GetType() == TYPE_VGAN)
@@ -145,6 +148,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			QUrgentOrders.dequeue(Urgorder);
 			Bcook->assign_Order((*Urgorder)->GetID());
+			
 			Vserved++;
 		}
 		else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
@@ -275,9 +279,9 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 
 			int ST = ceil(float(proOrder->getOrderSize() )/ Bcook->getSpeed()); //calculate the surving time
 			proOrder->setServInt(ST);
-			proOrder->setWaitTime();
+			
 			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
+
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -291,23 +295,42 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 		}
 	}
 }
-/*bool Restaurant::Health_Emergency()
+
+
+////////////////////By Donia\\\\\\\\\\\\\\\\\\\\\\
+
+
+bool Restaurant::Health_Emergency(int curr_ts)
 {
 	Cook* temp;
 	float pri_temp;
-	if (busyCooksQ.peekFront(temp, pri_temp))
+	Order* tempOrd;
+	int no_dishes_left;
+	float priority;
+	if (busyCooksQ.peekFront(temp, pri_temp) && InServing.peekFront(tempOrd, pri_temp)&&temp->Is_injured()==false)
 	{
+		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime) * temp->getSpeed();
+		temp->f_speed = (float(temp->getSpeed) / 2);
 		temp->setSpeed(temp->getSpeed() / 2);
-		for(int i=0;i<num)
-		CooksInRest.enqueue(temp);
+		
+		int ST = ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
+		tempOrd->setServInt(ST);
+		tempOrd->setWaitTime();
+		tempOrd->setFinishTime();
+		priority = tempOrd->getFinishTime();
 		busyCooksQ.dequeue(temp, pri_temp);
+		busyCooksQ.enqueue(temp, priority);
+		InServing.dequeue(tempOrd, pri_temp);
+		InServing.enqueue(tempOrd, priority);
+		temp->set_RstTime(tempOrd->getFinishTime());//set the finish of rest time
+		temp->injure(true);//make the flag on
 		return true;
 	}
 	else
 		return false;
-}*/
 
 
+}
 
 
 //by raghad
@@ -369,9 +392,21 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 	{
 		if ((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed()==Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
 		{
+			if (Acook->Is_injured == true && Acook->Has_Urg == true)
+			{
+				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
+				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
+				Acook->setSpeed(Acook->f_speed* 2);
+			}
 			busyCooksQ.dequeue(Acook, priority);
 			float F=(Acook->getBreakDur()+ CurrentTimeStep);
 			CooksInBreak.enqueue(Acook,  F);
+		}
+		else if ((priority) <= CurrentTimeStep && Acook->Is_injured() == true)
+		{
+			busyCooksQ.dequeue(Acook, priority);
+			CooksInRest.enqueue(Acook);
+			
 		}
 		else if (( priority) <= CurrentTimeStep)                      //Finish time equal the current time step
 		{
@@ -400,6 +435,7 @@ void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 	{
 		if ((priority) <= CurrentTimeStep)               //If there is a cooks finished it's break
 		{
+		
 			CooksInBreak.dequeue(Acook, priority);
 			if (Acook->GetType() == TYPE_VIP)
 				VcooksQ.enqueue(Acook);
@@ -407,6 +443,7 @@ void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 				GcooksQ.enqueue(Acook);
 			if (Acook->GetType() == TYPE_NRM)
 				NcooksQ.enqueue(Acook);
+
 		}
 		else
 		{
@@ -418,6 +455,41 @@ void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 
 
 }
+void Restaurant::getfromRestCookQ(int CurrentTimeStep)
+{
+	Cook* Rcook;
+	while (CooksInRest.peekFront(Rcook))
+	{
+		
+		if ((Rcook->get_rstTime()) <= CurrentTimeStep&&Rcook->Has_Urg==false) //check if there is a cooks finished his rest time
+		{
+		
+				CooksInRest.dequeue(Rcook);
+				Rcook->injure(false);
+				Rcook->setSpeed(Rcook->f_speed * 2);
+				switch (Rcook->GetType())
+				{
+				case TYPE_VIP:
+					VcooksQ.enqueue(Rcook);
+				case TYPE_VGAN:
+					GcooksQ.enqueue(Rcook);
+				case TYPE_NRM:
+					NcooksQ.enqueue(Rcook);
+				default:
+					break;
+				}
+			
+		
+		}
+		else
+		{
+			return; //there is no more cooks finished their rest 
+		}
+
+	}
+
+}
+
 
 Restaurant::~Restaurant()
 {
@@ -679,13 +751,129 @@ void Restaurant::promoteorder(int Id, double exmoney)
 	return; ///if ID isn't in Qnormal
 }
 
+
+
+//phase2
+//void Restaurant::addToBusyCQ(Cook* pC, Order* pO)
+//{
+//	float priority = pO->getFinishTime();
+//	busyCooksQ.enqueue(pC, priority);
+//}
+//
+//void Restaurant::addToInBreakCQ(Cook* pC)
+//{
+//
+//}
+void Restaurant::Restaurant_Modes(int Mode)
+{
+	if (Mode == 1)
+	{
+		pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue");
+		pGUI->waitForClick();
+		fileLoading();
+		int CurrentTimeStep = 1;
+		Cook* Busy;
+		Order* serv;
+		float prio;
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty())
+		{
+			char timestep[100];
+			itoa(CurrentTimeStep, timestep, 10);
+			pGUI->PrintMessage(timestep, 1);
+			ExecuteEvents(CurrentTimeStep);
+			getfromBreakCookQ(CurrentTimeStep);
+			getfrombusyCookQ(CurrentTimeStep);
+
+			Serve_Urgent_VIP(CurrentTimeStep);
+			serve_VIP_orders(CurrentTimeStep);
+			serve_Vegan_orders(CurrentTimeStep);
+			serve_Normal_orders(CurrentTimeStep);
+			FillDrawingList();
+			/*busyCooksQ.peekFront(Busy, prio);
+			cout << Busy->GetID() <<"   "<< Busy->get_order() << "   ";
+			while (InServing.peekFront(serv, prio) && serv->getFinishTime() == CurrentTimeStep)
+				InServing.dequeue(serv, prio);
+			cout << serv->GetID()<<endl;
+			*/
+			//Printing Cooks and Orders Information
+			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
+			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
+			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
+			pGUI->UpdateInterface();
+			Sleep(1000);
+			CurrentTimeStep++;
+			pGUI->ResetDrawingList();
+		}
+	}
+	else if (Mode == 2)
+	{
+		pGUI->PrintMessage("Welcome To Our Restaurant .... Step-by-Step Mode, Click To Continue");
+		pGUI->waitForClick();
+		fileLoading();
+		int CurrentTimeStep = 1;
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty())
+		{
+
+			char timestep[100];
+			itoa(CurrentTimeStep, timestep, 10);
+			pGUI->PrintMessage(timestep, 1);
+			ExecuteEvents(CurrentTimeStep);
+			getfromBreakCookQ(CurrentTimeStep);
+			getfrombusyCookQ(CurrentTimeStep);
+
+			Serve_Urgent_VIP(CurrentTimeStep);
+			serve_VIP_orders(CurrentTimeStep);
+			serve_Vegan_orders(CurrentTimeStep);
+			serve_Normal_orders(CurrentTimeStep);
+			FillDrawingList();
+			//Printing Cooks and Orders Information
+			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
+			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
+			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
+			pGUI->UpdateInterface();
+			pGUI->waitForClick();
+			CurrentTimeStep++;
+			pGUI->ResetDrawingList();
+		}
+	}
+	else if (Mode == 3)
+	{
+		pGUI->PrintMessage("Welcome To Our Restaurant .... Silent Mode, Click To Continue");
+		pGUI->waitForClick();
+		fileLoading();
+		int CurrentTimeStep = 1;
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty())
+		{
+			
+			ExecuteEvents(CurrentTimeStep);
+			getfromBreakCookQ(CurrentTimeStep);
+			getfrombusyCookQ(CurrentTimeStep);
+
+			Serve_Urgent_VIP(CurrentTimeStep);
+			serve_VIP_orders(CurrentTimeStep);
+			serve_Vegan_orders(CurrentTimeStep);
+			serve_Normal_orders(CurrentTimeStep);
+			//Printing Cooks and Orders Information
+			CurrentTimeStep++;
+			
+		}
+	}
+}
+
+
+
+
+
+
+///Appendix
+
 //Testinf Function
 
 /*void Restaurant::SimpleSimulator()
 {
 	Order *NpO,*GpO,*VpO,*pO;
 	float pr;
-	
+
 	pGUI->PrintMessage("Simple Simulator Function is Running .... Click to continue");
 	pGUI->waitForClick();
 	fileLoading();
@@ -756,7 +944,7 @@ void Restaurant::promoteorder(int Id, double exmoney)
 				temp = temp->getNext();
 			}
 		}
-		
+
 		FillDrawingList();
 		//Printing Cooks and Orders Information
 		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) +" Vegan :"  + to_string(GWaitNum) + " VIP : "+to_string(VWaitNum) , 2);
@@ -766,107 +954,9 @@ void Restaurant::promoteorder(int Id, double exmoney)
 		//pGUI->waitForClick();
 		CurrentTimeStep++;
 		pGUI->ResetDrawingList();
-		
+
 	}
 		pGUI->PrintMessage("Simulation Done ... Click To Exit");
 		pGUI->waitForClick();
 }
 */
-//phase2
-//void Restaurant::addToBusyCQ(Cook* pC, Order* pO)
-//{
-//	float priority = pO->getFinishTime();
-//	busyCooksQ.enqueue(pC, priority);
-//}
-//
-//void Restaurant::addToInBreakCQ(Cook* pC)
-//{
-//
-//}
-void Restaurant::Restaurant_Modes(int Mode)
-{
-	if (Mode == 1)
-	{
-		pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue");
-		pGUI->waitForClick();
-		fileLoading();
-		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty())
-		{
-			char timestep[100];
-			itoa(CurrentTimeStep, timestep, 10);
-			pGUI->PrintMessage(timestep, 1);
-			ExecuteEvents(CurrentTimeStep);
-			getfromBreakCookQ(CurrentTimeStep);
-			getfrombusyCookQ(CurrentTimeStep);
-
-			Serve_Urgent_VIP(CurrentTimeStep);
-			serve_VIP_orders(CurrentTimeStep);
-			serve_Vegan_orders(CurrentTimeStep);
-			serve_Normal_orders(CurrentTimeStep);
-			FillDrawingList();
-			//Printing Cooks and Orders Information
-			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
-			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
-			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
-			pGUI->UpdateInterface();
-			Sleep(1000);
-			CurrentTimeStep++;
-			pGUI->ResetDrawingList();
-		}
-	}
-	else if (Mode == 2)
-	{
-		pGUI->PrintMessage("Welcome To Our Restaurant .... Step-by-Step Mode, Click To Continue");
-		pGUI->waitForClick();
-		fileLoading();
-		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty())
-		{
-
-			char timestep[100];
-			itoa(CurrentTimeStep, timestep, 10);
-			pGUI->PrintMessage(timestep, 1);
-			ExecuteEvents(CurrentTimeStep);
-			getfromBreakCookQ(CurrentTimeStep);
-			getfrombusyCookQ(CurrentTimeStep);
-
-			Serve_Urgent_VIP(CurrentTimeStep);
-			serve_VIP_orders(CurrentTimeStep);
-			serve_Vegan_orders(CurrentTimeStep);
-			serve_Normal_orders(CurrentTimeStep);
-			FillDrawingList();
-			//Printing Cooks and Orders Information
-			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
-			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
-			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
-			pGUI->UpdateInterface();
-			pGUI->waitForClick();
-			CurrentTimeStep++;
-			pGUI->ResetDrawingList();
-		}
-	}
-	else if (Mode == 3)
-	{
-		pGUI->PrintMessage("Welcome To Our Restaurant .... Silent Mode, Click To Continue");
-		pGUI->waitForClick();
-		fileLoading();
-		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty())
-		{
-			
-			ExecuteEvents(CurrentTimeStep);
-			getfromBreakCookQ(CurrentTimeStep);
-			getfrombusyCookQ(CurrentTimeStep);
-
-			Serve_Urgent_VIP(CurrentTimeStep);
-			serve_VIP_orders(CurrentTimeStep);
-			serve_Vegan_orders(CurrentTimeStep);
-			serve_Normal_orders(CurrentTimeStep);
-			//Printing Cooks and Orders Information
-			CurrentTimeStep++;
-			
-		}
-	}
-}
-

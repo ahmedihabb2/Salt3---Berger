@@ -116,7 +116,7 @@ void Order::setWaitTime()
 }
 void Order::setFinishTime()
 {
-	FinishTime = ArrTime + srvInt + WaitTime;
+	FinishTime = ServTime+srvInt ;
 }
 void Order::Serve(int crrTS)
 {

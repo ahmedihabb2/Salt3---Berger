@@ -79,7 +79,9 @@ public:
 	int SRVorders, AutoP, RstPrd, VIP_WT;
 	int UrgentOredersNum=0;
 	int Vserved = 0, Nserved = 0, Gserved = 0;
-	bool Health_Emergency();
+	bool Health_Emergency(int CurrentTimeStep);
+	void getfromRestCookQ(int CurrentTimeStep);
+
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);

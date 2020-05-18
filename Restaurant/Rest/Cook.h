@@ -10,14 +10,19 @@ class Cook
 	int speed;		//dishes it can prepare in one clock tick (in one timestep)
 	//donya
 	int ord_assigned;
+	bool Is_inj;
+	int rst_ts;
+	bool has_Urg;
 	//abeer
 	int RstPrd;
 	int numOrdersBefBreak; 
 	int breakDuration; 
 	//raghad
 	int numofOrderdServed;
-
+	
 public:
+	
+
 	Cook();
 	virtual ~Cook();
 
@@ -45,6 +50,11 @@ public:
 	int get_RstPrd();
 	void assign_Order(int order);
 	int get_order();
-
-
+	bool Is_injured();
+	void injure(bool hurt);
+	void set_RstTime(int rst);
+	int get_rstTime();
+	void Give_Urg(bool);
+	bool Has_Urg();
+	float f_speed;
 };
