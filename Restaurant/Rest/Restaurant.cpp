@@ -766,6 +766,8 @@ void Restaurant::promoteorder(int Id, double exmoney)
 //}
 void Restaurant::Restaurant_Modes(int Mode)
 {
+	bool injured;
+	float R;
 	if (Mode == 1)
 	{
 		pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue");
@@ -775,6 +777,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		Cook* Busy;
 		Order* serv;
 		float prio;
+		
 		while (!EventsQueue.isEmpty() || !InServing.isEmpty())
 		{
 			char timestep[100];
@@ -783,7 +786,15 @@ void Restaurant::Restaurant_Modes(int Mode)
 			ExecuteEvents(CurrentTimeStep);
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
-
+			//donia
+			srand((int)time(0));
+			R= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			if (R <= InjProp)
+			{
+				injured = Health_Emergency(CurrentTimeStep);
+			}
+			getfromRestCookQ(CurrentTimeStep);
+			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
@@ -820,7 +831,15 @@ void Restaurant::Restaurant_Modes(int Mode)
 			ExecuteEvents(CurrentTimeStep);
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
-
+			//donia
+			srand((int)time(0));
+			R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			if (R <= InjProp)
+			{
+				injured = Health_Emergency(CurrentTimeStep);
+			}
+			getfromRestCookQ(CurrentTimeStep);
+			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
@@ -848,7 +867,15 @@ void Restaurant::Restaurant_Modes(int Mode)
 			ExecuteEvents(CurrentTimeStep);
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
-
+			//donia
+			srand((int)time(0));
+			R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			if (R <= InjProp)
+			{
+				injured = Health_Emergency(CurrentTimeStep);
+			}
+			getfromRestCookQ(CurrentTimeStep);
+			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
