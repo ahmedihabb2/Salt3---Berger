@@ -4,6 +4,8 @@
 Cook::Cook()
 {
 	RstPrd = 0;
+	Is_inj = false;
+	has_Urg =false;
 }
 
 
@@ -96,4 +98,34 @@ void Cook::assign_Order(int order)
 int Cook::get_order()
 {
 	return ord_assigned;
+}
+
+void Cook::injure(bool hurt)
+{
+	Is_inj = hurt;
+}
+
+bool Cook::Is_injured()
+{
+	return Is_inj;
+}
+
+void Cook::set_RstTime(int rst)
+{
+	rst_ts = RstPrd + rst;
+}
+
+int Cook::get_rstTime()
+{
+	return rst_ts;
+}
+
+void Cook::Give_Urg(bool urg)
+{
+	has_Urg = urg;
+
+}
+bool Cook::Has_Urg()
+{
+	return has_Urg;
 }

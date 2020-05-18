@@ -23,6 +23,7 @@ protected:
 	float Priority;
 	int WaitTime;
 	int srvInt;
+	bool Urgent;
 
 public:
 	Order( ORD_TYPE r_Type,int arrtime, int ID, int size,double totalmoney);
@@ -59,6 +60,8 @@ public:
 	void setFinishTime();
 	void setWaitTime();
 	void Serve( int);//
+	void setUrgent(bool flag);
+	bool isUrgent();
 };
 
 #endif
