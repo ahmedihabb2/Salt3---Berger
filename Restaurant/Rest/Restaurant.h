@@ -43,6 +43,7 @@ private:
 	//
 	LinkedList<Order*> LNormal_Order;
 	Queue<Order*> Qvegan_Order;
+	Queue<Order**> QUrgentOrders;
 	//We made it LinkedList only in this phase to be able to take order of each type
 	//and put it in finished list as SimpleSimulator function requires
 	//In General we choosed Priority Queue for this
@@ -57,6 +58,7 @@ public:
 	void fileLoading();
 	void SimpleSimulator();
 	void Interactive();
+	void Restaurant_Modes(int Mode);
 	void FillDrawingList();
 	void AddtoVIPQueue(Order* po);
 	void AddtoNOList(Order* po);
@@ -69,11 +71,17 @@ public:
 	void serve_Vegan_orders(int CurrentTimeStep);
 	void getfrombusyCookQ(int CurrentTimeStep);
 	void getfromBreakCookQ(int CurrentTimeStep);
+	void CheckUrgentOrders(int CurrentTimeStep);
+	void GetCooksFor_Urgent_VIP(int CurrentTimeStep);
+	void Serve_Urgent_VIP(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP, RstPrd, VIP_WT;
-	
-	bool Health_Emergency();
+	int UrgentOredersNum=0;
+	int Vserved = 0, Nserved = 0, Gserved = 0;
+	bool Health_Emergency(int CurrentTimeStep);
+	void getfromRestCookQ(int CurrentTimeStep);
+
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* pC, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
