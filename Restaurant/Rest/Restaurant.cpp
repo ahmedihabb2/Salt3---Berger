@@ -385,23 +385,24 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 	float priority;
 	while (busyCooksQ.peekFront(Acook, priority))
 	{
-		if ((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed()==Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
-		{
-			if (Acook->Is_injured ()== true && Acook->Has_Urg() == true)
-			{
-				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
-				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
-				Acook->setSpeed(Acook->f_speed* 2);
-			}
-			busyCooksQ.dequeue(Acook, priority);
-			float F=(Acook->getBreakDur()+ CurrentTimeStep);
-			CooksInBreak.enqueue(Acook,  F);
-		}
-		else if ((priority) <= CurrentTimeStep && Acook->Is_injured() == true)
+		if ((priority) <= CurrentTimeStep && Acook->Is_injured() == true&&Acook->Has_Urg()==false)
 		{
 			busyCooksQ.dequeue(Acook, priority);
 			CooksInRest.enqueue(Acook);
-			
+
+		}
+		
+		else if((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed() == Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
+		{
+			if (Acook->Is_injured() == true && Acook->Has_Urg() == true)
+			{
+				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
+				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
+				Acook->setSpeed(Acook->f_speed * 2);
+			}
+			busyCooksQ.dequeue(Acook, priority);
+			float F = (Acook->getBreakDur() + CurrentTimeStep);
+			CooksInBreak.enqueue(Acook, F);
 		}
 		else if (( priority) <= CurrentTimeStep)                      //Finish time equal the current time step
 		{
@@ -483,10 +484,13 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 				{
 				case TYPE_VIP:
 					VcooksQ.enqueue(Rcook);
+					break;
 				case TYPE_VGAN:
 					GcooksQ.enqueue(Rcook);
+					break;
 				case TYPE_NRM:
 					NcooksQ.enqueue(Rcook);
+					break;
 				default:
 					break;
 				}
