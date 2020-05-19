@@ -402,6 +402,7 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 				Acook->setSpeed(Acook->f_speed * 2);
 			}
 			busyCooksQ.dequeue(Acook, priority);
+			Acook->setnumofOrderdServed(0);
 			float F = (Acook->getBreakDur() + CurrentTimeStep);
 			CooksInBreak.enqueue(Acook, F);
 		}
