@@ -207,10 +207,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-				proOrder->setServInt(ST);
-				proOrder->setWaitTime();
-				proOrder->setFinishTime();
-				proOrder->setStatus(SRV);
+				proOrder->Serve(ST);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -224,10 +221,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
 
 				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-				proOrder->setServInt(ST);
-				proOrder->setWaitTime();
-				proOrder->setFinishTime();
-				proOrder->setStatus(SRV);
+				proOrder->Serve(ST);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -241,10 +235,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 				int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-				proOrder->setServInt(ST);
-				proOrder->setWaitTime();
-				proOrder->setFinishTime();
-				proOrder->setStatus(SRV);
+				proOrder->Serve(ST);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -278,10 +269,7 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 			int ST = ceil(float(proOrder->getOrderSize() )/ Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			
-			proOrder->setFinishTime();
-
+			proOrder->Serve(ST);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -309,13 +297,13 @@ bool Restaurant::Health_Emergency(int curr_ts)
 	float priority;
 	if (busyCooksQ.peekFront(temp, pri_temp) && InServing.peekFront(tempOrd, pri_temp)&&temp->Is_injured()==false)
 	{
-		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime) * temp->getSpeed();
-		temp->f_speed = (float(temp->getSpeed) / 2);
+		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime()) * temp->getSpeed();
+		temp->f_speed = (float(temp->getSpeed()) / 2);
 		temp->setSpeed(temp->getSpeed() / 2);
 		
 		int ST = ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
-		tempOrd->setWaitTime();
+		
 		tempOrd->setFinishTime();
 		priority = tempOrd->getFinishTime();
 		busyCooksQ.dequeue(temp, pri_temp);
@@ -346,10 +334,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setServTime(CurrentTimeStep);                       //set serving time with current time step 
 
 			int ST = ceil(float(proOrder->getOrderSize()) / Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			proOrder->setWaitTime();
-			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
+			proOrder->Serve(ST);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -363,10 +348,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setServTime(CurrentTimeStep); //set serving time with current time step 
 
 			int ST = ceil(float(proOrder->getOrderSize() )/ Bcook->getSpeed()); //calculate the surving time
-			proOrder->setServInt(ST);
-			proOrder->setWaitTime();
-			proOrder->setFinishTime();
-			proOrder->setStatus(SRV);
+			proOrder->Serve(ST);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
@@ -392,7 +374,7 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 	{
 		if ((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed()==Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
 		{
-			if (Acook->Is_injured == true && Acook->Has_Urg == true)
+			if (Acook->Is_injured ()== true && Acook->Has_Urg() == true)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
 				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
@@ -461,7 +443,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 	while (CooksInRest.peekFront(Rcook))
 	{
 		
-		if ((Rcook->get_rstTime()) <= CurrentTimeStep&&Rcook->Has_Urg==false) //check if there is a cooks finished his rest time
+		if ((Rcook->get_rstTime()) <= CurrentTimeStep&&Rcook->Has_Urg()==false) //check if there is a cooks finished his rest time
 		{
 		
 				CooksInRest.dequeue(Rcook);
@@ -986,4 +968,5 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->PrintMessage("Simulation Done ... Click To Exit");
 		pGUI->waitForClick();
 }
+
 */
