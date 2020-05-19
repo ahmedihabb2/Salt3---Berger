@@ -905,6 +905,16 @@ void Restaurant::outputFileLoading()
 	if (OutFile.is_open())
 	{
 		OutFile << "FT  ID  AT  WT  ST" << endl;
+
+		Order *orderr;
+		while (FinishedList.dequeue(orderr))
+		{
+			OutFile << orderr->getFinishTime() << "   "
+				<< orderr->GetID() << "   "
+				<< orderr->getArrTime() << "   "
+				<< orderr->getWaitTime() << "   "
+				<< orderr->getServInt() << endl;
+		}
 	}
 
 }
