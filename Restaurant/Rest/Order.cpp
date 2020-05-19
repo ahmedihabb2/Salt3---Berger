@@ -130,7 +130,7 @@ void Order::Serve(int crrTS)
 	//and call the function of the order object ,i.e:order.setServInt(cookSpeed>=orderSize?1:Ceil(float(ordersize)/cookspeed))
 	///and finally we call Serve function by passing the current time step we are in to it
 	///so that we get the finish time 
-	setServInt(crrTS);
+	setServTime(crrTS);
 	setWaitTime();
 	setFinishTime();
 	setStatus(SRV);
