@@ -24,7 +24,6 @@ protected:
 	int WaitTime;
 	int srvInt;
 	bool Urgent;
-
 public:
 	Order( ORD_TYPE r_Type,int arrtime, int ID, int size,double totalmoney);
 	virtual ~Order();
