@@ -11,7 +11,7 @@
 #include"..\LinkedList.h"
 
 #include <fstream>
-
+#include<time.h>
 #include "Order.h"
 
 // it is the maestro of the project
@@ -89,7 +89,13 @@ public:
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* p C, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
-
+	float RandomFloat(float a, float b) {
+		//srand((int)time(0));
+		float random = ((float)rand()) / (float)RAND_MAX;
+		float diff = b - a;
+		float r = random * diff;
+		return a + r;
+	}
 
 };
 

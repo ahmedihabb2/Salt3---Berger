@@ -783,14 +783,14 @@ void Restaurant::promoteorder(int Id, double exmoney)
 void Restaurant::Restaurant_Modes(int Mode)
 {
 	bool injured;
-	float R;
+	//float R;
 	if (Mode == 1)
 	{
 		pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue");
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty() || !QVIP_Order.isEmpty() || !Qvegan_Order.isEmpty() || !LNormal_Order.isEmpty())
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty() || !QVIP_Order.isEmpty() || !Qvegan_Order.isEmpty() || !LNormal_Order.isEmpty()||!CooksInBreak.isEmpty()||!CooksInRest.isEmpty())
 		{
 			char timestep[100];
 			itoa(CurrentTimeStep, timestep, 10);
@@ -799,10 +799,19 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			//donia
-			srand((int)time(0));
-			R= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			//srand((int)time(0));
+			float R= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			//to be deleted
+			cout << R << endl;
+			//
 			if (R <= InjProp)
 			{
+				//to be deleted
+				float priority;
+				Cook* cook;
+				if (busyCooksQ.peekFront(cook, priority) && cook->Is_injured() == false)
+					cout << cook->GetID()<<endl;
+				//
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			getfromRestCookQ(CurrentTimeStep);
@@ -836,7 +845,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty()||!QVIP_Order.isEmpty()|| !Qvegan_Order.isEmpty() ||!LNormal_Order.isEmpty())
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty()||!QVIP_Order.isEmpty()|| !Qvegan_Order.isEmpty() ||!LNormal_Order.isEmpty()|| !CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
 		{
 
 			char timestep[100];
@@ -846,10 +855,19 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			//donia
-			srand((int)time(0));
-			R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			//srand((int)time(0));
+			float R = RandomFloat(0.0,1.0);
+			//to be deleted
+			cout << R << endl;
+			//
 			if (R <= InjProp)
 			{
+				//to be deleted
+				float priority;
+				Cook* cook;
+				if (busyCooksQ.peekFront(cook, priority) && cook->Is_injured() == false)
+					cout << cook->GetID() << endl;
+				//
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			getfromRestCookQ(CurrentTimeStep);
@@ -878,17 +896,26 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty() || !QVIP_Order.isEmpty() || !Qvegan_Order.isEmpty() || !LNormal_Order.isEmpty())
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty() || !QVIP_Order.isEmpty() || !Qvegan_Order.isEmpty() || !LNormal_Order.isEmpty()|| !CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
 		{
 			
 			ExecuteEvents(CurrentTimeStep);
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			//donia
-			srand((int)time(0));
-			R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			//srand((int)time(0));
+			float R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			//to be deleted
+			cout << R << endl;
+			//
 			if (R <= InjProp)
 			{
+				//to be deleted
+				float priority;
+				Cook* cook;
+				if (busyCooksQ.peekFront(cook, priority) && cook->Is_injured() == false)
+					cout << cook->GetID() << endl;
+				//
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			getfromRestCookQ(CurrentTimeStep);
