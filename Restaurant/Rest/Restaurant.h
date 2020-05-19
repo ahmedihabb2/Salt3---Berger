@@ -73,7 +73,7 @@ public:
 	void getfromBreakCookQ(int CurrentTimeStep);
 	void getfromInServingQ(int CurrentTimeStep);
 	void CheckUrgentOrders(int CurrentTimeStep);
-	void GetCooksFor_Urgent_VIP(int CurrentTimeStep);
+	bool GetCooksFor_Urgent_VIP(int CurrentTimeStep);
 	void Serve_Urgent_VIP(int CurrentTimeStep);
 	int NCookNum , GCookNum , VCookNum;
 	int NWaitNum, GWaitNum, VWaitNum;
