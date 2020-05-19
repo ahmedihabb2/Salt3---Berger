@@ -817,6 +817,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			CurrentTimeStep++;
 			pGUI->ResetDrawingList();
 		}
+		outputFileLoading();
 	}
 	else if (Mode == 2)
 	{
@@ -858,6 +859,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			CurrentTimeStep++;
 			pGUI->ResetDrawingList();
 		}
+		outputFileLoading();
 	}
 	else if (Mode == 3)
 	{
