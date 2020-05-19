@@ -434,6 +434,7 @@ void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 		{
 		
 			CooksInBreak.dequeue(Acook, priority);
+			Acook->setnumofOrderdServed(0);
 			if (Acook->GetType() == TYPE_VIP)
 				VcooksQ.enqueue(Acook);
 			if (Acook->GetType() == TYPE_VGAN)
