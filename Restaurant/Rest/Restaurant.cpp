@@ -389,7 +389,8 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 		{
 			busyCooksQ.dequeue(Acook, priority);
 			CooksInRest.enqueue(Acook);
-
+			if (Acook->getnumofOrderdServed() + 1 >= Acook->getNumOrdBbreak())
+				Acook->setnumofOrderdServed(0);
 		}
 		
 		else if((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed() == Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
