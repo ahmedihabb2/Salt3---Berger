@@ -389,7 +389,7 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 		{
 			busyCooksQ.dequeue(Acook, priority);
 			CooksInRest.enqueue(Acook);
-			if (Acook->getnumofOrderdServed() + 1 >= Acook->getNumOrdBbreak())
+			if (Acook->getnumofOrderdServed()  == Acook->getNumOrdBbreak())
 				Acook->setnumofOrderdServed(0);
 		}
 		
