@@ -861,7 +861,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty()||!QVIP_Order.isEmpty()|| !Qvegan_Order.isEmpty() ||!LNormal_Order.isEmpty()|| !CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty()||!QVIP_Order.isEmpty()|| !Qvegan_Order.isEmpty() ||!LNormal_Order.isEmpty())
 		{
 
 			char timestep[100];
@@ -904,6 +904,19 @@ void Restaurant::Restaurant_Modes(int Mode)
 			CurrentTimeStep++;
 			pGUI->ResetDrawingList();
 		}
+		while (!CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
+		{
+			pGUI->PrintMessage("No More Orders...Please Wait Some Cooks in Break");
+			getfromBreakCookQ(CurrentTimeStep);
+			getfrombusyCookQ(CurrentTimeStep);
+			getfromRestCookQ(CurrentTimeStep);
+			FillDrawingList();
+			pGUI->UpdateInterface();
+			pGUI->ResetDrawingList();
+			Sleep(1000);
+			CurrentTimeStep++;
+		}
+	
 		
 	}
 	else if (Mode == 3)
