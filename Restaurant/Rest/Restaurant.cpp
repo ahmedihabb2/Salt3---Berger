@@ -784,6 +784,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 {
 	bool injured;
 	//float R;
+	srand((int)time(0));
 	if (Mode == 1)
 	{
 		pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue");
