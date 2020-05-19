@@ -531,10 +531,10 @@ void Restaurant::FillDrawingList()
 /////////////////////////////////////////////////////
 void Restaurant::fileLoading() 
 {
-	pGUI->PrintMessage("Enter file name");
-	filename = pGUI->GetString();
+	pGUI->PrintMessage("Enter input file name");
+	IPfilename = pGUI->GetString();
 
-	ifstream InFile(filename);
+	ifstream InFile(IPfilename);
 	
 	if (InFile.is_open())
 	{
@@ -866,11 +866,25 @@ void Restaurant::Restaurant_Modes(int Mode)
 			CurrentTimeStep++;
 			
 		}
+
+		outputFileLoading();
 	}
 }
 
 
+void Restaurant::outputFileLoading()
+{
+	pGUI->PrintMessage("Enter output file name");
+	OPfilename = pGUI->GetString();
 
+	ofstream OutFile(OPfilename);
+
+	if (OutFile.is_open())
+	{
+		OutFile << "FT  ID  AT  WT  ST" << endl;
+	}
+
+}
 
 
 

@@ -21,7 +21,8 @@ private:
 	GUI *pGUI;
 	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
 
-	string filename;
+	string IPfilename;
+	string OPfilename;
 	float InjProp;
 
 	//Queue for each type of Cooks
@@ -56,6 +57,7 @@ public:
 	void ExecuteEvents(int TimeStep);	//executes all events at current timestep
 	void RunSimulation();
 	void fileLoading();
+	void outputFileLoading();
 	void SimpleSimulator();
 	void Interactive();
 	void Restaurant_Modes(int Mode);
