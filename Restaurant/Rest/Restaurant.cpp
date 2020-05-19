@@ -561,7 +561,7 @@ void Restaurant::FillDrawingList()
 /////////////////////////////////////////////////////
 void Restaurant::fileLoading() 
 {
-	pGUI->PrintMessage("Enter input file name");
+	pGUI->PrintMessage("Enter input file name, the files are named ""test"" followed by number of test case ,i.e. test1.txt");
 	IPfilename = pGUI->GetString();
 
 	ifstream InFile(IPfilename);
