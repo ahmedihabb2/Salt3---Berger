@@ -83,7 +83,7 @@ public:
 	void getfromRestCookQ(int CurrentTimeStep);
 
 	//// Added by abeer phase2
-	//void addToBusyCQ(Cook* pC, Order* pO);
+	//void addToBusyCQ(Cook* p C, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
 
 
