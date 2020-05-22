@@ -85,7 +85,12 @@ public:
 	int urgentOrdersCount = 0;
 	bool Health_Emergency(int CurrentTimeStep);
 	void getfromRestCookQ(int CurrentTimeStep);
-
+	//This Strings are for storing Cooks and Orders info to be Printed on GUI
+	string UFinfo;
+	string VFinfo;
+	string NFinfo;
+	string GFinfo;
+	////////////////////
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* p C, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
