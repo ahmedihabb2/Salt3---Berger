@@ -139,8 +139,8 @@ void GUI::ClearDrawingArea() const
 	pWind->DrawImage("GUI\\waiting3-2.jpg", 0, MenuBarHeight + (WindHeight - StatusBarHeight) / 2-60, WindWidth / 2-60,59);
 	pWind->DrawImage("GUI\\chef.jpg", WindWidth / 2+2, MenuBarHeight, WindWidth / 2, (WindHeight - StatusBarHeight) / 2-60);
 	pWind->DrawImage("GUI\\chef-2.jpg", WindWidth / 2+61, MenuBarHeight + (WindHeight - StatusBarHeight) / 2 - 60, WindWidth / 2-58,59);
-	pWind->DrawImage("GUI\\6.jpg", 0, MenuBarHeight + ((WindHeight - StatusBarHeight) / 2)+60, WindWidth / 2-1, (WindHeight - StatusBarHeight) / 2-61);
-	pWind->DrawImage("GUI\\6-2.jpg", 0, MenuBarHeight + ((WindHeight - StatusBarHeight) / 2) + 1, WindWidth / 2-59, 60);
+	pWind->DrawImage("GUI\\6.jpg", -1, MenuBarHeight + ((WindHeight - StatusBarHeight) / 2)+60, WindWidth / 2, (WindHeight - StatusBarHeight) / 2-61);
+	pWind->DrawImage("GUI\\6-2.jpg", -1, MenuBarHeight + ((WindHeight - StatusBarHeight) / 2) + 1, WindWidth / 2-60, 60);
 	pWind->DrawImage("GUI\\38.jpg", WindWidth / 2+2, MenuBarHeight + (WindHeight - StatusBarHeight) / 2 +60, WindWidth / 2+1, (WindHeight - StatusBarHeight) / 2-61);
 	pWind->DrawImage("GUI\\38-2.jpg", WindWidth / 2+60, MenuBarHeight + (WindHeight - StatusBarHeight) / 2 + 1, WindWidth / 2 - 59, 60);
 }
