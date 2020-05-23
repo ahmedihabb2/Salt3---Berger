@@ -64,15 +64,15 @@ void GUI::PrintMessage(string msg,char* font) const	//Prints a message on status
 {
 	ClearStatusBar();	//First clear the status bar
 
-	pWind->SetPen(YELLOW);
-	pWind->SetFont(34,PLAIN, BY_NAME,font);
+	pWind->SetPen(Yellow);
+	pWind->SetFont(32,PLAIN, BY_NAME,font);
 	pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 1.5), msg); // You may need to change these coordinates later 
 																		  // to be able to write multi-line
 }
 void GUI::PrintMessage(string msg, int line) const
 {
 	pWind->SetPen(DARKBLUE);
-	pWind->SetFont(20, BOLD, BY_NAME, "Kristen ITC");
+	pWind->SetFont(20, BOLD, BY_NAME, "Times New Roman");
 
 	if (line == 1)
 	{
@@ -113,7 +113,7 @@ void GUI::DrawString(const int iX, const int iY, const string Text)
 }
 void GUI::DrawString1(const int iX, const int iY, const string Text)
 {
-	pWind->SetPen(YELLOW);
+	pWind->SetPen(Yellow);
 	pWind->SetFont(22, BOLD, BY_NAME, "Lucida Console");
 	pWind->DrawString1(iX, iY, Text);
 }
@@ -166,7 +166,7 @@ void GUI::DrawRestArea() const
 
 	// 1- Drawing the brown square of the Rest
 	pWind->SetPen(DARKBLUE);
-	pWind->SetBrush(YELLOW);
+	pWind->SetBrush(Yellow);
 	pWind->DrawRectangle(RestStartX, RestStartY, RestEndX, RestEndY);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)

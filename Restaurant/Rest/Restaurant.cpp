@@ -233,7 +233,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
 				Vserved++;
-				VFinfo += " V" + to_string(Bcook->GetID())+"("+ "V" + to_string(proOrder->GetID())+")";
+				VFinfo += "V" + to_string(Bcook->GetID())+"("+ "V" + to_string(proOrder->GetID())+")";
 			}
 			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
 			{
@@ -248,7 +248,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
 				Vserved++;
-				VFinfo += " N" + to_string(Bcook->GetID()) + "(" + "V" + to_string(proOrder->GetID()) + ")";
+				VFinfo += "N" + to_string(Bcook->GetID()) + "(" + "V" + to_string(proOrder->GetID()) + ")";
 			}
 			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
 			{
@@ -263,7 +263,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
 				Vserved++;
-				VFinfo += " G" + to_string(Bcook->GetID()) + "(" + "V" + to_string(proOrder->GetID()) + ")";
+				VFinfo += "G" + to_string(Bcook->GetID()) + "(" + "V" + to_string(proOrder->GetID()) + ")";
 			}
 			else
 			{
@@ -298,7 +298,7 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			Qvegan_Order.dequeue(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
 			Gserved++;
-			GFinfo += " G" + to_string(Bcook->GetID())+"("+ "G" + to_string(proOrder->GetID())+")";
+			GFinfo += "G" + to_string(Bcook->GetID())+"("+ "G" + to_string(proOrder->GetID())+")";
 		}
 		else
 		{
@@ -365,7 +365,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			LNormal_Order.DeleteFirst(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
 			Nserved++;
-			NFinfo += " N" + to_string(Bcook->GetID())+"("+ "N" + to_string(proOrder->GetID())+")";
+			NFinfo += "N" + to_string(Bcook->GetID())+"("+ "N" + to_string(proOrder->GetID())+")";
 		}
 		else if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook when there is no Normal
 		{
@@ -380,7 +380,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			LNormal_Order.DeleteFirst(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
 			Nserved++;
-			NFinfo += " V" + to_string(Bcook->GetID()) + "(" + "N" + to_string(proOrder->GetID()) + ")";
+			NFinfo += "V" + to_string(Bcook->GetID()) + "(" + "N" + to_string(proOrder->GetID()) + ")";
 		}
 		else
 		{
@@ -581,7 +581,7 @@ void Restaurant::FillDrawingList()
 /////////////////////////////////////////////////////
 void Restaurant::fileLoading() 
 {
-	pGUI->PrintMessage("Enter input file name");
+	pGUI->PrintMessage("Enter input file name","Maiandra GD");
 	IPfilename = pGUI->GetString();
 
 	ifstream InFile(IPfilename);
@@ -810,7 +810,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 	srand((int)time(0));
 	if (Mode == 1)
 	{
-		pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue");
+		pGUI->PrintMessage("Welcome To Our Restaurant .... Interactive Mode, Click To Continue","Maiandra GD");
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
@@ -856,7 +856,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		}
 		while (!CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
 		{
-			pGUI->PrintMessage("No More Orders...Please Wait, Some Cooks are in {Break, Rest}");
+			pGUI->PrintMessage("No More Orders...Please Wait, Some Cooks are in {Break, Rest}","Maiandra GD");
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			getfromRestCookQ(CurrentTimeStep);
@@ -870,7 +870,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 	}
 	else if (Mode == 2)
 	{
-		pGUI->PrintMessage("Welcome To Our Restaurant .... Step-by-Step Mode, Click To Continue");
+		pGUI->PrintMessage("Welcome To Our Restaurant .... Step-by-Step Mode, Click To Continue","Maiandra GD");
 		pGUI->waitForClick();
 		fileLoading();
 		
@@ -916,7 +916,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		}
 		while (!CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
 		{
-			pGUI->PrintMessage("No More Orders...Please Wait, Some Cooks are in{ Break, Rest }");
+			pGUI->PrintMessage("No More Orders...Please Wait, Some Cooks are in{ Break, Rest }","Maiandra GD");
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			getfromRestCookQ(CurrentTimeStep);
@@ -931,7 +931,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 	}
 	else if (Mode == 3)
 	{
-		pGUI->PrintMessage("Welcome To Our Restaurant .... Silent Mode, Click To Continue");
+		pGUI->PrintMessage("Welcome To Our Restaurant .... Silent Mode, Click To Continue","Maiandra GD");
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
@@ -972,14 +972,14 @@ void Restaurant::Restaurant_Modes(int Mode)
 
 		outputFileLoading();
 	}
-	pGUI->PrintMessage("End of Simulation....Click to Exit");
+	pGUI->PrintMessage("End of Simulation....Click to Exit","Maiandra GD");
 	pGUI->waitForClick();
 }
 
 
 void Restaurant::outputFileLoading()
 {
-	pGUI->PrintMessage("Enter output file name");
+	pGUI->PrintMessage("Enter output file name","Maiandra GD");
 	OPfilename = pGUI->GetString();
 
 	ofstream OutFile(OPfilename);

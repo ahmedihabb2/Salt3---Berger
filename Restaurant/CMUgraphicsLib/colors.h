@@ -126,6 +126,7 @@ const color KHAKI = color(240, 230, 140);
 const color PALEGOLDENROD = color(238, 232, 170);
 const color LIGHTGOLDENRODYELLOW = color(250, 250, 210);
 const color LIGHTYELLOW = color(255, 255, 224);
+const color Yellow= color(255, 255, 112);
 const color YELLOW = color(255, 255, 0);
 const color GOLD = color(255, 215, 0);
 const color LIGHTGOLDENROD = color(238, 221, 130);
