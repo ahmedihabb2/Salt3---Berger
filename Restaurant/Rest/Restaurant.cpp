@@ -608,14 +608,11 @@ void Restaurant::fileLoading()
 	
 			newNCook->setID(arrCIDs[i + 1]);
 			newNCook->setType(TYPE_NRM);
-			
-			//newNCook->setSpeed((Ncookspeed_min+rand() % Ncookspeed_max));
 			newNCook->setSpeed(rangeRandomAlg2(Ncookspeed_min, Ncookspeed_max));
-			cout <<"NSpeed:  "<< newNCook->getSpeed() << endl;
+			
 			newNCook->setNumOrdBbreak(numOrdersBbreak);
-			//newNCook->setBreakDur(Nbreak_min+rand() % Nbreak_max);
 			newNCook->setBreakDur(rangeRandomAlg2(Nbreak_min, Nbreak_max));
-			cout << "NBREAK:   " << newNCook->getBreakDur() << endl;
+			
 			newNCook->set_RstPrd(RstPrd);
 			
 			newNCook->setnumofOrderdServed(0);
@@ -631,14 +628,13 @@ void Restaurant::fileLoading()
 			newGCook->setID(arrCIDs[i + numNcooks + 1]);
 			newGCook->setType(TYPE_VGAN);
 			
-			//newGCook->setSpeed(Gcookspeed_min+	rand() % Gcookspeed_max);
 			newGCook->setSpeed(rangeRandomAlg2(Gcookspeed_min, Gcookspeed_max));
 
-			cout << "GSpeed:  " << newGCook->getSpeed() << endl;
+			
 			newGCook->setNumOrdBbreak(numOrdersBbreak);
-			//newGCook->setBreakDur(Gbreak_min+rand() % Gbreak_max );
+			
 			newGCook->setBreakDur(rangeRandomAlg2(Gbreak_min, Gbreak_max));
-			cout << "GBREAK:   " << newGCook->getBreakDur() << endl;
+			
 
 			newGCook->set_RstPrd(RstPrd);
 			
@@ -654,11 +650,9 @@ void Restaurant::fileLoading()
 			newVCook->setType(TYPE_VIP);
 			//newVCook->setSpeed(Vcookspeed_min+rand() % Vcookspeed_max );
 			newVCook->setSpeed(rangeRandomAlg2(Vcookspeed_min, Vcookspeed_max));
-			cout << "VSpeed:  " << newVCook->getSpeed() << endl;
 			newVCook->setNumOrdBbreak(numOrdersBbreak);
 			//newVCook->setBreakDur(Gbreak_min + rand() %Gbreak_max );
 			newVCook->setBreakDur(rangeRandomAlg2(Vbreak_min, Vbreak_max));
-			cout << "VBREAK:   " << newVCook->getBreakDur() << endl;
 			newVCook->set_RstPrd(RstPrd);
 			
 			newVCook->setnumofOrderdServed(0);
@@ -820,8 +814,9 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
-		while (!EventsQueue.isEmpty() || !InServing.isEmpty() || !QVIP_Order.isEmpty() || !Qvegan_Order.isEmpty() || !LNormal_Order.isEmpty()||!CooksInBreak.isEmpty()||!CooksInRest.isEmpty())
+		while (!EventsQueue.isEmpty() || !InServing.isEmpty() || !QVIP_Order.isEmpty() || !Qvegan_Order.isEmpty() || !LNormal_Order.isEmpty())
 		{
+			pGUI->ClearStatusBar();
 			char timestep[100];
 			itoa(CurrentTimeStep, timestep, 10);
 			pGUI->PrintMessage(timestep, 1);
@@ -829,19 +824,11 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			//donia
-			//srand((int)time(0));
+			
 			float R= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			//to be deleted
-			cout << R << endl;
-			//
+			
 			if (R <= InjProp)
 			{
-				//to be deleted
-				float priority;
-				Cook* cook;
-				if (busyCooksQ.peekFront(cook, priority) && cook->Is_injured() == false)
-					cout << cook->GetID()<<endl;
-				//
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			getfromRestCookQ(CurrentTimeStep);
@@ -867,6 +854,19 @@ void Restaurant::Restaurant_Modes(int Mode)
 			CurrentTimeStep++;
 			pGUI->ResetDrawingList();
 		}
+		while (!CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
+		{
+			pGUI->PrintMessage("No More Orders...Please Wait, Some Cooks are in {Break, Rest}");
+			getfromBreakCookQ(CurrentTimeStep);
+			getfrombusyCookQ(CurrentTimeStep);
+			getfromRestCookQ(CurrentTimeStep);
+			FillDrawingList();
+			pGUI->UpdateInterface();
+			pGUI->ResetDrawingList();
+			pGUI->waitForClick();
+			CurrentTimeStep++;
+		}
+
 	}
 	else if (Mode == 2)
 	{
@@ -887,17 +887,9 @@ void Restaurant::Restaurant_Modes(int Mode)
 			//donia
 			//srand((int)time(0));
 			float R = RandomFloat(0.0,1.0);
-			//to be deleted
-			cout << R << endl;
-			//
+		
 			if (R <= InjProp)
 			{
-				//to be deleted
-				float priority;
-				Cook* cook;
-				if (busyCooksQ.peekFront(cook, priority) && cook->Is_injured() == false)
-					cout << cook->GetID() << endl;
-				//
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			getfromRestCookQ(CurrentTimeStep);
@@ -924,7 +916,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		}
 		while (!CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
 		{
-			pGUI->PrintMessage("No More Orders...Please Wait Some Cooks in Break");
+			pGUI->PrintMessage("No More Orders...Please Wait, Some Cooks are in{ Break, Rest }");
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			getfromRestCookQ(CurrentTimeStep);

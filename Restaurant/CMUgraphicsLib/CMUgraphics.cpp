@@ -1207,7 +1207,7 @@ void window::DrawInteger(const int iX, const int iY, const long lNumber) {
 
 	char cTmpStorage[128];
 	sprintf(cTmpStorage, "%d", lNumber);
-	DrawString1(iX, iY, cTmpStorage);
+	DrawString(iX, iY, cTmpStorage);
 
 
 

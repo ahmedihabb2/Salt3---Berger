@@ -117,7 +117,7 @@ public:
 	string GetString() const; // reads a string (keyboard input) from the user
 
 	// Output Functions  ---------------------------
-	void PrintMessage(string msg) const; // prints a message in the status bar
+	void PrintMessage(string msg, char* font="Jokerman") const; // prints a message in the status bar
 	void ClearStatusBar() const;    // clears the status bar
 
 	void UpdateInterface();
