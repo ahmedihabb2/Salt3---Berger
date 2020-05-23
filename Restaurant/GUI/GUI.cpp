@@ -361,7 +361,7 @@ PROG_MODE	GUI::getGUIMode() const
 	
 	Mode = (PROG_MODE)(atoi(S.c_str()) - 1);
 
-	while (Mode < 0 || Mode >= MODE_CNT)
+	while (Mode < 0 || Mode >= 3)
 	{
 		pWind->DrawImage("GUI\\crop.jpg", 0, WindHeight - StatusBarHeight, WindWidth + 2, StatusBarHeight);
 
