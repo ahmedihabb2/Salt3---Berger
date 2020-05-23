@@ -853,12 +853,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			serve_Normal_orders(CurrentTimeStep);
 			getfromInServingQ(CurrentTimeStep);
 			FillDrawingList();
-			/*busyCooksQ.peekFront(Busy, prio);
-			cout << Busy->GetID() <<"   "<< Busy->get_order() << "   ";
-			while (InServing.peekFront(serv, prio) && serv->getFinishTime() == CurrentTimeStep)
-				InServing.dequeue(serv, prio);
-			cout << serv->GetID()<<endl;
-			*/
+			
 			//Printing Cooks and Orders Information
 			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
 			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
@@ -878,10 +873,11 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->PrintMessage("Welcome To Our Restaurant .... Step-by-Step Mode, Click To Continue");
 		pGUI->waitForClick();
 		fileLoading();
+		
 		int CurrentTimeStep = 1;
 		while (!EventsQueue.isEmpty() || !InServing.isEmpty()||!QVIP_Order.isEmpty()|| !Qvegan_Order.isEmpty() ||!LNormal_Order.isEmpty())
 		{
-
+			pGUI->ClearStatusBar();
 			char timestep[100];
 			itoa(CurrentTimeStep, timestep, 10);
 			pGUI->PrintMessage(timestep, 1);

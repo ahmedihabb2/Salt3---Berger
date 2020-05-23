@@ -161,6 +161,7 @@
     <Text Include="CMUgraphicsLib\Manual.txt" />
     <Text Include="CMUgraphicsLib\Readme.txt" />
     <Text Include="test.txt" />
+    <Text Include="test2.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="GUI\38.jpg" />

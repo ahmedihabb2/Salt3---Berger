@@ -14,7 +14,7 @@ GUI::GUI()
 	int x, y;
 	pWind->WaitMouseClick(x, y);
 	delete pWind;
-	pWind = new window(WindWidth + 15, WindHeight, 0, 0);
+	pWind = new window(WindWidth +15, WindHeight, 0, 0);
 	ClearStatusBar();
 	ClearDrawingArea();
 	DrawRestArea();
@@ -64,39 +64,40 @@ void GUI::PrintMessage(string msg) const	//Prints a message on status bar
 {
 	ClearStatusBar();	//First clear the status bar
 
-	pWind->SetPen(BROWN);
-	pWind->SetFont(18, BOLD, BY_NAME, "Arial");
-	pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 1.5), msg); // You may need to change these coordinates later 
+	pWind->SetPen(GREENYELLOW);
+	pWind->SetFont(22, BOLD, BY_NAME, "Broadway");
+	pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 1.5), msg); // You may need to change these coordinates later 
 																		  // to be able to write multi-line
 }
 void GUI::PrintMessage(string msg, int line) const
 {
-	pWind->SetPen(DARKRED);
-	pWind->SetFont(18, BOLD, BY_NAME, "Arial");
+	pWind->SetPen(YELLOW);
+	pWind->SetFont(22, BOLD, BY_NAME, "Lucida Console");
+
 	if (line == 1)
 	{
-		ClearStatusBar(1);
-		pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 1.1), msg);
+		//ClearStatusBar(1);
+		pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 1.1), msg);
 	}
 	if (line == 2)
 	{
-		ClearStatusBar(2);
-		pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 1.3), msg);
+		//ClearStatusBar(2);
+		pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 1.3), msg);
 	}
 	if (line == 3)
 	{
-		ClearStatusBar(3);
-		pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 1.6), msg);
+		//ClearStatusBar(3);
+		pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight /1.6), msg);
 	}
 	if (line == 4)
 	{
-		ClearStatusBar(4);
-		pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 2.1), msg);
+		//ClearStatusBar(4);
+		pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 2.1), msg);
 	}
 	if (line == 5)
 	{
-		ClearStatusBar(5);
-		pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 2.9), msg);
+		//ClearStatusBar(5);
+		pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 2.9), msg);
 	}
 }
 
@@ -108,7 +109,12 @@ void GUI::DrawString(const int iX, const int iY, const string Text)
 	pWind->SetFont(18, BOLD, BY_NAME, "Arial");
 	pWind->DrawString(iX, iY, Text);
 }
-
+void GUI::DrawString1(const int iX, const int iY, const string Text)
+{
+	pWind->SetPen(YELLOW);
+	pWind->SetFont(22, BOLD, BY_NAME, "Lucida Console");
+	pWind->DrawString1(iX, iY, Text);
+}
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearStatusBar() const
 {
@@ -148,7 +154,7 @@ void GUI::ClearStatusBar(int line) const
 	if (line == 5)
 		pWind->DrawImage("GUI\\d.jpg",0, WindHeight - (int)(StatusBarHeight / 3), WindWidth, WindHeight - (int)(StatusBarHeight / 4));
 	
-	pWind->SetPen(BROWN, 3);
+	pWind->SetPen(YELLOW, 3);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight, WindWidth, WindHeight - StatusBarHeight);
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -158,7 +164,7 @@ void GUI::DrawRestArea() const
 
 	// 1- Drawing the brown square of the Rest
 	pWind->SetPen(BROWN);
-	pWind->SetBrush(WHITE);
+	pWind->SetBrush(WHITESMOKE);
 	pWind->DrawRectangle(RestStartX, RestStartY, RestEndX, RestEndY);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
@@ -182,13 +188,13 @@ void GUI::DrawRestArea() const
 	// 5- Writing regions labels
 	pWind->SetPen(BROWN);
 	pWind->SetFont(20, BOLD, BY_NAME, "Arial");
-	pWind->DrawString(RestStartX + (int)(0.1 * L), RestStartY + 5 * L / 12, "WAIT");
+	pWind->DrawString1(RestStartX + (int)(0.1 * L), RestStartY + 5 * L / 12, "WAIT");
 
-	pWind->DrawString(WindWidth / 2 + (int)(0.1 * L), RestStartY + 5 * L / 12, "COOK");
+	pWind->DrawString1(WindWidth / 2 + (int)(0.1 * L), RestStartY + 5 * L / 12, "COOK");
 
-	pWind->DrawString(WindWidth / 2 + (int)(0.1 * L), YHalfDrawingArea + 5 * L / 12, "SRVG");
+	pWind->DrawString1(WindWidth / 2 + (int)(0.1 * L), YHalfDrawingArea + 5 * L / 12, "SRVG");
 
-	pWind->DrawString(RestStartX + (int)(0.1 * L), YHalfDrawingArea + 5 * L / 12, "DONE");
+	pWind->DrawString1(RestStartX + (int)(0.1 * L), YHalfDrawingArea + 5 * L / 12, "DONE");
 
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -245,7 +251,7 @@ void GUI::DrawSingleItem(const DrawingItem* pDitem, int RegionCount) const      
 
 	// Drawing the item
 	pWind->SetPen(pDitem->clr);
-	pWind->SetFont(22, BOLD, SCRIPT);
+	pWind->SetFont(24, BOLD, BY_NAME,"Lucida Handwriting");
 	pWind->DrawInteger(x, y, pDitem->ID);
 }
 

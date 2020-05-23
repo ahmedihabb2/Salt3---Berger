@@ -44,7 +44,7 @@ private:
 	// Some Static Constant Data Members: ---------------------
 
 	static const int
-		WindWidth = 1200, WindHeight = 650,		//Window width and height
+		WindWidth = 1200, WindHeight =650,		//Window width and height
 		StatusBarHeight = 150,	//Status Bar Height
 		MenuBarHeight = 0,		//Menu Bar Height (distance from top of window to bottom line of menu bar)
 		MenuItemWidth = 80,		//Width of each item in menu bar menu
@@ -101,9 +101,11 @@ private:
 
 
 	void DrawString(const int iX, const int iY, const string Text); // prints a message in the passed coordinates
+	void DrawString1(const int iX, const int iY, const string Text);
+
 	void DrawRestArea() const;	    // draws the restaurant area
 
-	void ClearStatusBar() const;    // clears the status bar
+	
 	void ClearDrawingArea() const;	// clears the Drawing area from all drawings
 
 public:
@@ -116,7 +118,7 @@ public:
 
 	// Output Functions  ---------------------------
 	void PrintMessage(string msg) const; // prints a message in the status bar
-
+	void ClearStatusBar() const;    // clears the status bar
 
 	void UpdateInterface();
 	void AddToDrawingList(Order* pOrd);	//Adds a new order to the drawing queue
