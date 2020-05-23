@@ -69,6 +69,15 @@ void GUI::PrintMessage(string msg,char* font) const	//Prints a message on status
 	pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 1.5), msg); // You may need to change these coordinates later 
 																		  // to be able to write multi-line
 }
+void GUI::PrintMessage2(string msg, char* font) const	//Prints a message on status bar
+{
+	
+
+	pWind->SetPen(Yellow);
+	pWind->SetFont(32, PLAIN, BY_NAME, font);
+	pWind->DrawString1(10, WindHeight - (int)(StatusBarHeight / 1.5), msg); // You may need to change these coordinates later 
+																		  // to be able to write multi-line
+}
 void GUI::PrintMessage(string msg, int line) const
 {
 	pWind->SetPen(DARKBLUE);
@@ -349,13 +358,24 @@ PROG_MODE	GUI::getGUIMode() const
 	PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent");
 	string S = GetString();
 
+	
 	Mode = (PROG_MODE)(atoi(S.c_str()) - 1);
 
-	do
+	while (Mode < 0 || Mode >= MODE_CNT)
 	{
+		pWind->DrawImage("GUI\\crop.jpg", 0, WindHeight - StatusBarHeight, WindWidth + 2, StatusBarHeight);
 
+		pWind->SetPen(DARKBLUE, 3);
+		pWind->DrawLine(0, WindHeight - StatusBarHeight, WindWidth, WindHeight - StatusBarHeight);
+		PrintMessage2("Invalid input!,  Click to continue --->  " , "Cooper Black" );
+		waitForClick();
+		ClearStatusBar();
+		Mode = getGUIMode();
 
-	} while (Mode < 0 || Mode >= MODE_CNT);
+	} 
+		return Mode;
+		
+	
+	
 
-	return Mode;
 }

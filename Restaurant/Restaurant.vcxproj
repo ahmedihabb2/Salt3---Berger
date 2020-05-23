@@ -169,6 +169,7 @@
     <Image Include="GUI\bggg.jpg" />
     <Image Include="GUI\chef.jpg" />
     <Image Include="GUI\d.jpg" />
+    <Image Include="GUI\Error.jpg" />
     <Image Include="GUI\waiting3.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

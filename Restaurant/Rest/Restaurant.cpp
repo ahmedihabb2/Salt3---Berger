@@ -945,17 +945,10 @@ void Restaurant::Restaurant_Modes(int Mode)
 			//donia
 			//srand((int)time(0));
 			float R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			//to be deleted
-			cout << R << endl;
-			//
+			
 			if (R <= InjProp)
 			{
-				//to be deleted
-				float priority;
-				Cook* cook;
-				if (busyCooksQ.peekFront(cook, priority) && cook->Is_injured() == false)
-					cout << cook->GetID() << endl;
-				//
+				
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			getfromRestCookQ(CurrentTimeStep);
