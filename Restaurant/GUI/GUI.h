@@ -103,10 +103,9 @@ private:
 	void DrawString(const int iX, const int iY, const string Text); // prints a message in the passed coordinates
 	void DrawString1(const int iX, const int iY, const string Text);
 
-	void DrawRestArea() const;	    // draws the restaurant area
 
 	
-	void ClearDrawingArea() const;	// clears the Drawing area from all drawings
+	
 
 public:
 	GUI();
@@ -119,7 +118,8 @@ public:
 	// Output Functions  ---------------------------
 	void PrintMessage(string msg, char* font="Jokerman") const; // prints a message in the status bar
 	void ClearStatusBar() const;    // clears the status bar
-
+	void ClearDrawingArea() const;	// clears the Drawing area from all drawings
+	void DrawRestArea() const;	    // draws the restaurant area
 	void UpdateInterface();
 	void AddToDrawingList(Order* pOrd);	//Adds a new order to the drawing queue
 	void AddToDrawingList(Cook* pC);	//Adds a new cook to the drawing queue

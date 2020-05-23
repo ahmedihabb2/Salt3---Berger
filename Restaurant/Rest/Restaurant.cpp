@@ -814,6 +814,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		pGUI->waitForClick();
 		fileLoading();
 		int CurrentTimeStep = 1;
+		
 		while (!EventsQueue.isEmpty() || !InServing.isEmpty() || !QVIP_Order.isEmpty() || !Qvegan_Order.isEmpty() || !LNormal_Order.isEmpty())
 		{
 			pGUI->ClearStatusBar();

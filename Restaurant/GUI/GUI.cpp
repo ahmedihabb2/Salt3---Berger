@@ -123,7 +123,7 @@ void GUI::ClearStatusBar() const
 	/*pWind->SetPen(WHITE, 3);
 	pWind->SetBrush(WHITE);
 	pWind->DrawRectangle(0, WindHeight - StatusBarHeight , WindWidth, WindHeight);	*/
-	pWind->DrawImage("GUI\\d.jpg", 0, WindHeight - StatusBarHeight, WindWidth, StatusBarHeight);
+	pWind->DrawImage("GUI\\d.jpg", 0, WindHeight - StatusBarHeight, WindWidth+2, StatusBarHeight);
 
 	pWind->SetPen(DARKBLUE, 3);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight, WindWidth, WindHeight - StatusBarHeight);
@@ -135,10 +135,12 @@ void GUI::ClearDrawingArea() const
 	//pWind->SetPen(PINK, 3);
 	//pWind->SetBrush(PINK);
 	//pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
-	pWind->DrawImage("GUI\\waiting3.jpg", 0, MenuBarHeight, WindWidth / 2, (WindHeight - StatusBarHeight) / 2);
-	pWind->DrawImage("GUI\\chef.jpg", WindWidth / 2, MenuBarHeight, WindWidth / 2, (WindHeight - StatusBarHeight) / 2);
-	pWind->DrawImage("GUI\\6.jpg", 0, MenuBarHeight + (WindHeight - StatusBarHeight) / 2, WindWidth / 2, (WindHeight - StatusBarHeight) / 2);
-	pWind->DrawImage("GUI\\38.jpg", WindWidth / 2, MenuBarHeight + (WindHeight - StatusBarHeight) / 2, WindWidth / 2, (WindHeight - StatusBarHeight) / 2);
+	pWind->DrawImage("GUI\\waiting3.jpg", 0, MenuBarHeight, (WindWidth / 2)-1, (WindHeight - StatusBarHeight) / 2-60);
+	pWind->DrawImage("GUI\\waiting3-2.jpg", 0, MenuBarHeight + (WindHeight - StatusBarHeight) / 2-60, WindWidth / 2-60,59);
+	pWind->DrawImage("GUI\\chef.jpg", WindWidth / 2+2, MenuBarHeight, WindWidth / 2, (WindHeight - StatusBarHeight) / 2-60);
+	pWind->DrawImage("GUI\\chef-2.jpg", WindWidth / 2+61, MenuBarHeight + (WindHeight - StatusBarHeight) / 2 - 60, WindWidth / 2-58,59);
+	pWind->DrawImage("GUI\\6.jpg", 0, MenuBarHeight + ((WindHeight - StatusBarHeight) / 2)+1, WindWidth / 2, (WindHeight - StatusBarHeight) / 2-2);
+	pWind->DrawImage("GUI\\38.jpg", WindWidth / 2, MenuBarHeight + (WindHeight - StatusBarHeight) / 2 +1, WindWidth / 2+3, (WindHeight - StatusBarHeight) / 2-2);
 
 }
 void GUI::ClearStatusBar(int line) const
