@@ -6,9 +6,9 @@
 
 int main()
 {
+	PlaySound(TEXT("Spong2.wav"), NULL, SND_SYNC);
 	Restaurant* pRest = new Restaurant;
 	pRest->RunSimulation();
-	PlaySound(TEXT("Spong.wav"), NULL, SND_SYNC);
 	delete pRest;
 	return 0;
 }
