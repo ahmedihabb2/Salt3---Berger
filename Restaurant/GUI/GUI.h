@@ -127,7 +127,7 @@ public:
 	void ClearStatusBar(int line) const;
 	void PrintMessage(string msg, int line) const;
 	PROG_MODE getGUIMode() const;			//returns the mode of the program
-
+	void PrintMessage2(string msg, char* font = "Jokerman") const;
 };
 
 #endif
