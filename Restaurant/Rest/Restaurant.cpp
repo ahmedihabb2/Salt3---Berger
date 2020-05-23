@@ -305,6 +305,7 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			return;                                         //there is no more available cooks in this timestep 
 		}
 	}
+	
 }
 
 
@@ -846,7 +847,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
 			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 			if(!UFinfo.empty()||!VFinfo.empty()||!GFinfo.empty() ||!NFinfo.empty())
-				pGUI->PrintMessage(UFinfo+" "+VFinfo +"  "+GFinfo+"  "+NFinfo, 4);
+				pGUI->PrintMessage(UFinfo+" "+VFinfo+" "+GFinfo+" "+NFinfo, 4);
 			else
 				pGUI->PrintMessage("No Served Orders", 4);
 			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
@@ -906,7 +907,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
 			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 			if (!UFinfo.empty() || !VFinfo.empty() || !GFinfo.empty() || !NFinfo.empty())
-				pGUI->PrintMessage(UFinfo + " " + VFinfo + "  " + GFinfo + "  " + NFinfo, 4);
+				pGUI->PrintMessage(UFinfo+" "+ VFinfo+" "+ GFinfo+" "+ NFinfo, 4);
 			else
 				pGUI->PrintMessage("No Served Orders", 4);
 			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
