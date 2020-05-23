@@ -162,7 +162,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				QUrgentOrders.dequeue(Urgorder);
 				Bcook->assign_Order((*Urgorder)->GetID());
 				Vserved++;
-				UFinfo += " V" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ")";
+				UFinfo += "V" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
 			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
 			{
@@ -180,7 +180,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				QUrgentOrders.dequeue(Urgorder);
 				Bcook->assign_Order((*Urgorder)->GetID());
 				Vserved++;
-				UFinfo += " N" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ")";
+				UFinfo += "N" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
 			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
 			{
@@ -198,7 +198,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				QUrgentOrders.dequeue(Urgorder);
 				Bcook->assign_Order((*Urgorder)->GetID());
 				Vserved++;
-				UFinfo += " G" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ")";
+				UFinfo += "G" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
 			else
 			{
@@ -233,7 +233,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
 				Vserved++;
-				VFinfo += " V" + to_string(Bcook->GetID())+"("+ "V" + to_string(proOrder->GetID())+")";
+				VFinfo += "V" + to_string(Bcook->GetID())+"("+ "V" + to_string(proOrder->GetID())+") ";
 			}
 			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
 			{
@@ -248,7 +248,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
 				Vserved++;
-				VFinfo += " N" + to_string(Bcook->GetID()) + "(" + "V" + to_string(proOrder->GetID()) + ")";
+				VFinfo += "N" + to_string(Bcook->GetID()) + "(" + "V" + to_string(proOrder->GetID()) + ") ";
 			}
 			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
 			{
@@ -263,7 +263,7 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				QVIP_Order.dequeue(proOrder, prio);
 				Bcook->assign_Order(proOrder->GetID());
 				Vserved++;
-				VFinfo += " G" + to_string(Bcook->GetID()) + "(" +  "V" + to_string(proOrder->GetID()) + ")";
+				VFinfo += "G" + to_string(Bcook->GetID()) + "(" +  "V" + to_string(proOrder->GetID()) + ") ";
 			}
 			else
 			{
@@ -298,13 +298,14 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			Qvegan_Order.dequeue(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
 			Gserved++;
-			GFinfo += " G" + to_string(Bcook->GetID())+"("+ " G" + to_string(proOrder->GetID())+")";
+			GFinfo += "G" + to_string(Bcook->GetID())+"("+ " G" + to_string(proOrder->GetID())+") ";
 		}
 		else
 		{
 			return;                                         //there is no more available cooks in this timestep 
 		}
 	}
+	
 }
 
 
@@ -365,7 +366,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			LNormal_Order.DeleteFirst(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
 			Nserved++;
-			NFinfo += " N" + to_string(Bcook->GetID())+"("+ " N" + to_string(proOrder->GetID())+")";
+			NFinfo += "N" + to_string(Bcook->GetID())+"("+ " N" + to_string(proOrder->GetID())+") ";
 		}
 		else if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook when there is no Normal
 		{
@@ -380,7 +381,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			LNormal_Order.DeleteFirst(proOrder);
 			Bcook->assign_Order(proOrder->GetID());
 			Nserved++;
-			NFinfo += " V" + to_string(Bcook->GetID()) + "(" + " N" + to_string(proOrder->GetID()) + ")";
+			NFinfo += "V" + to_string(Bcook->GetID()) + "(" + " N" + to_string(proOrder->GetID()) + ") ";
 		}
 		else
 		{
@@ -846,7 +847,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
 			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 			if(!UFinfo.empty()||!VFinfo.empty()||!GFinfo.empty() ||!NFinfo.empty())
-				pGUI->PrintMessage(UFinfo+" "+VFinfo +"  "+GFinfo+"  "+NFinfo, 4);
+				pGUI->PrintMessage(UFinfo+VFinfo +GFinfo+NFinfo, 4);
 			else
 				pGUI->PrintMessage("No Served Orders", 4);
 			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
@@ -906,7 +907,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
 			pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
 			if (!UFinfo.empty() || !VFinfo.empty() || !GFinfo.empty() || !NFinfo.empty())
-				pGUI->PrintMessage(UFinfo + " " + VFinfo + "  " + GFinfo + "  " + NFinfo, 4);
+				pGUI->PrintMessage(UFinfo + VFinfo + GFinfo + NFinfo, 4);
 			else
 				pGUI->PrintMessage("No Served Orders", 4);
 			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
