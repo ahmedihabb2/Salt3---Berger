@@ -325,7 +325,7 @@ bool Restaurant::Health_Emergency(int curr_ts)
 		temp->f_speed = (float(temp->getSpeed()) / 2);
 		temp->setSpeed(temp->getSpeed() / 2);
 		
-		int ST = ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
+		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
 		
 		tempOrd->setFinishTime();
@@ -413,7 +413,7 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
 				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
-				Acook->setSpeed(Acook->f_speed * 2);
+				Acook->setSpeed((int)(Acook->f_speed * 2));
 			}
 			busyCooksQ.dequeue(Acook, priority);
 			Acook->setnumofOrderdServed(0);
@@ -496,7 +496,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 		
 				CooksInRest.dequeue(Rcook);
 				Rcook->injure(false);
-				Rcook->setSpeed(Rcook->f_speed * 2);
+				Rcook->setSpeed((int)(Rcook->f_speed * 2));
 				switch (Rcook->GetType())
 				{
 				case TYPE_VIP:
@@ -893,7 +893,9 @@ void Restaurant::Restaurant_Modes(int Mode)
 			if (R <= InjProp)
 			{
 				injured = Health_Emergency(CurrentTimeStep);
+				
 			}
+			
 			getfromRestCookQ(CurrentTimeStep);
 			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
