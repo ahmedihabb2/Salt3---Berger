@@ -77,12 +77,20 @@ public:
 	void CheckUrgentOrders(int CurrentTimeStep);
 	bool GetCooksFor_Urgent_VIP(int CurrentTimeStep);
 	void Serve_Urgent_VIP(int CurrentTimeStep);
+
+
+	int numNcooks, numGcooks, numVcooks, Ncookspeed_min, Ncookspeed_max, Gcookspeed_min, Gcookspeed_max, Vcookspeed_min, Vcookspeed_max;
+	int numOrdersBbreak, Nbreak_min, Nbreak_max, Gbreak_min, Gbreak_max, Vbreak_min, Vbreak_max, numofevents;
+
+
 	int NCookNum , GCookNum , VCookNum;
+	int injcooksnum = 0;
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP, RstPrd, VIP_WT;
 	int UrgentOredersNum=0;
 	int Vserved = 0, Nserved = 0, Gserved = 0;
-	int urgentOrdersCount = 0;
+	float numAutoPromOrders = 0;
+	//int urgentOrdersCount = 0;
 	bool Health_Emergency(int CurrentTimeStep);
 	void getfromRestCookQ(int CurrentTimeStep);
 	//This Strings are for storing Cooks and Orders info to be Printed on GUI
