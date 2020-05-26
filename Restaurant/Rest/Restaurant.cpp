@@ -869,7 +869,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			pGUI->waitForClick();
 			CurrentTimeStep++;
 		}
-
+		outputFileLoading();
 	}
 	else if (Mode == 2)
 	{
@@ -929,8 +929,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			Sleep(1000);
 			CurrentTimeStep++;
 		}
-	
-		
+		outputFileLoading();
 	}
 	else if (Mode == 3)
 	{
@@ -1011,6 +1010,7 @@ void Restaurant::outputFileLoading()
 			<< ", Avg Serv = " << totalServtime / (Nserved + Vserved + Gserved) << endl;
 
 		OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (numNormOrds - numAutoPromOrders) / numNormOrds << "%";
+
 	}
 
 }
