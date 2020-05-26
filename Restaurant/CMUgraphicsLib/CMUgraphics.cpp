@@ -1164,12 +1164,45 @@ void window::DrawString(const int iX, const int iY, const char* cpText) {
 
 }
 
+void window::DrawString1(const int iX, const int iY, const char* cpText) {
+
+	if (cpText == NULL) {
+		// Throw an exception here?
+		return;
+	}
+
+	ProcessMessage(); // Kludge1
+
+	SetFontStyle();
+
+	if (SetBkMode(dcActive, TRANSPARENT) == 0) {
+		cout << "Fatal Error: Failed to SetBkMode in DrawString!" << endl;
+	}
+	if (SetTextAlign(dcActive, TA_UPDATECP) == GDI_ERROR) {
+		cout << "Fatal Error: Failed to SetTextAlign in DrawString!" << endl;
+	}
+
+	if (MoveToEx(dcActive, iX, iY, NULL) != TRUE) {
+		cout << "Fatal Error: Failed to MoveToEx in DrawString!" << endl;
+	}
+
+	if (TextOut(dcActive, iX, iY, cpText, (int)strlen(cpText)) == 0) {
+		cout << "Fatal Error: Failed to TextOut in DrawString!" << endl;
+	}
+	RestoreFontStyle();
+
+}
+
 void window::DrawString(const int iX, const int iY, const string strText) {
 
 	DrawString(iX, iY, (char*)strText.c_str());
 
 }
+void window::DrawString1(const int iX, const int iY, const string strText) {
 
+	DrawString1(iX, iY, (char*)strText.c_str());
+
+}
 void window::DrawInteger(const int iX, const int iY, const long lNumber) {
 
 	char cTmpStorage[128];

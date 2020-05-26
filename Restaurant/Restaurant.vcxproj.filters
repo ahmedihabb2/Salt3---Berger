@@ -273,6 +273,7 @@
       <Filter>CMUGraphicsLib</Filter>
     </Text>
     <Text Include="test.txt" />
+    <Text Include="test2.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="GUI\6.jpg">
@@ -291,6 +292,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="GUI\waiting3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="GUI\Error.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

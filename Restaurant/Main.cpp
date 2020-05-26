@@ -2,6 +2,7 @@
 #include "Rest\Restaurant.h"
 #include "GUI\GUI.h"
 
+
 int main()
 {
 	Restaurant* pRest = new Restaurant;

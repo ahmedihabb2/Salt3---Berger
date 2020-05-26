@@ -11,7 +11,7 @@
 #include"..\LinkedList.h"
 
 #include <fstream>
-
+#include<time.h>
 #include "Order.h"
 
 // it is the maestro of the project
@@ -85,11 +85,31 @@ public:
 	int urgentOrdersCount = 0;
 	bool Health_Emergency(int CurrentTimeStep);
 	void getfromRestCookQ(int CurrentTimeStep);
-
+	//This Strings are for storing Cooks and Orders info to be Printed on GUI
+	string UFinfo;
+	string VFinfo;
+	string NFinfo;
+	string GFinfo;
+	////////////////////
 	//// Added by abeer phase2
 	//void addToBusyCQ(Cook* p C, Order* pO);
 	//void addToInBreakCQ(Cook* pC);
-
+	float RandomFloat(float a, float b) {
+		//srand((int)time(0));
+		float random = ((float)rand()) / (float)RAND_MAX;
+		float diff = b - a;
+		float r = random * diff;
+		return a + r;
+	}
+	int rangeRandomAlg2(int min, int max) {
+		int n = max - min + 1;
+		int remainder = RAND_MAX % n;
+		int x;
+		do {
+			x = rand();
+		} while (x >= RAND_MAX - remainder);
+		return min + x % n;
+	}
 
 };
 

@@ -285,7 +285,8 @@ class window {
     // Draws a string starting at the location given by (iX, iY) using the font set by SetFont(..)
 	void DrawString(const int iX, const int iY, const char* cpText);
 	void DrawString(const int iX, const int iY, const string strText);
-
+    void DrawString1(const int iX, const int iY, const char* cpText);
+    void DrawString1(const int iX, const int iY, const string strText);
     // Draws an integer or double starting at the location given by (iX, iY) using the font set by SetFont(..)
 	void DrawInteger(const int iX, const int iY, const long lNumber);
 	void DrawDouble(const int iX, const int iY, const double dNumber);
