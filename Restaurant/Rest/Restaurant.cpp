@@ -70,6 +70,7 @@ void Restaurant::Executepromotion(int CurrentTimeStep)
 		proOrder->Promote(money);
 		float priority = proOrder->getPriority();
 		QVIP_Order.enqueue(proOrder, priority);                //add it to VIP queue
+		numAutoPromOrders++;
 	}
 	
 
@@ -336,6 +337,7 @@ bool Restaurant::Health_Emergency(int curr_ts)
 		InServing.enqueue(tempOrd, priority);
 		temp->set_RstTime(tempOrd->getFinishTime());//set the finish of rest time
 		temp->injure(true);//make the flag on
+		injcooksnum++;
 		return true;
 	}
 	else
@@ -589,8 +591,7 @@ void Restaurant::fileLoading()
 	
 	if (InFile.is_open())
 	{
-		int numNcooks, numGcooks, numVcooks, Ncookspeed_min, Ncookspeed_max, Gcookspeed_min, Gcookspeed_max, Vcookspeed_min, Vcookspeed_max;
-		int numOrdersBbreak, Nbreak_min, Nbreak_max, Gbreak_min, Gbreak_max, Vbreak_min  , Vbreak_max, numofevents ;
+		
 
 		InFile >> numNcooks >> numGcooks >> numVcooks >> Ncookspeed_min>> Ncookspeed_max>> Gcookspeed_min>> Gcookspeed_max>> Vcookspeed_min>> Vcookspeed_max;
 
@@ -868,7 +869,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			pGUI->waitForClick();
 			CurrentTimeStep++;
 		}
-
+		outputFileLoading();
 	}
 	else if (Mode == 2)
 	{
@@ -930,8 +931,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			Sleep(1000);
 			CurrentTimeStep++;
 		}
-	
-		
+		outputFileLoading();
 	}
 	else if (Mode == 3)
 	{
@@ -986,6 +986,10 @@ void Restaurant::outputFileLoading()
 		OutFile << "FT  ID  AT  WT  ST" << endl;
 
 		Order *orderr;
+		float totalwaittime = 0;
+		float totalServtime = 0;
+		float numNormOrds = 0;
+
 		while (FinishedList.dequeue(orderr))
 		{
 			OutFile << orderr->getFinishTime() << "   "
@@ -993,7 +997,22 @@ void Restaurant::outputFileLoading()
 				<< orderr->getArrTime() << "   "
 				<< orderr->getWaitTime() << "   "
 				<< orderr->getServInt() << endl;
+
+			totalwaittime = totalwaittime + orderr->getWaitTime();
+			totalServtime = totalServtime + orderr->getServInt();
+			if (orderr->GetType() == TYPE_NRM)
+				numNormOrds++;
 		}
+		
+		OutFile << "Orders: " << Nserved + Vserved + Gserved << " [Norm:" << Nserved << ", Veg:" << Gserved << ", VIP:" << Vserved << "]" << endl;
+		OutFile << "cooks: " << numNcooks + numGcooks + numVcooks << " [Norm:" << numNcooks << ", Veg:" << numGcooks << ", VIP:" << numVcooks
+			<< ", injured:" << injcooksnum << "]" << endl;
+
+		OutFile << "Avg Wait = " << totalwaittime / (Nserved + Vserved + Gserved) 
+			<< ", Avg Serv = " << totalServtime / (Nserved + Vserved + Gserved) << endl;
+
+		OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (numNormOrds - numAutoPromOrders) / numNormOrds << "%";
+
 	}
 
 }
