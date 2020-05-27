@@ -674,7 +674,10 @@ void Restaurant::fileLoading()
 					double Mony;
 				InFile >> ordertype>>arrivaltime>> ID>> Size>> Mony;
 				if (ordertype == 'N')
+				{
 					pEv = new ArrivalEvent(arrivaltime, ID, TYPE_NRM, Size, Mony);
+					originalNormOrdCount++;
+				}
 				else if (ordertype == 'G')
 					pEv = new ArrivalEvent(arrivaltime, ID, TYPE_VGAN, Size, Mony);
 				else if (ordertype == 'V')
@@ -693,6 +696,7 @@ void Restaurant::fileLoading()
 				int cancellationtime, ID;
 				InFile >> cancellationtime >> ID;
 				pEv = new CancellationEvent(cancellationtime, ID);
+				originalNormOrdCount--;
 
 			}
 
@@ -986,7 +990,7 @@ void Restaurant::outputFileLoading()
 		Order *orderr;
 		float totalwaittime = 0;
 		float totalServtime = 0;
-		float numNormOrds = 0;
+		//float numNormOrds = 0;
 
 		while (FinishedList.dequeue(orderr))
 		{
@@ -998,8 +1002,8 @@ void Restaurant::outputFileLoading()
 
 			totalwaittime = totalwaittime + orderr->getWaitTime();
 			totalServtime = totalServtime + orderr->getServInt();
-			if (orderr->GetType() == TYPE_NRM)
-				numNormOrds++;
+			/*if (orderr->GetType() == TYPE_NRM)
+				numNormOrds++;*/
 		}
 		
 		OutFile << "Orders: " << Nserved + Vserved + Gserved << " [Norm:" << Nserved << ", Veg:" << Gserved << ", VIP:" << Vserved << "]" << endl;
@@ -1009,7 +1013,7 @@ void Restaurant::outputFileLoading()
 		OutFile << "Avg Wait = " << totalwaittime / (Nserved + Vserved + Gserved) 
 			<< ", Avg Serv = " << totalServtime / (Nserved + Vserved + Gserved) << endl;
 
-		OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (numNormOrds - numAutoPromOrders) / numNormOrds << "%";
+		OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (1- ((originalNormOrdCount - numAutoPromOrders)  / originalNormOrdCount)) * 100 << "%";
 
 	}
 

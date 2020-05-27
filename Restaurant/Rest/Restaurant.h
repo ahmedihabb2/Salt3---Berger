@@ -90,6 +90,7 @@ public:
 	int UrgentOredersNum=0;
 	int Vserved = 0, Nserved = 0, Gserved = 0;
 	float numAutoPromOrders = 0;
+	int originalNormOrdCount = 0;
 	//int urgentOrdersCount = 0;
 	bool Health_Emergency(int CurrentTimeStep);
 	void getfromRestCookQ(int CurrentTimeStep);
