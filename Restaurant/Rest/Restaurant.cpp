@@ -158,10 +158,11 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				(*Urgorder)->setFinishTime();
 				(*Urgorder)->setStatus(SRV);
 				float priority = ((*Urgorder)->getFinishTime());             //set the priority of serving queue with the inverted finished time
+				Bcook->assign_Order((*Urgorder)->GetID());
 				InServing.enqueue(*Urgorder, priority);
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QUrgentOrders.dequeue(Urgorder);
-				Bcook->assign_Order((*Urgorder)->GetID());
+				
 				Vserved++;
 				UFinfo += "V" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
@@ -177,9 +178,10 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				(*Urgorder)->setStatus(SRV);
 				float priority = ((*Urgorder)->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(*Urgorder, priority);
+				Bcook->assign_Order((*Urgorder)->GetID());
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QUrgentOrders.dequeue(Urgorder);
-				Bcook->assign_Order((*Urgorder)->GetID());
+				
 				Vserved++;
 				UFinfo += "N" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
@@ -195,9 +197,10 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				(*Urgorder)->setStatus(SRV);
 				float priority = ((*Urgorder)->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(*Urgorder, priority);
+				Bcook->assign_Order((*Urgorder)->GetID());
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QUrgentOrders.dequeue(Urgorder);
-				Bcook->assign_Order((*Urgorder)->GetID());
+				
 				Vserved++;
 				UFinfo += "G" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
@@ -230,11 +233,13 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->Serve(CurrentTimeStep);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
+
+				Bcook->assign_Order(proOrder->GetID());
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QVIP_Order.dequeue(proOrder, prio);
-				Bcook->assign_Order(proOrder->GetID());
 				Vserved++;
 				VFinfo += "V" + to_string(Bcook->GetID())+"("+ "V" + to_string(proOrder->GetID())+") ";
+				cout << "TS " << CurrentTimeStep << "--> Cook No." << Bcook->GetID ()<< "  Took Order No.: " << Bcook->get_order()<<endl;
 			}
 			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
 			{
@@ -245,11 +250,13 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->Serve(CurrentTimeStep);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
+				Bcook->assign_Order(proOrder->GetID());
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QVIP_Order.dequeue(proOrder, prio);
-				Bcook->assign_Order(proOrder->GetID());
+				
 				Vserved++;
 				VFinfo += "N" + to_string(Bcook->GetID()) + "(" + "V" + to_string(proOrder->GetID()) + ") ";
+				cout << "TS " << CurrentTimeStep << "--> Cook No." << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order()<<endl;
 			}
 			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
 			{
@@ -260,11 +267,13 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 				proOrder->Serve(CurrentTimeStep);
 				float priority = (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 				InServing.enqueue(proOrder, priority);
+				Bcook->assign_Order(proOrder->GetID());
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QVIP_Order.dequeue(proOrder, prio);
-				Bcook->assign_Order(proOrder->GetID());
+				
 				Vserved++;
 				VFinfo += "G" + to_string(Bcook->GetID()) + "(" +  "V" + to_string(proOrder->GetID()) + ") ";
+				cout << "TS " << CurrentTimeStep << "--> Cook No." << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order()<<endl;
 			}
 			else
 			{
@@ -295,9 +304,12 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 			proOrder->Serve(CurrentTimeStep);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
+			Bcook->assign_Order(proOrder->GetID());
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			Qvegan_Order.dequeue(proOrder);
-			Bcook->assign_Order(proOrder->GetID());
+			
+			//
+			cout << "TS " << CurrentTimeStep << "--> Cook No. " << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order()<<endl;
 			Gserved++;
 			GFinfo += "G" + to_string(Bcook->GetID())+"("+ " G" + to_string(proOrder->GetID())+") ";
 		}
@@ -322,21 +334,22 @@ bool Restaurant::Health_Emergency(int curr_ts)
 	float priority;
 	if (busyCooksQ.peekFront(temp, pri_temp) && InServing.peekFront(tempOrd, pri_temp)&&temp->Is_injured()==false)
 	{
+		cout << "@ TS "<<curr_ts<<"---> " <<"COOK NO :"<< temp->GetID()<<" That has Ord.NO:  "<<temp->get_order()<<"Was injured"<<endl;
 		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime()) * temp->getSpeed();
 		temp->f_speed = (float(temp->getSpeed()) / 2);
 		temp->setSpeed(temp->getSpeed() / 2);
 		
-		int ST = ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
+		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
-		
 		tempOrd->setFinishTime();
 		priority = tempOrd->getFinishTime();
+		temp->set_RstTime(tempOrd->getFinishTime());//set the finish of rest time
+		temp->injure(true);//make the flag on
 		busyCooksQ.dequeue(temp, pri_temp);
 		busyCooksQ.enqueue(temp, priority);
 		InServing.dequeue(tempOrd, pri_temp);
 		InServing.enqueue(tempOrd, priority);
-		temp->set_RstTime(tempOrd->getFinishTime());//set the finish of rest time
-		temp->injure(true);//make the flag on
+		
 		injcooksnum++;
 		return true;
 	}
@@ -363,12 +376,14 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->setServInt(ST);
 			proOrder->Serve(CurrentTimeStep);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
+			Bcook->assign_Order(proOrder->GetID());
 			InServing.enqueue(proOrder, priority);
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
-			Bcook->assign_Order(proOrder->GetID());
+			
 			Nserved++;
 			NFinfo += "N" + to_string(Bcook->GetID())+"("+ " N" + to_string(proOrder->GetID())+") ";
+			cout << "TS " << CurrentTimeStep << "--> Cook No." << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order()<<endl;
 		}
 		else if (VcooksQ.dequeue(Bcook))           //check if there is available VIP cook when there is no Normal
 		{
@@ -379,11 +394,13 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 			proOrder->Serve(CurrentTimeStep);
 			float priority =  (proOrder->getFinishTime());             //set the priority of serving queue with the inverted finished time
 			InServing.enqueue(proOrder, priority);
+			Bcook->assign_Order(proOrder->GetID());
 			busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 			LNormal_Order.DeleteFirst(proOrder);
-			Bcook->assign_Order(proOrder->GetID());
+			
 			Nserved++;
 			NFinfo += "V" + to_string(Bcook->GetID()) + "(" + " N" + to_string(proOrder->GetID()) + ") ";
+			cout << "TS " << CurrentTimeStep << "--> Cook No. " << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order()<<endl;
 		}
 		else
 		{
@@ -403,10 +420,11 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 	{
 		if ((priority) <= CurrentTimeStep && Acook->Is_injured() == true&&Acook->Has_Urg()==false)
 		{
+			if (Acook->getnumofOrderdServed() == Acook->getNumOrdBbreak())
+				Acook->setnumofOrderdServed(0);
 			busyCooksQ.dequeue(Acook, priority);
 			CooksInRest.enqueue(Acook);
-			if (Acook->getnumofOrderdServed()  == Acook->getNumOrdBbreak())
-				Acook->setnumofOrderdServed(0);
+			
 		}
 		
 		else if((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed() == Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
@@ -415,12 +433,13 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
 				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
-				Acook->setSpeed(Acook->f_speed * 2);
+				Acook->setSpeed((int)(Acook->f_speed * 2));
 			}
 			busyCooksQ.dequeue(Acook, priority);
 			Acook->setnumofOrderdServed(0);
 			float F = (Acook->getBreakDur() + CurrentTimeStep);
 			CooksInBreak.enqueue(Acook, F);
+			cout << "TS " << CurrentTimeStep << "---> " << "COOK No :" << Acook->GetID() <<  "Took a break" << endl;
 		}
 		else if (( priority) <= CurrentTimeStep)                      //Finish time equal the current time step
 		{
@@ -498,7 +517,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 		
 				CooksInRest.dequeue(Rcook);
 				Rcook->injure(false);
-				Rcook->setSpeed(Rcook->f_speed * 2);
+				Rcook->setSpeed((int)(Rcook->f_speed * 2));
 				switch (Rcook->GetType())
 				{
 				case TYPE_VIP:
@@ -614,7 +633,7 @@ void Restaurant::fileLoading()
 			
 			newNCook->setNumOrdBbreak(numOrdersBbreak);
 			newNCook->setBreakDur(rangeRandomAlg2(Nbreak_min, Nbreak_max));
-			
+			cout << "N " << newNCook->GetID()<< "   Speed, Break : " << newNCook->getSpeed()<<"  "<<newNCook->getBreakDur() << endl;
 			newNCook->set_RstPrd(RstPrd);
 			
 			newNCook->setnumofOrderdServed(0);
@@ -632,11 +651,11 @@ void Restaurant::fileLoading()
 			
 			newGCook->setSpeed(rangeRandomAlg2(Gcookspeed_min, Gcookspeed_max));
 
-			
+		
 			newGCook->setNumOrdBbreak(numOrdersBbreak);
 			
 			newGCook->setBreakDur(rangeRandomAlg2(Gbreak_min, Gbreak_max));
-			
+			cout << "G " << newGCook->GetID() << "   Speed, Break : " << newGCook->getSpeed() << "  " << newGCook->getBreakDur() << endl;
 
 			newGCook->set_RstPrd(RstPrd);
 			
@@ -652,11 +671,12 @@ void Restaurant::fileLoading()
 			newVCook->setType(TYPE_VIP);
 			//newVCook->setSpeed(Vcookspeed_min+rand() % Vcookspeed_max );
 			newVCook->setSpeed(rangeRandomAlg2(Vcookspeed_min, Vcookspeed_max));
+		
 			newVCook->setNumOrdBbreak(numOrdersBbreak);
 			//newVCook->setBreakDur(Gbreak_min + rand() %Gbreak_max );
 			newVCook->setBreakDur(rangeRandomAlg2(Vbreak_min, Vbreak_max));
 			newVCook->set_RstPrd(RstPrd);
-			
+			cout << "V " << newVCook->GetID() << "  Speed, Break : " << newVCook->getSpeed() << "  " << newVCook->getBreakDur() << endl;
 			newVCook->setnumofOrderdServed(0);
 			VcooksQ.enqueue(newVCook);
 		}
@@ -709,6 +729,7 @@ void Restaurant::fileLoading()
 }
 void Restaurant::AddtoVIPQueue(Order* po)
 {
+	po->setPriority();
 	float priority = po->getPriority();
 	QVIP_Order.enqueue(po, priority);
 
@@ -830,6 +851,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			ExecuteEvents(CurrentTimeStep);
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
+			getfromInServingQ(CurrentTimeStep);
 			//donia
 			
 			float R= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -845,7 +867,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
 			serve_Normal_orders(CurrentTimeStep);
-			getfromInServingQ(CurrentTimeStep);
+			
 			FillDrawingList();
 			
 			//Printing Cooks and Orders Information
@@ -891,6 +913,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			ExecuteEvents(CurrentTimeStep);
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
+			getfromInServingQ(CurrentTimeStep);
 			//donia
 			//srand((int)time(0));
 			float R = RandomFloat(0.0,1.0);
@@ -898,7 +921,9 @@ void Restaurant::Restaurant_Modes(int Mode)
 			if (R <= InjProp)
 			{
 				injured = Health_Emergency(CurrentTimeStep);
+				
 			}
+			
 			getfromRestCookQ(CurrentTimeStep);
 			///end donya
 			Serve_Urgent_VIP(CurrentTimeStep);
@@ -906,7 +931,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
 			serve_Normal_orders(CurrentTimeStep);
-			getfromInServingQ(CurrentTimeStep);
+			
 			FillDrawingList();
 			//Printing Cooks and Orders Information
 			pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) + " Vegan :" + to_string(GWaitNum) + " VIP : " + to_string(VWaitNum), 2);
@@ -947,6 +972,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			ExecuteEvents(CurrentTimeStep);
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
+			getfromInServingQ(CurrentTimeStep);
 			//donia
 			//srand((int)time(0));
 			float R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -963,7 +989,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
 			serve_Normal_orders(CurrentTimeStep);
-			getfromInServingQ(CurrentTimeStep);
+			
 			//Printing Cooks and Orders Information
 			CurrentTimeStep++;
 			
