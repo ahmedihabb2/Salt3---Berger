@@ -163,7 +163,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QUrgentOrders.dequeue(Urgorder);
 				
-				Vserved++;
+				Userved++;
 				UFinfo += "V" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
 			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
@@ -182,7 +182,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QUrgentOrders.dequeue(Urgorder);
 				
-				Vserved++;
+				Userved++;
 				UFinfo += "N" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
 			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
@@ -201,7 +201,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				busyCooksQ.enqueue(Bcook, priority);                       //enque the cook in priority busy cook queue
 				QUrgentOrders.dequeue(Urgorder);
 				
-				Vserved++;
+				Userved++;
 				UFinfo += "G" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
 			}
 			else
@@ -877,7 +877,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 				pGUI->PrintMessage(UFinfo+VFinfo +GFinfo+NFinfo, 4);
 			else
 				pGUI->PrintMessage("No Served Orders", 4);
-			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
+			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved)+" Urgent :"+to_string(Userved), 5);
 			pGUI->UpdateInterface();
 			pGUI->waitForClick();
 			CurrentTimeStep++;
@@ -940,7 +940,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 				pGUI->PrintMessage(UFinfo + VFinfo + GFinfo + NFinfo, 4);
 			else
 				pGUI->PrintMessage("No Served Orders", 4);
-			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved), 5);
+			pGUI->PrintMessage("Total Served Orders Till Now-> Normal : " + to_string(Nserved) + " Vegan :" + to_string(Gserved) + " VIP :" + to_string(Vserved) + " Urgent :" + to_string(Userved), 5);
 			pGUI->UpdateInterface();
 			Sleep(1000);
 			CurrentTimeStep++;
