@@ -12,6 +12,7 @@ ArrivalEvent::ArrivalEvent(int eTime, int oID, ORD_TYPE oType, int Osize, double
 	OrdType = oType;
 	OrderSize = Osize;
 	OrdMoney = Omoney;
+	
 
 }
 
