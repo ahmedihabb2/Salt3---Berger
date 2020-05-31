@@ -33,9 +33,7 @@ public:
 
 	ORD_TYPE GetType() const;
 
-	void SetDistance(int d);
-	int GetDistance() const;
-
+	
 	void setStatus(ORD_STATUS s);
 	ORD_STATUS getStatus() const;
 

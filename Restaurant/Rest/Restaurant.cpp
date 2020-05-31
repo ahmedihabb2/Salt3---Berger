@@ -71,6 +71,7 @@ void Restaurant::Executepromotion(int CurrentTimeStep)
 		float priority = proOrder->getPriority();
 		QVIP_Order.enqueue(proOrder, priority);                //add it to VIP queue
 		numAutoPromOrders++;
+		cout << "TS Promotion " << CurrentTimeStep <<" Order "<<proOrder->GetID()<<" AutoP" << endl;
 	}
 	
 
@@ -84,7 +85,7 @@ void Restaurant::CheckUrgentOrders(int CurrentTimeStep)
 	vipordersarr = QVIP_Order.toArray(size);
 	for (int i = 0; i < size;i++)
 	{
-		if (CurrentTimeStep - vipordersarr[i]->getArrTime() > VIP_WT)
+		if (CurrentTimeStep - vipordersarr[i]->getArrTime() > VIP_WT && !vipordersarr[i]->isUrgent())
 		{
 
 			vipordersarr[i]->setUrgent(true);
@@ -117,7 +118,7 @@ bool Restaurant::GetCooksFor_Urgent_VIP(int CurrentTimeStep)
 			else if (CooksInRest.peekFront(urgentcook))             //the cooks in rest but they work with half speed
 			{
 				CooksInRest.dequeue(urgentcook);
-				urgentcook->setSpeed(urgentcook->getSpeed() / 2);
+				
 				urgentcook->Give_Urg(true);
 				if (urgentcook->GetType() == TYPE_VIP)
 					VcooksQ.enqueue(urgentcook);
@@ -165,6 +166,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				
 				Userved++;
 				UFinfo += "V" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
+				cout << "TS Urgent" << CurrentTimeStep << "--> Cook No. " << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order() << endl;
 			}
 			else if (NcooksQ.dequeue(Bcook))                              //check if there is available Normal cook when there is no VIP
 			{
@@ -184,6 +186,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				
 				Userved++;
 				UFinfo += "N" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
+				cout << "TS Urgent" << CurrentTimeStep << "--> Cook No. " << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order() << endl;
 			}
 			else if (GcooksQ.dequeue(Bcook))                              //check if there is available Vegan cook when there is no VIP&&Normal
 			{
@@ -203,6 +206,7 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 				
 				Userved++;
 				UFinfo += "G" + to_string(Bcook->GetID()) + "(" + "V" + to_string((*Urgorder)->GetID()) + ") ";
+				cout << "TS Urgent" << CurrentTimeStep << "--> Cook No. " << Bcook->GetID() << "  Took Order No.: " << Bcook->get_order() << endl;
 			}
 			else
 			{
@@ -341,6 +345,8 @@ bool Restaurant::Health_Emergency(int curr_ts)
 			temp->f_speed = (float(temp->getSpeed()) / 2);
 			temp->setSpeed(temp->getSpeed() / 2);
 		}
+		else
+			temp->f_speed = float(temp->getSpeed());
 		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
 		tempOrd->setFinishTime();
@@ -434,7 +440,8 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 			if (Acook->Is_injured() == true && Acook->Has_Urg() == true)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
-				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
+				Acook->Give_Urg(false);   ////so its speed is still the half until he has his break
+				if(Acook->f_speed!=float(Acook->getSpeed()))
 				Acook->setSpeed((int)(Acook->f_speed * 2));
 			}
 			busyCooksQ.dequeue(Acook, priority);
@@ -519,6 +526,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 		
 				CooksInRest.dequeue(Rcook);
 				Rcook->injure(false);
+				if(Rcook->f_speed!=float(Rcook->getSpeed()))
 				Rcook->setSpeed((int)(Rcook->f_speed * 2));
 				switch (Rcook->GetType())
 				{
@@ -619,7 +627,7 @@ void Restaurant::fileLoading()
 		InFile >> numOrdersBbreak >> Nbreak_min>> Nbreak_max>> Gbreak_min>> Gbreak_max>> Vbreak_min>> Vbreak_max >> InjProp >> RstPrd >> AutoP>> VIP_WT>>numofevents;
 
 		int numAllcooks = numNcooks + numGcooks + numVcooks;
-		int* arrCIDs = new int[numAllcooks];
+		int* arrCIDs = new int[numAllcooks+1];
 		for (int i = 1; i <= numAllcooks; i++)
 		{
 			arrCIDs[i] = i;
@@ -821,17 +829,7 @@ void Restaurant::promoteorder(int Id, double exmoney)
 
 
 
-//phase2
-//void Restaurant::addToBusyCQ(Cook* pC, Order* pO)
-//{
-//	float priority = pO->getFinishTime();
-//	busyCooksQ.enqueue(pC, priority);
-//}
-//
-//void Restaurant::addToInBreakCQ(Cook* pC)
-//{
-//
-//}
+
 void Restaurant::Restaurant_Modes(int Mode)
 {
 	bool injured;
@@ -1074,99 +1072,3 @@ void Restaurant::outputFileLoading()
 
 
 
-///Appendix
-
-//Testinf Function
-
-/*void Restaurant::SimpleSimulator()
-{
-	Order *NpO,*GpO,*VpO,*pO;
-	float pr;
-
-	pGUI->PrintMessage("Simple Simulator Function is Running .... Click to continue");
-	pGUI->waitForClick();
-	fileLoading();
-	int CurrentTimeStep = 1;
-	while (!EventsQueue.isEmpty() || !InServing.isEmpty())
-	{
-
-		char timestep[100];
-		itoa(CurrentTimeStep, timestep, 10);
-		pGUI->PrintMessage(timestep,1);
-		ExecuteEvents(CurrentTimeStep);
-		//Picking one order of each type and adding it to serving list
-		if (!LNormal_Order.isEmpty())
-		{
-			LNormal_Order.DeleteFirst(NpO);
-			NpO->setStatus(SRV);
-			InServing.InsertEnd(NpO);
-		}
-		if (!Qvegan_Order.isEmpty())
-		{
-			Qvegan_Order.dequeue(GpO);
-			GpO->setStatus(SRV);
-			InServing.InsertEnd(GpO);
-		}
-		if (!QVIP_Order.isEmpty())
-		{
-			QVIP_Order.dequeue(VpO, pr);
-			VpO->setStatus(SRV);
-			InServing.InsertEnd(VpO);
-		}
-		//each 5 timesteps pick one order of each type and add it to finished orders
-		if (CurrentTimeStep % 5 == 0)
-		{
-			Node<Order*>* temp = InServing.getHead();
-			while (temp)
-			{
-				if (temp->getItem()->GetType() == TYPE_NRM )
-				{
-					temp->getItem()->setStatus(DONE);
-					FinishedList.enqueue(temp->getItem());
-					InServing.DeleteNode(temp->getItem());
-					break;
-				}
-				temp = temp->getNext();
-			}
-			temp = InServing.getHead();
-			while (temp)
-			{
-				if (temp->getItem()->GetType() == TYPE_VGAN)
-				{
-					temp->getItem()->setStatus(DONE);
-					FinishedList.enqueue(temp->getItem());
-					InServing.DeleteNode(temp->getItem());
-					break;
-				}
-				temp = temp->getNext();
-			}
-			temp = InServing.getHead();
-			while (temp)
-			{
-				if (temp->getItem()->GetType() == TYPE_VIP)
-				{
-					temp->getItem()->setStatus(DONE);
-					FinishedList.enqueue(temp->getItem());
-					InServing.DeleteNode(temp->getItem());
-					break;
-				}
-				temp = temp->getNext();
-			}
-		}
-
-		FillDrawingList();
-		//Printing Cooks and Orders Information
-		pGUI->PrintMessage("Wating Orders ->  Normal : " + to_string(NWaitNum) +" Vegan :"  + to_string(GWaitNum) + " VIP : "+to_string(VWaitNum) , 2);
-		pGUI->PrintMessage("Available Cooks - >  Normal : " + to_string(NCookNum) + " Vegan :" + to_string(GCookNum) + " VIP :" + to_string(VCookNum), 3);
-		pGUI->UpdateInterface();
-		Sleep(1000);
-		//pGUI->waitForClick();
-		CurrentTimeStep++;
-		pGUI->ResetDrawingList();
-
-	}
-		pGUI->PrintMessage("Simulation Done ... Click To Exit");
-		pGUI->waitForClick();
-}
-
-*/

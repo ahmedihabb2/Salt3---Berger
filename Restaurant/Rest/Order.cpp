@@ -30,15 +30,6 @@ ORD_TYPE Order::GetType() const
 }
 
 
-void Order::SetDistance(int d)
-{
-	Distance = d>0?d:0;
-}
-
-int Order::GetDistance() const
-{
-	return Distance;
-}
 
 
 void Order::setStatus(ORD_STATUS s)
