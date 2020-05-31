@@ -54,8 +54,15 @@ public:
 			return;
 		}
 
+		else if (!Head->getNext())
+		{
+			tail = p;
+			Head->setNext(p);
+			tail->setNext(nullptr);
+		}
 		else
 		{
+			
 			tail->setNext(p);
 			p->setNext(nullptr);
 			tail = p;
@@ -65,11 +72,24 @@ public:
 	{
 		if (isEmpty())
 			return false;
-		frntEntry = Head->getItem();
-		Node<T>* temp = Head->getNext();
-		delete Head;
-		Head = temp;
-		return true;
+		else if (Head->getNext()==nullptr)
+		{
+			frntEntry = Head->getItem();
+			delete Head;
+			Head = tail = nullptr;
+			
+		}
+		else
+		{
+			frntEntry = Head->getItem();
+			Node<T>* temp = new Node<T>;
+			temp =Head;
+			Head = Head->getNext();
+			delete temp;
+			
+		}
+		
+		
 	}
 	bool peek(T& frntEntry)
 	{
@@ -80,13 +100,14 @@ public:
 		return true;
 	
 	}
-	void DeleteLast()
+	void DeleteLast(T& frntEntry)
 	{
 		Node<T>* temp = Head;
 		if (!Head)
 		{
 			return;
 		}
+		frntEntry = tail->getItem();
 		while (temp->getNext() != tail)
 		{
 			temp = temp->getNext();

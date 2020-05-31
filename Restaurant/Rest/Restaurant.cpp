@@ -345,12 +345,10 @@ bool Restaurant::Health_Emergency(int curr_ts)
 		busyCooksQ.dequeue(temp, pri_temp);
 		InServing.dequeue(tempOrd, pri_temp);
 		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime()) * temp->getSpeed();
-		if (temp->getSpeed() > 1)
-		{
+
 			temp->f_speed = (float(temp->getSpeed()) / 2);
 			temp->setSpeed(temp->getSpeed() / 2);
-		}
-		else
+		
 			temp->f_speed = float(temp->getSpeed());
 		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
@@ -449,8 +447,8 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
 				Acook->Give_Urg(false);   ////so its speed is still the half until he has his break
-				if (Acook->f_speed != float(Acook->getSpeed()))
-					Acook->setSpeed((int)(Acook->f_speed * 2));
+				//if (Acook->f_speed != float(Acook->getSpeed()))
+				Acook->setSpeed((int)(Acook->f_speed * 2));
 			}
 			Acook->setnumofOrderdServed(0);
 			float F = (Acook->getBreakDur() + CurrentTimeStep);
@@ -533,7 +531,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 		
 				CooksInRest.dequeue(Rcook);
 				Rcook->injure(false);
-				if(Rcook->f_speed!=float(Rcook->getSpeed()))
+				//if(Rcook->f_speed!=float(Rcook->getSpeed()))
 				Rcook->setSpeed((int)(Rcook->f_speed * 2));
 				switch (Rcook->GetType())
 				{
@@ -600,9 +598,17 @@ void Restaurant::FillDrawingList()
 	for (int i = 0; i < GWaitNum ;i++)
 		pGUI->AddToDrawingList(pOG[i]);
 
+	int usize = 0;
+	Order*** PU = QUrgentOrders.toArray(usize);
+	for (int i = 0; i < usize; i++)
+		pGUI->AddToDrawingList(*PU[i]);
+
 	Order** pOV = QVIP_Order.toArray(VWaitNum);
 	for (int i = 0; i < VWaitNum;i++)
+	{
+		if(!pOV[i]->isUrgent())
 		pGUI->AddToDrawingList(pOV[i]);
+	}
 
 	int size = 0;
 	Order** SO = InServing.toArray(SRVorders);
@@ -775,10 +781,6 @@ void Restaurant::cancellorder(int Id)
 		{
 			if (Head->getItem()->GetID() == Id)
 			{
-				if (!Head->getNext())
-				{
-					LNormal_Order.settail(prv);
-				}
 
 				prv->setNext(Head->getNext());
 				delete Head;
@@ -797,46 +799,54 @@ void Restaurant::cancellorder(int Id)
 void Restaurant::promoteorder(int Id, double exmoney)
 {
 	Node<Order*>* prv = LNormal_Order.getHead();
-	if (prv&&prv->getItem()->GetID() == Id)
+	if (!prv)
+		return;
+	if (prv->getItem()->GetID() == Id)
 	{
 		Order* proOrder;
 		LNormal_Order.DeleteFirst(proOrder);
 	    proOrder->Promote(exmoney);
 		float priority = proOrder->getPriority();
 		QVIP_Order.enqueue(proOrder, priority);
+		return;
 		
 	}
-	else if(prv)
+	else if (prv->getNext())
 	{
-		Node<Order*>* Head = prv->getNext();
-		while (Head)
-		{
-			if (Head->getItem()->GetID() == Id)
-			{
-				if (!Head->getNext())
-				{
-					LNormal_Order.settail(prv);
-				}
 
-				Node<Order*>* proOrder = Head;
-				prv->setNext(Head->getNext());
-				proOrder->getItem()->Promote(exmoney);
-				float priority = proOrder->getItem()->getPriority();
-				QVIP_Order.enqueue(proOrder->getItem(), priority);
-			
-				//delete Head;
+
+		while (prv->getNext()->getNext())
+		{
+			if (prv->getNext()->getItem()->GetID() == Id)
+			{
+				Order* proOrder;
+				Node<Order*>* temp = new Node<Order*>;
+				temp = prv->getNext();
+				prv->setNext(temp->getNext());
+				proOrder = temp->getItem();
+				proOrder->Promote(exmoney);
+				float priority = proOrder->getPriority();
+				QVIP_Order.enqueue(proOrder, priority);
+				delete temp;
 				return;
-				
+
 			}
 			else
-			{
-				prv = Head;
-				Head = Head->getNext();
-			}
+				prv = prv->getNext();
+
 		}
 
+		if (prv && prv->getNext() && prv->getNext()->getItem()->GetID() == Id)
+		{
+			Order* proOrder;
+			LNormal_Order.DeleteLast( proOrder);
+			proOrder->Promote(exmoney);
+			float priority = proOrder->getPriority();
+			QVIP_Order.enqueue(proOrder, priority);
+			return;
 
-		
+
+		}
 	}
 	return; ///if ID isn't in Qnormal
 }
@@ -876,7 +886,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			}
 			getfromRestCookQ(CurrentTimeStep);
 			///end donya
-			Serve_Urgent_VIP(CurrentTimeStep);  
+			Serve_Urgent_VIP(CurrentTimeStep);
 			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
