@@ -600,9 +600,17 @@ void Restaurant::FillDrawingList()
 	for (int i = 0; i < GWaitNum ;i++)
 		pGUI->AddToDrawingList(pOG[i]);
 
+	int usize = 0;
+	Order*** PU = QUrgentOrders.toArray(usize);
+	for (int i = 0; i < usize; i++)
+		pGUI->AddToDrawingList(*PU[i]);
+
 	Order** pOV = QVIP_Order.toArray(VWaitNum);
 	for (int i = 0; i < VWaitNum;i++)
+	{
+		if(!pOV[i]->isUrgent())
 		pGUI->AddToDrawingList(pOV[i]);
+	}
 
 	int size = 0;
 	Order** SO = InServing.toArray(SRVorders);
