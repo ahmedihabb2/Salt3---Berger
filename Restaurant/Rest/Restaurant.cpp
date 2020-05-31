@@ -1071,6 +1071,7 @@ void Restaurant::outputFileLoading()
 		{
 			OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (1 - ((originalNormOrdCount - numAutoPromOrders) / originalNormOrdCount)) * 100 << "%";
 		}
+
 	}
 
 }
