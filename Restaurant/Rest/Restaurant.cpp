@@ -1020,7 +1020,7 @@ void Restaurant::outputFileLoading()
 
 	if (OutFile.is_open())
 	{
-		OutFile << "FT  ID  AT  WT  ST" << endl;
+		OutFile << "FT    ID    AT    WT    ST" << endl;
 
 		Order *orderr;
 		float totalwaittime = 0;
@@ -1049,10 +1049,10 @@ void Restaurant::outputFileLoading()
 
 		for (int i = 0; i < ordsCount; i++)
 		{
-			OutFile << FinishedOrdsArray[i]->getFinishTime() << "   "
-				<< FinishedOrdsArray[i]->GetID() << "   "
-				<< FinishedOrdsArray[i]->getArrTime() << "   "
-				<< FinishedOrdsArray[i]->getWaitTime() << "   "
+			OutFile << FinishedOrdsArray[i]->getFinishTime() << "     "
+				<< FinishedOrdsArray[i]->GetID() << "     "
+				<< FinishedOrdsArray[i]->getArrTime() << "     "
+				<< FinishedOrdsArray[i]->getWaitTime() << "     "
 				<< FinishedOrdsArray[i]->getServInt() << endl;
 
 			totalwaittime = totalwaittime + FinishedOrdsArray[i]->getWaitTime();
