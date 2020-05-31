@@ -58,7 +58,10 @@ void Cook::setType(ORD_TYPE t)
 
 void Cook::setSpeed(int s)
 {
-	speed = s;
+	if (s >= 1)
+		speed = s;
+	else
+		speed = 1;
 }
 
 void Cook::setNumOrdBbreak(int num)

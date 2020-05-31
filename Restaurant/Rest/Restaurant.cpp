@@ -345,12 +345,10 @@ bool Restaurant::Health_Emergency(int curr_ts)
 		busyCooksQ.dequeue(temp, pri_temp);
 		InServing.dequeue(tempOrd, pri_temp);
 		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime()) * temp->getSpeed();
-		if (temp->getSpeed() > 1)
-		{
+
 			temp->f_speed = (float(temp->getSpeed()) / 2);
 			temp->setSpeed(temp->getSpeed() / 2);
-		}
-		else
+		
 			temp->f_speed = float(temp->getSpeed());
 		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
@@ -449,8 +447,8 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
 				Acook->Give_Urg(false);   ////so its speed is still the half until he has his break
-				if (Acook->f_speed != float(Acook->getSpeed()))
-					Acook->setSpeed((int)(Acook->f_speed * 2));
+				//if (Acook->f_speed != float(Acook->getSpeed()))
+				Acook->setSpeed((int)(Acook->f_speed * 2));
 			}
 			Acook->setnumofOrderdServed(0);
 			float F = (Acook->getBreakDur() + CurrentTimeStep);
@@ -533,7 +531,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 		
 				CooksInRest.dequeue(Rcook);
 				Rcook->injure(false);
-				if(Rcook->f_speed!=float(Rcook->getSpeed()))
+				//if(Rcook->f_speed!=float(Rcook->getSpeed()))
 				Rcook->setSpeed((int)(Rcook->f_speed * 2));
 				switch (Rcook->GetType())
 				{
