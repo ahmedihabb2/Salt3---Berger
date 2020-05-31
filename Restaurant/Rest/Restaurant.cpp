@@ -1016,31 +1016,55 @@ void Restaurant::outputFileLoading()
 		Order *orderr;
 		float totalwaittime = 0;
 		float totalServtime = 0;
-		//float numNormOrds = 0;
 
-		while (FinishedList.dequeue(orderr))
-		{
-			OutFile << orderr->getFinishTime() << "   "
-				<< orderr->GetID() << "   "
-				<< orderr->getArrTime() << "   "
-				<< orderr->getWaitTime() << "   "
-				<< orderr->getServInt() << endl;
+		int ordsCount = Nserved + Vserved + Gserved;
+		int cooksCount = numNcooks + numGcooks + numVcooks;
 
-			totalwaittime = totalwaittime + orderr->getWaitTime();
-			totalServtime = totalServtime + orderr->getServInt();
-			/*if (orderr->GetType() == TYPE_NRM)
-				numNormOrds++;*/
-		}
+		Order** FinishedOrdsArray = FinishedList.toArray(ordsCount);
 		
-		OutFile << "Orders: " << Nserved + Vserved + Gserved << " [Norm:" << Nserved << ", Veg:" << Gserved << ", VIP:" << Vserved << "]" << endl;
-		OutFile << "cooks: " << numNcooks + numGcooks + numVcooks << " [Norm:" << numNcooks << ", Veg:" << numGcooks << ", VIP:" << numVcooks
+		for (int i = 0; i < ordsCount; i++)
+		{
+			for (int j = 0; j < ordsCount - 1; j++)
+			{
+				if (FinishedOrdsArray[j]->getFinishTime() == FinishedOrdsArray[j + 1]->getFinishTime())
+				{
+					if (FinishedOrdsArray[j]->getServInt() > FinishedOrdsArray[j + 1]->getServInt())
+					{
+						Order* temp = FinishedOrdsArray[j];
+						FinishedOrdsArray[j] = FinishedOrdsArray[j + 1];
+						FinishedOrdsArray[j + 1] = temp;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < ordsCount; i++)
+		{
+			OutFile << FinishedOrdsArray[i]->getFinishTime() << "   "
+				<< FinishedOrdsArray[i]->GetID() << "   "
+				<< FinishedOrdsArray[i]->getArrTime() << "   "
+				<< FinishedOrdsArray[i]->getWaitTime() << "   "
+				<< FinishedOrdsArray[i]->getServInt() << endl;
+
+			totalwaittime = totalwaittime + FinishedOrdsArray[i]->getWaitTime();
+			totalServtime = totalServtime + FinishedOrdsArray[i]->getServInt();
+		}
+
+		
+		OutFile << "Orders: " << ordsCount << " [Norm:" << Nserved << ", Veg:" << Gserved << ", VIP:" << Vserved << "]" << endl;
+		OutFile << "cooks: " << cooksCount << " [Norm:" << numNcooks << ", Veg:" << numGcooks << ", VIP:" << numVcooks
 			<< ", injured:" << injcooksnum << "]" << endl;
 
-		OutFile << "Avg Wait = " << totalwaittime / (Nserved + Vserved + Gserved) 
-			<< ", Avg Serv = " << totalServtime / (Nserved + Vserved + Gserved) << endl;
+		if (ordsCount != 0)
+		{
+			OutFile << "Avg Wait = " << totalwaittime / ordsCount
+				<< ", Avg Serv = " << totalServtime / ordsCount << endl;
+		}
 
-		OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (1- ((originalNormOrdCount - numAutoPromOrders)  / originalNormOrdCount)) * 100 << "%";
-
+		if (originalNormOrdCount != 0)
+		{
+			OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (1 - ((originalNormOrdCount - numAutoPromOrders) / originalNormOrdCount)) * 100 << "%";
+		}
 	}
 
 }
