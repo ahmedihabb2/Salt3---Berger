@@ -213,6 +213,8 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 					return;                                         //there is no more available cooks in this timestep 
 				}
 			}
+			else
+				return;
 		}
 	
 }
@@ -340,6 +342,8 @@ bool Restaurant::Health_Emergency(int curr_ts)
 	if (busyCooksQ.peekFront(temp, pri_temp) && InServing.peekFront(tempOrd, pri_temp)&&temp->Is_injured()==false)
 	{
 		cout << "@ TS "<<curr_ts<<"---> " <<"COOK NO :"<< temp->GetID()<<" That has Ord.NO:  "<<temp->get_order()<<"Was injured"<<endl;
+		busyCooksQ.dequeue(temp, pri_temp);
+		InServing.dequeue(tempOrd, pri_temp);
 		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime()) * temp->getSpeed();
 		if (temp->getSpeed() > 1)
 		{
@@ -354,9 +358,9 @@ bool Restaurant::Health_Emergency(int curr_ts)
 		priority = tempOrd->getFinishTime();
 		temp->set_RstTime(tempOrd->getFinishTime());//set the finish of rest time
 		temp->injure(true);//make the flag on
-		busyCooksQ.dequeue(temp, pri_temp);
+		
 		busyCooksQ.enqueue(temp, priority);
-		InServing.dequeue(tempOrd, pri_temp);
+		
 		InServing.enqueue(tempOrd, priority);
 		
 		injcooksnum++;
@@ -429,23 +433,25 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 	{
 		if ((priority) <= CurrentTimeStep && Acook->Is_injured() == true&&Acook->Has_Urg()==false)
 		{
+			busyCooksQ.dequeue(Acook, priority);
+
 			if (Acook->getnumofOrderdServed() == Acook->getNumOrdBbreak())
 				Acook->setnumofOrderdServed(0);
-			busyCooksQ.dequeue(Acook, priority);
 			CooksInRest.enqueue(Acook);
 			
 		}
 		
 		else if((priority) <= CurrentTimeStep && Acook->getnumofOrderdServed() == Acook->getNumOrdBbreak())     //the cook servesed number of orders it should take break
 		{
+		
+			busyCooksQ.dequeue(Acook, priority);
 			if (Acook->Is_injured() == true && Acook->Has_Urg() == true)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
 				Acook->Give_Urg(false);   ////so its speed is still the half until he has his break
-				if(Acook->f_speed!=float(Acook->getSpeed()))
-				Acook->setSpeed((int)(Acook->f_speed * 2));
+				if (Acook->f_speed != float(Acook->getSpeed()))
+					Acook->setSpeed((int)(Acook->f_speed * 2));
 			}
-			busyCooksQ.dequeue(Acook, priority);
 			Acook->setnumofOrderdServed(0);
 			float F = (Acook->getBreakDur() + CurrentTimeStep);
 			CooksInBreak.enqueue(Acook, F);
@@ -522,7 +528,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 	while (CooksInRest.peekFront(Rcook))
 	{
 		
-		if ((Rcook->get_rstTime()) <= CurrentTimeStep&&Rcook->Has_Urg()==false) //check if there is a cooks finished his rest time
+		if ((Rcook->get_rstTime()) <= CurrentTimeStep) //check if there is a cooks finished his rest time
 		{
 		
 				CooksInRest.dequeue(Rcook);
@@ -974,6 +980,8 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			getfromInServingQ(CurrentTimeStep);
+			getfromRestCookQ(CurrentTimeStep);
+			Serve_Urgent_VIP(CurrentTimeStep);
 			//donia
 			//srand((int)time(0));
 			float R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -983,9 +991,9 @@ void Restaurant::Restaurant_Modes(int Mode)
 				
 				injured = Health_Emergency(CurrentTimeStep);
 			}
-			getfromRestCookQ(CurrentTimeStep);
+			
 			///end donya
-			Serve_Urgent_VIP(CurrentTimeStep);
+			
 			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
