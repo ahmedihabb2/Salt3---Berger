@@ -793,43 +793,54 @@ void Restaurant::cancellorder(int Id)
 void Restaurant::promoteorder(int Id, double exmoney)
 {
 	Node<Order*>* prv = LNormal_Order.getHead();
-	if (prv&&prv->getItem()->GetID() == Id)
+	if (!prv)
+		return;
+	if (prv->getItem()->GetID() == Id)
 	{
 		Order* proOrder;
 		LNormal_Order.DeleteFirst(proOrder);
 	    proOrder->Promote(exmoney);
 		float priority = proOrder->getPriority();
 		QVIP_Order.enqueue(proOrder, priority);
+		return;
 		
 	}
-	else if(prv)
+	else if (prv->getNext())
 	{
-		Node<Order*>* Head = prv->getNext();
-		while (Head)
+
+
+		while (prv->getNext()->getNext())
 		{
-			if (Head->getItem()->GetID() == Id)
+			if (prv->getNext()->getItem()->GetID() == Id)
 			{
-
-
-				Node<Order*>* proOrder = Head;
-				prv->setNext(Head->getNext());
-				proOrder->getItem()->Promote(exmoney);
-				float priority = proOrder->getItem()->getPriority();
-				QVIP_Order.enqueue(proOrder->getItem(), priority);
-			
-				//delete Head;
+				Order* proOrder;
+				Node<Order*>* temp = new Node<Order*>;
+				temp = prv->getNext();
+				prv->setNext(temp->getNext());
+				proOrder = temp->getItem();
+				proOrder->Promote(exmoney);
+				float priority = proOrder->getPriority();
+				QVIP_Order.enqueue(proOrder, priority);
+				delete temp;
 				return;
-				
+
 			}
 			else
-			{
-				prv = Head;
-				Head = Head->getNext();
-			}
+				prv = prv->getNext();
+
 		}
 
+		if (prv && prv->getNext() && prv->getNext()->getItem()->GetID() == Id)
+		{
+			Order* proOrder;
+			LNormal_Order.DeleteLast( proOrder);
+			proOrder->Promote(exmoney);
+			float priority = proOrder->getPriority();
+			QVIP_Order.enqueue(proOrder, priority);
+			return;
 
-		
+
+		}
 	}
 	return; ///if ID isn't in Qnormal
 }
