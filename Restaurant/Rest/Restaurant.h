@@ -62,9 +62,9 @@ public:
 	void Interactive();
 	void Restaurant_Modes(int Mode);
 	void FillDrawingList();
-	void AddtoVIPQueue(Order* po);
-	void AddtoNOList(Order* po);
-	void AddtoVEQueue(Order* po);
+	void AddtoVIPQueue(Order*& po);
+	void AddtoNOList(Order*& po);
+	void AddtoVEQueue(Order*& po);
 	void cancellorder(int ID);
 	void promoteorder(int ID, double exmoney);
 	void Executepromotion(int CurrentTimeStep);
@@ -91,7 +91,6 @@ public:
 	int Userved=0,Vserved = 0, Nserved = 0, Gserved = 0;
 	float numAutoPromOrders = 0;
 	int originalNormOrdCount = 0;
-	//int urgentOrdersCount = 0;
 	bool Health_Emergency(int CurrentTimeStep);
 	void getfromRestCookQ(int CurrentTimeStep);
 	//This Strings are for storing Cooks and Orders info to be Printed on GUI
@@ -100,9 +99,7 @@ public:
 	string NFinfo;
 	string GFinfo;
 	////////////////////
-	//// Added by abeer phase2
-	//void addToBusyCQ(Cook* p C, Order* pO);
-	//void addToInBreakCQ(Cook* pC);
+	
 	float RandomFloat(float a, float b) {
 		//srand((int)time(0));
 		float random = ((float)rand()) / (float)RAND_MAX;

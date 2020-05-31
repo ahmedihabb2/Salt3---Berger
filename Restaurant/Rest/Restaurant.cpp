@@ -744,19 +744,19 @@ void Restaurant::fileLoading()
 	}
 	
 }
-void Restaurant::AddtoVIPQueue(Order* po)
+void Restaurant::AddtoVIPQueue(Order*& po)
 {
 	po->setPriority();
 	float priority = po->getPriority();
 	QVIP_Order.enqueue(po, priority);
 
 }
-void Restaurant::AddtoNOList(Order* po)
+void Restaurant::AddtoNOList(Order*& po)
 {
 	LNormal_Order.InsertEnd(po);
 
 }
-void Restaurant::AddtoVEQueue(Order* po)
+void Restaurant::AddtoVEQueue(Order*& po)
 {
 	Qvegan_Order.enqueue(po);
 
