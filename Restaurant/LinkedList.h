@@ -28,6 +28,11 @@ public:
 	{
 		return Head;
 	}
+	void settail(Node<T>* t)
+	{
+		tail = t;
+	
+	}
 	void DeleteAll()
 	{
 		Node<T>* P = Head;

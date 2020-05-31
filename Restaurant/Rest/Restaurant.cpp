@@ -775,6 +775,10 @@ void Restaurant::cancellorder(int Id)
 		{
 			if (Head->getItem()->GetID() == Id)
 			{
+				if (!Head->getNext())
+				{
+					LNormal_Order.settail(prv);
+				}
 
 				prv->setNext(Head->getNext());
 				delete Head;
@@ -809,7 +813,10 @@ void Restaurant::promoteorder(int Id, double exmoney)
 		{
 			if (Head->getItem()->GetID() == Id)
 			{
-
+				if (!Head->getNext())
+				{
+					LNormal_Order.settail(prv);
+				}
 
 				Node<Order*>* proOrder = Head;
 				prv->setNext(Head->getNext());
@@ -869,7 +876,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			}
 			getfromRestCookQ(CurrentTimeStep);
 			///end donya
-			Serve_Urgent_VIP(CurrentTimeStep);
+			Serve_Urgent_VIP(CurrentTimeStep);  
 			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
