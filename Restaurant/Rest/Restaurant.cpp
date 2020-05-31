@@ -117,7 +117,7 @@ bool Restaurant::GetCooksFor_Urgent_VIP(int CurrentTimeStep)
 			else if (CooksInRest.peekFront(urgentcook))             //the cooks in rest but they work with half speed
 			{
 				CooksInRest.dequeue(urgentcook);
-				urgentcook->setSpeed(urgentcook->getSpeed() / 2);
+				
 				urgentcook->Give_Urg(true);
 				if (urgentcook->GetType() == TYPE_VIP)
 					VcooksQ.enqueue(urgentcook);
@@ -341,6 +341,8 @@ bool Restaurant::Health_Emergency(int curr_ts)
 			temp->f_speed = (float(temp->getSpeed()) / 2);
 			temp->setSpeed(temp->getSpeed() / 2);
 		}
+		else
+			temp->f_speed = float(temp->getSpeed());
 		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
 		tempOrd->setFinishTime();
@@ -434,7 +436,8 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 			if (Acook->Is_injured() == true && Acook->Has_Urg() == true)
 			{
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
-				Acook->Give_Urg(false);    ////so its speed is still the half until he has his break
+				Acook->Give_Urg(false);   ////so its speed is still the half until he has his break
+				if(Acook->f_speed!=float(Acook->getSpeed()))
 				Acook->setSpeed((int)(Acook->f_speed * 2));
 			}
 			busyCooksQ.dequeue(Acook, priority);
@@ -519,6 +522,7 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 		
 				CooksInRest.dequeue(Rcook);
 				Rcook->injure(false);
+				if(Rcook->f_speed!=float(Rcook->getSpeed()))
 				Rcook->setSpeed((int)(Rcook->f_speed * 2));
 				switch (Rcook->GetType())
 				{
@@ -619,7 +623,7 @@ void Restaurant::fileLoading()
 		InFile >> numOrdersBbreak >> Nbreak_min>> Nbreak_max>> Gbreak_min>> Gbreak_max>> Vbreak_min>> Vbreak_max >> InjProp >> RstPrd >> AutoP>> VIP_WT>>numofevents;
 
 		int numAllcooks = numNcooks + numGcooks + numVcooks;
-		int* arrCIDs = new int[numAllcooks];
+		int* arrCIDs = new int[numAllcooks+1];
 		for (int i = 1; i <= numAllcooks; i++)
 		{
 			arrCIDs[i] = i;
