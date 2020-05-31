@@ -336,9 +336,11 @@ bool Restaurant::Health_Emergency(int curr_ts)
 	{
 		cout << "@ TS "<<curr_ts<<"---> " <<"COOK NO :"<< temp->GetID()<<" That has Ord.NO:  "<<temp->get_order()<<"Was injured"<<endl;
 		no_dishes_left = tempOrd->getOrderSize() - (curr_ts - tempOrd->getServTime()) * temp->getSpeed();
-		temp->f_speed = (float(temp->getSpeed()) / 2);
-		temp->setSpeed(temp->getSpeed() / 2);
-		
+		if (temp->getSpeed() > 1)
+		{
+			temp->f_speed = (float(temp->getSpeed()) / 2);
+			temp->setSpeed(temp->getSpeed() / 2);
+		}
 		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
 		tempOrd->setFinishTime();
