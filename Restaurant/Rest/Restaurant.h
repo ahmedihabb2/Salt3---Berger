@@ -88,7 +88,7 @@ public:
 	int NWaitNum, GWaitNum, VWaitNum;
 	int SRVorders, AutoP, RstPrd, VIP_WT;
 	int UrgentOredersNum=0;
-	int Vserved = 0, Nserved = 0, Gserved = 0;
+	int Userved=0,Vserved = 0, Nserved = 0, Gserved = 0;
 	float numAutoPromOrders = 0;
 	int originalNormOrdCount = 0;
 	//int urgentOrdersCount = 0;
