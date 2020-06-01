@@ -1036,19 +1036,18 @@ void Restaurant::outputFileLoading()
 
 	ofstream OutFile(OPfilename);
 
+	float totalwaittime = 0;
+	float totalServtime = 0;
+
+	int ordsCount = Nserved + Vserved + Gserved;
+	int cooksCount = numNcooks + numGcooks + numVcooks;
+
+	Order** FinishedOrdsArray = FinishedList.toArray(ordsCount);
+
 	if (OutFile.is_open())
 	{
 		OutFile << "FT    ID    AT    WT    ST" << endl;
-
-		Order *orderr;
-		float totalwaittime = 0;
-		float totalServtime = 0;
-
-		int ordsCount = Nserved + Vserved + Gserved;
-		int cooksCount = numNcooks + numGcooks + numVcooks;
-
-		Order** FinishedOrdsArray = FinishedList.toArray(ordsCount);
-		
+	
 		for (int i = 0; i < ordsCount; i++)
 		{
 			for (int j = 0; j < ordsCount - 1; j++)
@@ -1093,6 +1092,11 @@ void Restaurant::outputFileLoading()
 			OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (1 - ((originalNormOrdCount - numAutoPromOrders) / originalNormOrdCount)) * 100 << "%";
 		}
 
+	}
+
+	for (int i = 0; i < ordsCount; i++)
+	{
+		delete FinishedOrdsArray[i];
 	}
 
 }
