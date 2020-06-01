@@ -1060,10 +1060,10 @@ void Restaurant::outputFileLoading()
 			OutFile << "Avg Wait = " << totalwaittime / ordsCount
 				<< ", Avg Serv = " << totalServtime / ordsCount << endl;
 		}
-
+		OutFile << "Urgent orders: " << UrgentOredersNum;
 		if (originalNormOrdCount != 0)
 		{
-			OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (1 - ((originalNormOrdCount - numAutoPromOrders) / originalNormOrdCount)) * 100 << "%";
+			OutFile<< ",  Auto-promoted: " << (1 - ((originalNormOrdCount - numAutoPromOrders) / originalNormOrdCount)) * 100 << "%";
 		}
 
 	}
