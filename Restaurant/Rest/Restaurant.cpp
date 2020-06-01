@@ -349,7 +349,6 @@ bool Restaurant::Health_Emergency(int curr_ts)
 			temp->f_speed = (float(temp->getSpeed()) / 2);
 			temp->setSpeed(temp->getSpeed() / 2);
 		
-			temp->f_speed = float(temp->getSpeed());
 		int ST = curr_ts - tempOrd->getServTime()+ceil(float(no_dishes_left) / (temp->getSpeed())); //calculate the surving time
 		tempOrd->setServInt(ST);
 		tempOrd->setFinishTime();
@@ -448,7 +447,8 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 				Acook->injure(false);         ///if he was injured and was assigned to an urgent cook
 				Acook->Give_Urg(false);   ////so its speed is still the half until he has his break
 				//if (Acook->f_speed != float(Acook->getSpeed()))
-				Acook->setSpeed((int)(Acook->f_speed * 2));
+				float original_speed = Acook->f_speed * 2;
+				Acook->setSpeed(int(original_speed));
 			}
 			Acook->setnumofOrderdServed(0);
 			float F = (Acook->getBreakDur() + CurrentTimeStep);
@@ -532,7 +532,8 @@ void Restaurant::getfromRestCookQ(int CurrentTimeStep)
 				CooksInRest.dequeue(Rcook);
 				Rcook->injure(false);
 				//if(Rcook->f_speed!=float(Rcook->getSpeed()))
-				Rcook->setSpeed((int)(Rcook->f_speed * 2));
+				float original_speed = Rcook->f_speed * 2;
+				Rcook->setSpeed(int(original_speed));
 				switch (Rcook->GetType())
 				{
 				case TYPE_VIP:
