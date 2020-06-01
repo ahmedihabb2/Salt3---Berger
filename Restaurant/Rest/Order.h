@@ -16,9 +16,7 @@ protected:
 
 	int ArrTime, ServTime, FinishTime;	//arrival, service start, and finish times
 
-	//
-	// TODO: Add More Data Members As Needed
-	//
+
 	int orderSize;
 	float Priority;
 	int WaitTime;
@@ -37,9 +35,7 @@ public:
 	void setStatus(ORD_STATUS s);
 	ORD_STATUS getStatus() const;
 
-	//
-	// TODO: Add More Member Functions As Needed
-	//Donia Addition
+	
 	void setPriority();
 	void setOrderSize(int size);
 	float getPriority();
@@ -56,7 +52,7 @@ public:
 	void setServInt(int& serv);
 	void setFinishTime();
 	void setWaitTime();
-	void Serve( int);//
+	void Serve( int);
 	void setUrgent(bool flag);
 	bool isUrgent();
 };
