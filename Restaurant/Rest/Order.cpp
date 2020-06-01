@@ -41,8 +41,6 @@ ORD_STATUS Order::getStatus() const
 {
 	return status;
 }
-
-//////////////////////Donia Additions
 void Order::setOrderSize(int size)
 {
 

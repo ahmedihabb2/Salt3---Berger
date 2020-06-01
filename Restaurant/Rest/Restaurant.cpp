@@ -53,8 +53,6 @@ void Restaurant::ExecuteEvents(int CurrentTimeStep)
 	}
 
 }
-//by Raghad
-
 //promot Normer orders automatically promoted to VIP after it excess (Autop) time step in waiting List  
 void Restaurant::Executepromotion(int CurrentTimeStep)
 {
@@ -76,7 +74,6 @@ void Restaurant::Executepromotion(int CurrentTimeStep)
 	
 
 }
-//by Ahmed
 //Serving VIP orders after wating time excess VIP_WT to any cook in Break or Rest
 void Restaurant::CheckUrgentOrders(int CurrentTimeStep)
 {
@@ -218,7 +215,6 @@ void Restaurant::Serve_Urgent_VIP(int CurrentTimeStep)
 		}
 	
 }
-//by raghad
 void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 {
 	Order* proOrder;
@@ -294,7 +290,6 @@ void Restaurant::serve_VIP_orders(int CurrentTimeStep)
 	}
 
 }
-//by raghad
 void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 {
 	Order* proOrder;
@@ -327,10 +322,6 @@ void Restaurant::serve_Vegan_orders(int CurrentTimeStep)
 	}
 	
 }
-
-
-////////////////////By Donia\\\\\\\\\\\\\\\\\\\\\\
-
 
 bool Restaurant::Health_Emergency(int curr_ts)
 {
@@ -370,7 +361,6 @@ bool Restaurant::Health_Emergency(int curr_ts)
 }
 
 
-//by raghad
 void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 {
 	Order* proOrder;
@@ -421,7 +411,7 @@ void Restaurant::serve_Normal_orders(int CurrentTimeStep)
 	}
 
 }
-//by raghad
+
 void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 {
 	Cook* Acook;
@@ -473,7 +463,6 @@ void Restaurant::getfrombusyCookQ(int CurrentTimeStep)
 
 
 }
-//by raghad
 void Restaurant::getfromBreakCookQ(int CurrentTimeStep)
 {
 	Cook* Acook;
@@ -693,11 +682,11 @@ void Restaurant::fileLoading()
 
 			newVCook->setID(arrCIDs[i + numNcooks + numGcooks + 1]);
 			newVCook->setType(TYPE_VIP);
-			//newVCook->setSpeed(Vcookspeed_min+rand() % Vcookspeed_max );
+			
 			newVCook->setSpeed(rangeRandomAlg2(Vcookspeed_min, Vcookspeed_max));
 		
 			newVCook->setNumOrdBbreak(numOrdersBbreak);
-			//newVCook->setBreakDur(Gbreak_min + rand() %Gbreak_max );
+			
 			newVCook->setBreakDur(rangeRandomAlg2(Vbreak_min, Vbreak_max));
 			newVCook->set_RstPrd(RstPrd);
 			cout << "V " << newVCook->GetID() << "  Speed, Break : " << newVCook->getSpeed() << "  " << newVCook->getBreakDur() << endl;
@@ -705,7 +694,7 @@ void Restaurant::fileLoading()
 			VcooksQ.enqueue(newVCook);
 		}
 
-		//added by raghad
+		
 		for (int i = 0; i < numofevents; i++)
 		{
 			char typeofevent;
@@ -880,7 +869,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			getfromInServingQ(CurrentTimeStep);
-			//donia
+			
 			
 			float R= static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 			
@@ -889,7 +878,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			getfromRestCookQ(CurrentTimeStep);
-			///end donya
+			
 			Serve_Urgent_VIP(CurrentTimeStep);
 			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
@@ -913,7 +902,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 		}
 		while (!CooksInBreak.isEmpty() || !CooksInRest.isEmpty())
 		{
-			pGUI->PrintMessage("No More Orders...Please Wait, Some Cooks are in {Break, Rest}","Maiandra GD");
+			pGUI->PrintMessage("No More Orders...Please Do More Clicks, Some Cooks are in {Break, Rest}","Maiandra GD");
 			getfromBreakCookQ(CurrentTimeStep);
 			getfrombusyCookQ(CurrentTimeStep);
 			getfromRestCookQ(CurrentTimeStep);
@@ -1003,8 +992,7 @@ void Restaurant::Restaurant_Modes(int Mode)
 			getfromInServingQ(CurrentTimeStep);
 			getfromRestCookQ(CurrentTimeStep);
 			Serve_Urgent_VIP(CurrentTimeStep);
-			//donia
-			//srand((int)time(0));
+			
 			float R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 			
 			if (R <= InjProp)
@@ -1013,14 +1001,13 @@ void Restaurant::Restaurant_Modes(int Mode)
 				injured = Health_Emergency(CurrentTimeStep);
 			}
 			
-			///end donya
 			
 			Executepromotion(CurrentTimeStep);
 			serve_VIP_orders(CurrentTimeStep);
 			serve_Vegan_orders(CurrentTimeStep);
 			serve_Normal_orders(CurrentTimeStep);
 			
-			//Printing Cooks and Orders Information
+			
 			CurrentTimeStep++;
 			
 		}
@@ -1039,19 +1026,18 @@ void Restaurant::outputFileLoading()
 
 	ofstream OutFile(OPfilename);
 
+	float totalwaittime = 0;
+	float totalServtime = 0;
+
+	int ordsCount = Nserved + Vserved + Gserved;
+	int cooksCount = numNcooks + numGcooks + numVcooks;
+
+	Order** FinishedOrdsArray = FinishedList.toArray(ordsCount);
+
 	if (OutFile.is_open())
 	{
-		OutFile << "FT  ID  AT  WT  ST" << endl;
-
-		Order *orderr;
-		float totalwaittime = 0;
-		float totalServtime = 0;
-
-		int ordsCount = Nserved + Vserved + Gserved;
-		int cooksCount = numNcooks + numGcooks + numVcooks;
-
-		Order** FinishedOrdsArray = FinishedList.toArray(ordsCount);
-		
+		OutFile << "FT    ID    AT    WT    ST" << endl;
+	
 		for (int i = 0; i < ordsCount; i++)
 		{
 			for (int j = 0; j < ordsCount - 1; j++)
@@ -1070,10 +1056,10 @@ void Restaurant::outputFileLoading()
 
 		for (int i = 0; i < ordsCount; i++)
 		{
-			OutFile << FinishedOrdsArray[i]->getFinishTime() << "   "
-				<< FinishedOrdsArray[i]->GetID() << "   "
-				<< FinishedOrdsArray[i]->getArrTime() << "   "
-				<< FinishedOrdsArray[i]->getWaitTime() << "   "
+			OutFile << FinishedOrdsArray[i]->getFinishTime() << "     "
+				<< FinishedOrdsArray[i]->GetID() << "     "
+				<< FinishedOrdsArray[i]->getArrTime() << "     "
+				<< FinishedOrdsArray[i]->getWaitTime() << "     "
 				<< FinishedOrdsArray[i]->getServInt() << endl;
 
 			totalwaittime = totalwaittime + FinishedOrdsArray[i]->getWaitTime();
@@ -1096,6 +1082,11 @@ void Restaurant::outputFileLoading()
 			OutFile << "Urgent orders: " << UrgentOredersNum << ",  Auto-promoted: " << (1 - ((originalNormOrdCount - numAutoPromOrders) / originalNormOrdCount)) * 100 << "%";
 		}
 
+	}
+
+	for (int i = 0; i < ordsCount; i++)
+	{
+		delete FinishedOrdsArray[i];
 	}
 
 }

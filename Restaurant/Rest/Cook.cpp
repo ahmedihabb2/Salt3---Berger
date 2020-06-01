@@ -81,8 +81,6 @@ void Cook::setnumofOrderdServed(int num)
 }
 
 
-/////////////donya\\\\\\\\\\\\\\\\
-
 void Cook::set_RstPrd(int r)
 {
 	if (r >= 0)
