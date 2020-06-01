@@ -108,7 +108,7 @@ public:
 		return a + r;
 	}
 	int rangeRandomAlg2(int min, int max) {
-		int n = max - min + 1;
+		int n = abs(max - min )+ 1;
 		int remainder = RAND_MAX % n;
 		int x;
 		do {

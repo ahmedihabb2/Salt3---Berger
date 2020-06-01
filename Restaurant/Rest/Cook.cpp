@@ -1,5 +1,5 @@
 #include "Cook.h"
-
+#include<cmath>
 
 Cook::Cook()
 {
@@ -66,12 +66,13 @@ void Cook::setSpeed(int s)
 
 void Cook::setNumOrdBbreak(int num)
 {
-	numOrdersBefBreak = num;
+	
+	numOrdersBefBreak = abs(num);
 }
 
 void Cook::setBreakDur(int bd)
 {
-	breakDuration = bd;
+	breakDuration = abs(bd);
 }
 
 void Cook::setnumofOrderdServed(int num)

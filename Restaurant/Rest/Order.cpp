@@ -1,12 +1,12 @@
 #include "Order.h"
-
+#include<cmath>
 Order::Order(ORD_TYPE r_Type,int arrtime, int id, int size, double totalmoney)
 {
 	ID = (id>0&&id<1000)?id:0;	//1<ID<999
 	type = r_Type;
 	status = WAIT;
 	WaitTime = 0;//initially 0 and will increment each time step
-	totalMoney = totalmoney;
+	totalMoney =(totalmoney > 0)?totalmoney:0;
 	setArrTime(arrtime);
 	setOrderSize(size);
 	Priority = 0;
@@ -45,7 +45,8 @@ ORD_STATUS Order::getStatus() const
 //////////////////////Donia Additions
 void Order::setOrderSize(int size)
 {
-	orderSize = size;
+
+	orderSize = (size>0)?size:0;
 }
 
 void Order::setPriority()
@@ -85,12 +86,12 @@ float Order::getPriority()
 void Order::Promote(double& addedmoney)
 {
 	type = TYPE_VIP;
-	totalMoney += addedmoney;
+	totalMoney += abs(addedmoney);
 	setPriority();
 }
 void Order::setArrTime(int& arr)
 {
-	ArrTime = arr;
+	ArrTime = abs(arr);
 }
 
 void  Order::setServTime( int& serv)///as TimeStep
