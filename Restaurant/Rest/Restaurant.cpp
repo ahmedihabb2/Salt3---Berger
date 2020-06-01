@@ -781,7 +781,10 @@ void Restaurant::cancellorder(int Id)
 		{
 			if (Head->getItem()->GetID() == Id)
 			{
-
+				if (!Head->getNext())
+				{
+					LNormal_Order.settail(prv);
+				}
 				prv->setNext(Head->getNext());
 				delete Head;
 				break;
